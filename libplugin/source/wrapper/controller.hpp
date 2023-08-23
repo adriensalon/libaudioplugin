@@ -11,6 +11,7 @@ namespace vstsync {
 //------------------------------------------------------------------------
 //  wrapperController
 //------------------------------------------------------------------------
+
 class wrapperController : public Steinberg::Vst::EditControllerEx1
 {
 public:

@@ -5,8 +5,9 @@ smtg_enable_vst3_sdk()
 
 add_library(libplugin STATIC "source/libplugin.cpp")
 
-target_include_directories(libplugin PUBLIC "external/vst3sdk")
 target_include_directories(libplugin PUBLIC "include")
+
+target_link_libraries(libplugin PUBLIC sdk)
 
 # @param target The target that implements the libplugin interface
 # @param PLUGIN_FX
@@ -15,11 +16,12 @@ target_include_directories(libplugin PUBLIC "include")
 # @param PLUGIN_COMPANY <company>
 # @param PLUGIN_DESCRIPTION <description>
 # @param PLUGIN_VERSION <version>
-function(add_plugin target)
+function(add_plugin plugin_name)
 	set(options PLUGIN_FX PLUGIN_INSTRUMENT)
-	set(oneValueArgs PLUGIN_NAME PLUGIN_COMPANY PLUGIN_DESCRIPTION PLUGIN_VERSION)
-	cmake_parse_arguments(PARSE_ARGV 1 LIBPLUGIN "${options}" "${oneValueArgs}" "")
-
+	set(oneValueArgs PLUGIN_COMPANY PLUGIN_DESCRIPTION PLUGIN_VERSION)
+	set(multipleValuesArgs PLUGIN_SOURCES)
+	cmake_parse_arguments(PARSE_ARGV 1 LIBPLUGIN "${options}" "${oneValueArgs}" "${multipleValuesArgs}")
+	message("${source}")
 	if(LIBPLUGIN_PLUGIN_INSTRUMENT)
 		set(LIBPLUGIN_PLUGIN_TYPE "Instrument")
 	else()
@@ -28,11 +30,6 @@ function(add_plugin target)
 		endif()
 
 		set(LIBPLUGIN_PLUGIN_TYPE "Fx")
-	endif()
-
-	if(NOT DEFINED LIBPLUGIN_PLUGIN_NAME)
-		message("-- [libplugin] Plugin name is not defined, set it with PLUGIN_NAME")
-		set(LIBPLUGIN_PLUGIN_NAME "MyPluginName")
 	endif()
 
 	if(NOT DEFINED LIBPLUGIN_PLUGIN_COMPANY)
@@ -50,52 +47,47 @@ function(add_plugin target)
 		set(LIBPLUGIN_PLUGIN_VERSION "1.0.0.0")
 	endif()
 
-	get_target_property(target_type ${target} TYPE)
-
-	if(NOT target_type STREQUAL "STATIC_LIBRARY")
-		message(FATAL_ERROR " [libplugin] Plugin target ${target} is not a static library, aborting...")
-	endif()
-
-	message("-- [libplugin] Plugin name is '${LIBPLUGIN_PLUGIN_NAME}'")
+	message("-- [libplugin] Plugin name is '${plugin_name}'")
 	message("-- [libplugin] Plugin category is '${LIBPLUGIN_PLUGIN_TYPE}'")
 	message("-- [libplugin] Plugin company is '${LIBPLUGIN_PLUGIN_COMPANY}'")
 	message("-- [libplugin] Plugin description is '${LIBPLUGIN_PLUGIN_DESCRIPTION}'")
 	message("-- [libplugin] Plugin version is '${LIBPLUGIN_PLUGIN_VERSION}'")
 
-	project(${LIBPLUGIN_PLUGIN_NAME}
+	project(${plugin_name}
 		VERSION ${LIBPLUGIN_PLUGIN_VERSION}
 		DESCRIPTION ${LIBPLUGIN_PLUGIN_DESCRIPTION})
 
-	smtg_add_vst3plugin(${LIBPLUGIN_PLUGIN_NAME}
+		message("sources = ${LIBPLUGIN_PLUGIN_SOURCES}")
+	smtg_add_vst3plugin(${plugin_name}
+		${LIBPLUGIN_PLUGIN_SOURCES}
 		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/wrapper/processor.cpp
-		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/wrapper/controller.cpp
-		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/wrapper/entry.cpp)
+		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/wrapper/controller.cpp)
 
-	target_compile_definitions(${LIBPLUGIN_PLUGIN_NAME} PUBLIC -DLIBPLUGIN_PLUGIN_NAME="${LIBPLUGIN_PLUGIN_NAME}")
-	target_compile_definitions(${LIBPLUGIN_PLUGIN_NAME} PUBLIC -DLIBPLUGIN_PLUGIN_TYPE="${LIBPLUGIN_PLUGIN_TYPE}")
-	target_compile_definitions(${LIBPLUGIN_PLUGIN_NAME} PUBLIC -DLIBPLUGIN_PLUGIN_COMPANY="${LIBPLUGIN_PLUGIN_COMPANY}")
-	target_compile_definitions(${LIBPLUGIN_PLUGIN_NAME} PUBLIC -DLIBPLUGIN_PLUGIN_DESCRIPTION="${LIBPLUGIN_PLUGIN_DESCRIPTION}")
+	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_NAME="${plugin_name}")
+	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_TYPE="${LIBPLUGIN_PLUGIN_TYPE}")
+	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_COMPANY="${LIBPLUGIN_PLUGIN_COMPANY}")
+	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_DESCRIPTION="${LIBPLUGIN_PLUGIN_DESCRIPTION}")
 
-	target_link_libraries(${LIBPLUGIN_PLUGIN_NAME} PRIVATE sdk)
-	target_link_libraries(${LIBPLUGIN_PLUGIN_NAME} PRIVATE libplugin)
+	# target_link_libraries(${plugin_name} PRIVATE sdk)
+	target_link_libraries(${plugin_name} PRIVATE libplugin)
 
-	smtg_target_configure_version_file(${LIBPLUGIN_PLUGIN_NAME})
+	smtg_target_configure_version_file(${plugin_name})
 
 	if(SMTG_MAC)
-		smtg_target_set_bundle(${LIBPLUGIN_PLUGIN_NAME}
+		smtg_target_set_bundle(${plugin_name}
 			BUNDLE_IDENTIFIER com.PLSOVERRIDECOMPANY.ANDNAME
 			COMPANY_NAME "My Plug-in Company")
 
-		smtg_target_set_debug_executable(${LIBPLUGIN_PLUGIN_NAME}
+		smtg_target_set_debug_executable(${plugin_name}
 			"/Applications/VST3PluginTestHost.app"
 			"--pluginfolder;$(BUILT_PRODUCTS_DIR)")
 
 	elseif(SMTG_WIN)
-		target_sources(${LIBPLUGIN_PLUGIN_NAME} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/resource/win32resource.rc)
+		target_sources(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/resource/win32resource.rc)
 
 		if(MSVC)
-			set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${LIBPLUGIN_PLUGIN_NAME})
-			smtg_target_set_debug_executable(${LIBPLUGIN_PLUGIN_NAME}
+			set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${plugin_name})
+			smtg_target_set_debug_executable(${plugin_name}
 				"$(ProgramW6432)/Steinberg/VST3PluginTestHost/VST3PluginTestHost.exe"
 				"--pluginfolder \"$(OutDir)/\"")
 		endif()

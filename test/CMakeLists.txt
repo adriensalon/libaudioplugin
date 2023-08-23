@@ -1,8 +1,8 @@
 project(libplugin_test)
 
-add_library(libplugin_test STATIC "source/test.cpp")
-
-add_plugin(libplugin_test
+add_plugin(TestPlugin
+	PLUGIN_SOURCES "source/test.cpp"
+	PLUGIN_INSTRUMENT
 	PLUGIN_NAME "TestPlugin"
 	PLUGIN_COMPANY "adrien salon"
 	PLUGIN_DESCRIPTION "This is the testing plugin"
