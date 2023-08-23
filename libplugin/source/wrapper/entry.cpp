@@ -9,7 +9,7 @@
 
 #include "public.sdk/source/main/pluginfactory.h"
 
-#define stringPluginName "PLSOVERRIDE"
+#define stringPluginName LIBPLUGIN_PLUGIN_NAME
 
 using namespace Steinberg::Vst;
 using namespace vstsync;
@@ -21,7 +21,7 @@ using namespace vstsync;
 // GetPluginFactory function!
 //------------------------------------------------------------------------
 
-BEGIN_FACTORY_DEF ("My Plug-in Company", 
+BEGIN_FACTORY_DEF (LIBPLUGIN_PLUGIN_COMPANY, 
 			       "https://www.mycompanyname.com", 
 			       "mailto:info@mycompanyname.com")
 
