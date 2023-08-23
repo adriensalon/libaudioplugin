@@ -55,9 +55,7 @@ function(add_plugin plugin_name)
 	message("sources = ${LIBPLUGIN_PLUGIN_SOURCES}")
 	smtg_add_vst3plugin(${plugin_name}
 		${LIBPLUGIN_PLUGIN_SOURCES}
-		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/libplugin.cpp
-		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/wrapper/processor.cpp
-		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/wrapper/controller.cpp)
+		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/libplugin.cpp)
 
 	target_link_libraries(${plugin_name} PRIVATE sdk)
 
@@ -67,6 +65,7 @@ function(add_plugin plugin_name)
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_TYPE="${LIBPLUGIN_PLUGIN_TYPE}")
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_COMPANY="${LIBPLUGIN_PLUGIN_COMPANY}")
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_DESCRIPTION="${LIBPLUGIN_PLUGIN_DESCRIPTION}")
+	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_VERSION="${LIBPLUGIN_PLUGIN_VERSION}")
 
 	smtg_target_configure_version_file(${plugin_name})
 

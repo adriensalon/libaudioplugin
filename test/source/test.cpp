@@ -2,4 +2,4 @@
 
 
 
-REGISTER_PLUGIN(wrapperProcessor, wrapperController)
+REGISTER_PLUGIN(int, float)
