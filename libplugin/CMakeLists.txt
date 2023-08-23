@@ -3,12 +3,6 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE STRING "")
 
 smtg_enable_vst3_sdk()
 
-add_library(libplugin STATIC "source/libplugin.cpp")
-
-target_include_directories(libplugin PUBLIC "include")
-
-target_link_libraries(libplugin PUBLIC sdk)
-
 # @param target The target that implements the libplugin interface
 # @param PLUGIN_FX
 # @param PLUGIN_INSTRUMENT
@@ -22,6 +16,7 @@ function(add_plugin plugin_name)
 	set(multipleValuesArgs PLUGIN_SOURCES)
 	cmake_parse_arguments(PARSE_ARGV 1 LIBPLUGIN "${options}" "${oneValueArgs}" "${multipleValuesArgs}")
 	message("${source}")
+
 	if(LIBPLUGIN_PLUGIN_INSTRUMENT)
 		set(LIBPLUGIN_PLUGIN_TYPE "Instrument")
 	else()
@@ -57,19 +52,21 @@ function(add_plugin plugin_name)
 		VERSION ${LIBPLUGIN_PLUGIN_VERSION}
 		DESCRIPTION ${LIBPLUGIN_PLUGIN_DESCRIPTION})
 
-		message("sources = ${LIBPLUGIN_PLUGIN_SOURCES}")
+	message("sources = ${LIBPLUGIN_PLUGIN_SOURCES}")
 	smtg_add_vst3plugin(${plugin_name}
 		${LIBPLUGIN_PLUGIN_SOURCES}
+		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/libplugin.cpp
 		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/wrapper/processor.cpp
 		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/wrapper/controller.cpp)
+
+	target_link_libraries(${plugin_name} PRIVATE sdk)
+
+	target_include_directories(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include)
 
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_NAME="${plugin_name}")
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_TYPE="${LIBPLUGIN_PLUGIN_TYPE}")
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_COMPANY="${LIBPLUGIN_PLUGIN_COMPANY}")
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_DESCRIPTION="${LIBPLUGIN_PLUGIN_DESCRIPTION}")
-
-	# target_link_libraries(${plugin_name} PRIVATE sdk)
-	target_link_libraries(${plugin_name} PRIVATE libplugin)
 
 	smtg_target_configure_version_file(${plugin_name})
 

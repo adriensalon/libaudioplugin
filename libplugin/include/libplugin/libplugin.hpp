@@ -1,8 +1,17 @@
 #pragma once
 
+
+#include "../../source/wrapper/cids.hpp"
+#include "../../source/wrapper/controller.hpp"
+#include "../../source/wrapper/processor.hpp"
+#include "../../source/wrapper/version.hpp"
+#include "public.sdk/source/main/pluginfactory.h"
+#define stringPluginName LIBPLUGIN_PLUGIN_NAME
+using namespace Steinberg::Vst;
+using namespace vstsync;
+
+
 /// @brief
-// using namespace Steinberg::Vst;
-// using namespace vstsync;
 #define REGISTER_PLUGIN(processor_class_m, controller_class_m)   \
                                                                  \
     BEGIN_FACTORY_DEF(LIBPLUGIN_PLUGIN_COMPANY,                  \
@@ -33,19 +42,29 @@
 
 #include "public.sdk/source/vst/vsteditcontroller.h"
 
+/// @brief 
 namespace libplugin {
+	
+	/// @brief 
+	namespace wrapper {
 
-// namespace detail {
+		/// @brief 
+		/// @tparam processor_t 
+		template <typename processor_t>
+		struct plugin_processor {
 
-template <typename processor_t>
-struct plugin_interface {
 
-    int test()
-    {
-        return processor_t::test();
-    }
-};
+		};
 
-// }
+		/// @brief 
+		/// @tparam controller_t 
+		template <typename controller_t>
+		struct plugin_controller {
+
+
+		};
+		
+	}
+	
 
 }

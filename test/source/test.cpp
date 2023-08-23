@@ -1,8 +1,5 @@
 #include <libplugin/libplugin.hpp>
 
-struct demo_plugin {
 
 
-	
-
-};
+REGISTER_PLUGIN(wrapperProcessor, wrapperController)
