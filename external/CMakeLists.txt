@@ -22,3 +22,7 @@ set(SMTG_MDA_VST3_VST2_COMPATIBLE OFF CACHE BOOL "We do not need this." FORCE)
 # SMTG_USE_STATIC_CRT: Use static CRuntime on Windows (option /MT) (default OFF: /MD is used) (Windows only)
 add_subdirectory(vst3sdk)
 target_include_directories(sdk PUBLIC vst3sdk)
+
+set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE STRING "")
+
+smtg_enable_vst3_sdk()
