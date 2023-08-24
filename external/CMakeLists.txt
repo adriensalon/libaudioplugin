@@ -1,17 +1,5 @@
 
 
-if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
-
-	set(SMTG_AAX_SDK_PATH ${CMAKE_CURRENT_LIST_DIR}/aax-sdk)
-	# add_subdirectory(aax-sdk)
-
-	# target_include_directories(sdk PUBLIC vst2sdk)	
-
-	# if(libplugin_platform MATCHES "Windows")
-	# 		target_compile_definitions(vst2sdk PUBLIC -D_CRT_SECURE_NO_WARNINGS)
-	# endif()
-endif()
-
 set(SMTG_ENABLE_VST3_HOSTING_EXAMPLES OFF CACHE BOOL "We do not need examples." FORCE)
 set(SMTG_ENABLE_VST3_PLUGIN_EXAMPLES OFF CACHE BOOL "We do not need examples." FORCE)
 set(SMTG_ENABLE_VSTGUI_SUPPORT OFF CACHE BOOL "We do not need VSTGUI." FORCE)
@@ -37,15 +25,22 @@ set(SMTG_MDA_VST3_VST2_COMPATIBLE ON CACHE BOOL "We do not need this." FORCE)
 # Use static CRuntime on Windows (option /MT) (default OFF: /MD is used) (Windows only)
 set(SMTG_USE_STATIC_CRT OFF CACHE BOOL "Test." FORCE)
 
+if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
+	set(SMTG_AAX_SDK_PATH ${CMAKE_CURRENT_LIST_DIR}/aax-sdk CACHE STRING "The location where we store the AAX SDK." FORCE)
+endif()
+
 add_subdirectory(vst3sdk)
 
 target_include_directories(sdk PUBLIC vst3sdk)
 
+if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
+	list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/vst3sdk/cmake/modules")
+	include(SMTG_AddAAXLibrary)
+endif()
+
 if(LIBPLUGIN_BUILD_BACKEND STREQUAL "VST2")
 	add_subdirectory(vst2sdk)
-
 	target_include_directories(sdk PUBLIC vst2sdk)	
-
 	if(libplugin_platform MATCHES "Windows")
 			target_compile_definitions(vst2sdk PUBLIC -D_CRT_SECURE_NO_WARNINGS)
 	endif()

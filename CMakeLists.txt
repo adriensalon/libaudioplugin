@@ -30,7 +30,7 @@ if(libplugin_platform MATCHES "Apple")
 	set(libplugin_available_backends ${libplugin_available_backends} "AU2" "AU3")
 endif()
 
-set(LIBPLUGIN_BUILD_BACKEND "AAX" CACHE STRING "Selected plugin backend")
+set(LIBPLUGIN_BUILD_BACKEND "VST3" CACHE STRING "Selected plugin backend")
 set_property(CACHE LIBPLUGIN_BUILD_BACKEND PROPERTY STRINGS ${libplugin_available_backends})
 
 if(NOT LIBPLUGIN_BUILD_BACKEND IN_LIST libplugin_available_backends)
@@ -107,15 +107,14 @@ function(add_plugin plugin_name)
 		VERSION ${LIBPLUGIN_PLUGIN_VERSION}
 		DESCRIPTION ${LIBPLUGIN_PLUGIN_DESCRIPTION})
 
-	smtg_add_vst3plugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
-
-	target_link_libraries(${plugin_name} PRIVATE sdk)
-
 	if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
-	
+		smtg_add_aaxplugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
 		target_link_libraries(${plugin_name} PRIVATE aaxwrapper)
-
 		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_AAX_WRAPPER)
+		add_custom_command(TARGET ${plugin_name} POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/AAXPLUGIN ${CMAKE_BINARY_DIR}/AAX)
+		add_custom_command(TARGET ${plugin_name} POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/AAXPLUGIN)
 
 	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU2")
 		# TODO
@@ -126,20 +125,22 @@ function(add_plugin plugin_name)
 		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_AU2_WRAPPER)
 
 	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "VST2")
+		smtg_add_vst3plugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
 		target_sources(${plugin_name} PRIVATE
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/dllmain.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/vst/vst2wrapper/vst2wrapper.sdk.cpp)
-
 		target_link_libraries(${plugin_name} PRIVATE vst2sdk)
-
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${plugin_name}> ${CMAKE_BINARY_DIR}/VST2/$<CONFIGURATION>/${plugin_name}.${libplugin_vst2_extension})
-
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/VST3)
-
 		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_VST2_WRAPPER)
+
+	else()
+		smtg_add_vst3plugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
 	endif()
+
+	target_link_libraries(${plugin_name} PRIVATE sdk)
 
 	target_include_directories(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include)
 
@@ -158,18 +159,18 @@ function(add_plugin plugin_name)
 			BUNDLE_IDENTIFIER com.${LIBPLUGIN_PLUGIN_COMPANY}.${plugin_name}
 			COMPANY_NAME "${LIBPLUGIN_PLUGIN_COMPANY}")
 
-		# smtg_target_set_debug_executable(${plugin_name}
-		# 	"/Applications/VST3PluginTestHost.app"
-		# 	"--pluginfolder;$(BUILT_PRODUCTS_DIR)")
-
+	# smtg_target_set_debug_executable(${plugin_name}
+	# "/Applications/VST3PluginTestHost.app"
+	# "--pluginfolder;$(BUILT_PRODUCTS_DIR)")
 	elseif(SMTG_WIN)
 		target_sources(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/resource/win32resource.rc)
 
 		if(MSVC)
 			set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${plugin_name})
+
 			# smtg_target_set_debug_executable(${plugin_name}
-			# 	"$(ProgramW6432)/Steinberg/VST3PluginTestHost/VST3PluginTestHost.exe"
-			# 	"--pluginfolder \"$(OutDir)/\"")
+			# "$(ProgramW6432)/Steinberg/VST3PluginTestHost/VST3PluginTestHost.exe"
+			# "--pluginfolder \"$(OutDir)/\"")
 		endif()
 	endif(SMTG_MAC)
 endfunction()
