@@ -19,8 +19,8 @@
 /// @brief
 #define REGISTER_PLUGIN(processor_class_m, controller_class_m) \
 	VERIFY_PLUGIN(processor_class_m, controller_class_m) \
-	COMPILE_PLUGIN_AAX(processor_class_m, controller_class_m) \
-	COMPILE_PLUGIN_AU2(processor_class_m, controller_class_m) \
-	COMPILE_PLUGIN_AU3(processor_class_m, controller_class_m) \
-	COMPILE_PLUGIN_VST2(processor_class_m, controller_class_m) \
-	COMPILE_PLUGIN_VST3(processor_class_m, controller_class_m)
+	COMPILE_PLUGIN_VST3(processor_class_m, controller_class_m)\
+	COMPILE_PLUGIN_VST2_WRAPPER(processor_class_m, controller_class_m) \
+	COMPILE_PLUGIN_AAX_WRAPPER(processor_class_m, controller_class_m) \
+	COMPILE_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m) \
+	COMPILE_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m) 

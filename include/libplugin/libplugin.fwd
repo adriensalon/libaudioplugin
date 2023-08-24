@@ -58,44 +58,8 @@ constexpr inline bool is_detected_convertible_v = is_detected_convertible<to_t, 
 #include <libplugin/pluginfo.h>
 
 #define VERIFY_PLUGIN(processor_class_m, controller_class_m)                                                          \
-    namespace detail {                                                                                                \
-        constexpr inline bool result_processor_valid = libplugin::detail::is_processor_valid<processor_class_m>();    \
-        constexpr inline bool result_controller_valid = libplugin::detail::is_controller_valid<controller_class_m>(); \
-    }
-
-#if LIBPLUGIN_BUILD_AAX
-#define COMPILE_PLUGIN_AAX(processor_class_m, controller_class_m)
-// TODO
-#else
-#define COMPILE_PLUGIN_AAX(processor_class_m, controller_class_m)
-#endif
-
-#if LIBPLUGIN_BUILD_AU2
-#define COMPILE_PLUGIN_AU2(processor_class_m, controller_class_m)
-// TODO
-#else
-#define COMPILE_PLUGIN_AU2(processor_class_m, controller_class_m)
-#endif
-
-#if LIBPLUGIN_BUILD_AU3
-#define COMPILE_PLUGIN_AU3(processor_class_m, controller_class_m)
-// TODO
-#else
-#define COMPILE_PLUGIN_AU3(processor_class_m, controller_class_m)
-#endif
-
-#include <public.sdk/source/main/pluginfactory.h>
-
-#if LIBPLUGIN_BUILD_VST2
-#include <public.sdk/source/vst/vst2wrapper/vst2wrapper.h>
-#define COMPILE_PLUGIN_VST2(processor_class_m, controller_class_m)                                                        \
-    ::AudioEffect* createEffectInstance(audioMasterCallback audioMaster)                                                  \
-    {                                                                                                                     \
-        return Steinberg::Vst::Vst2Wrapper::create(GetPluginFactory(), PLUGIN_PROCESSOR_UID, 666, audioMaster); \
-    }
-#else
-#define COMPILE_PLUGIN_VST2(processor_class_m, controller_class_m)
-#endif
+    static_assert(libplugin::detail::is_processor_valid<processor_class_m>());    \
+	static_assert(libplugin::detail::is_controller_valid<controller_class_m>());
 
 #include <public.sdk/source/main/pluginfactory.h>
 
@@ -126,6 +90,42 @@ constexpr inline bool is_detected_convertible_v = is_detected_convertible<to_t, 
         controller_class_m::createInstance)                        \
     END_FACTORY
 
+#if LIBPLUGIN_BUILD_VST2_WRAPPER
+
+#include <public.sdk/source/vst/vst2wrapper/vst2wrapper.h>
+
+#define COMPILE_PLUGIN_VST2_WRAPPER(processor_class_m, controller_class_m)                                      \
+    AudioEffect* createEffectInstance(audioMasterCallback audioMaster)                                          \
+    {                                                                                                           \
+        return Steinberg::Vst::Vst2Wrapper::create(GetPluginFactory(), PLUGIN_PROCESSOR_UID, 666, audioMaster); \
+    }
+
+#else
+#define COMPILE_PLUGIN_VST2_WRAPPER(processor_class_m, controller_class_m)
+#endif
+
+#if LIBPLUGIN_BUILD_AAX_WRAPPER
+#define COMPILE_PLUGIN_AAX_WRAPPER(processor_class_m, controller_class_m)
+// TODO
+#else
+#define COMPILE_PLUGIN_AAX_WRAPPER(processor_class_m, controller_class_m)
+#endif
+
+#if LIBPLUGIN_BUILD_AU2_WRAPPER
+#define COMPILE_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m)
+// TODO
+#else
+#define COMPILE_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m)
+#endif
+
+#if LIBPLUGIN_BUILD_AU3_WRAPPER
+#define COMPILE_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m)
+// TODO
+#else
+#define COMPILE_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m)
+#endif
+
+
 namespace libplugin {
 namespace detail {
 
@@ -135,6 +135,9 @@ namespace detail {
     template <typename vst3_processor_t>
     constexpr bool is_processor_valid()
     {
+        // constexpr unsigned int backends_count = LIBPLUGIN_BUILD_AAX + LIBPLUGIN_BUILD_AU2 + LIBPLUGIN_BUILD_AU3 + LIBPLUGIN_BUILD_VST2 + LIBPLUGIN_BUILD_VST3;
+        // static_assert(backends_count == 1, "Error : multiple backends selected");
+
         // has processor createInstance
         // has processor initialize
         // has processor initialize

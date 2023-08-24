@@ -26,10 +26,9 @@ set(SMTG_USE_STATIC_CRT OFF CACHE BOOL "Test." FORCE)
 add_subdirectory(vst3sdk)
 target_include_directories(sdk PUBLIC vst3sdk)
 
-if(LIBPLUGIN_BUILD_VST2)
+if(LIBPLUGIN_BUILD_VST2_WRAPPER)
 	add_subdirectory(vst2sdk)
 	target_include_directories(sdk PUBLIC vst2sdk)
-	# target_link_libraries(sdk PUBLIC $<LINK_LIBRARY:WHOLE_ARCHIVE,vst2sdk>)
 endif()
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE STRING "")

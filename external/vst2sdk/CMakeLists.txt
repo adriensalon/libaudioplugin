@@ -2,7 +2,7 @@ project(vst2sdk)
 
 set(vst2sdk_source 
 	# "public.sdk/samples/vst2.x/win/vstplug.def"
-	# "public.sdk/source/vst2.x/vstplugmain.cpp"
+	"public.sdk/source/vst2.x/vstplugmain.cpp"
 	"public.sdk/source/vst2.x/audioeffect.cpp"
 	"public.sdk/source/vst2.x/audioeffectx.cpp") 
 
