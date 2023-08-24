@@ -3,20 +3,21 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE STRING "")
 
 smtg_enable_vst3_sdk()
 
-# @param target The target that implements the libplugin interface
+# @param plugin_name The target that implements the libplugin interface
 # @param PLUGIN_FX
 # @param PLUGIN_INSTRUMENT
 # @param PLUGIN_NAME <name>
 # @param PLUGIN_COMPANY <company>
 # @param PLUGIN_DESCRIPTION <description>
 # @param PLUGIN_VERSION <version>
+# @param PLUGIN_EMAIL <email>
+# @param PLUGIN_WEBSITE <website>
 function(add_plugin plugin_name)
 	set(options PLUGIN_FX PLUGIN_INSTRUMENT)
-	set(oneValueArgs PLUGIN_COMPANY PLUGIN_DESCRIPTION PLUGIN_VERSION)
+	set(oneValueArgs PLUGIN_COMPANY PLUGIN_DESCRIPTION PLUGIN_VERSION PLUGIN_EMAIL PLUGIN_WEBSITE)
 	set(multipleValuesArgs PLUGIN_SOURCES)
 	cmake_parse_arguments(PARSE_ARGV 1 LIBPLUGIN "${options}" "${oneValueArgs}" "${multipleValuesArgs}")
-	message("${source}")
-
+	
 	if(LIBPLUGIN_PLUGIN_INSTRUMENT)
 		set(LIBPLUGIN_PLUGIN_TYPE "Instrument")
 	else()
@@ -42,20 +43,29 @@ function(add_plugin plugin_name)
 		set(LIBPLUGIN_PLUGIN_VERSION "1.0.0.0")
 	endif()
 
+	if(NOT DEFINED LIBPLUGIN_PLUGIN_EMAIL)
+		message("-- [libplugin] Plugin email is not defined, set it with PLUGIN_EMAIL")
+		set(LIBPLUGIN_PLUGIN_EMAIL "info@mycompanyname.com")
+	endif()
+
+	if(NOT DEFINED LIBPLUGIN_PLUGIN_WEBSITE)
+		message("-- [libplugin] Plugin website is not defined, set it with PLUGIN_WEBSITE")
+		set(LIBPLUGIN_PLUGIN_WEBSITE "https://www.mycompanyname.com")
+	endif()
+
 	message("-- [libplugin] Plugin name is '${plugin_name}'")
 	message("-- [libplugin] Plugin category is '${LIBPLUGIN_PLUGIN_TYPE}'")
 	message("-- [libplugin] Plugin company is '${LIBPLUGIN_PLUGIN_COMPANY}'")
 	message("-- [libplugin] Plugin description is '${LIBPLUGIN_PLUGIN_DESCRIPTION}'")
 	message("-- [libplugin] Plugin version is '${LIBPLUGIN_PLUGIN_VERSION}'")
+	message("-- [libplugin] Plugin email is '${LIBPLUGIN_PLUGIN_EMAIL}'")
+	message("-- [libplugin] Plugin website is '${LIBPLUGIN_PLUGIN_WEBSITE}'")
 
 	project(${plugin_name}
 		VERSION ${LIBPLUGIN_PLUGIN_VERSION}
 		DESCRIPTION ${LIBPLUGIN_PLUGIN_DESCRIPTION})
 
-	message("sources = ${LIBPLUGIN_PLUGIN_SOURCES}")
-	smtg_add_vst3plugin(${plugin_name}
-		${LIBPLUGIN_PLUGIN_SOURCES}
-		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/source/libplugin.cpp)
+	smtg_add_vst3plugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
 
 	target_link_libraries(${plugin_name} PRIVATE sdk)
 
@@ -66,6 +76,8 @@ function(add_plugin plugin_name)
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_COMPANY="${LIBPLUGIN_PLUGIN_COMPANY}")
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_DESCRIPTION="${LIBPLUGIN_PLUGIN_DESCRIPTION}")
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_VERSION="${LIBPLUGIN_PLUGIN_VERSION}")
+	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_EMAIL="${LIBPLUGIN_PLUGIN_EMAIL}")
+	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_WEBSITE="${LIBPLUGIN_PLUGIN_WEBSITE}")
 
 	smtg_target_configure_version_file(${plugin_name})
 

@@ -1,0 +1,65 @@
+#pragma once
+
+#include <projectversion.h>
+
+/// @brief
+#define PLUGIN_NAME LIBPLUGIN_PLUGIN_NAME
+
+/// @brief
+#define PLUGIN_COMPANY LIBPLUGIN_PLUGIN_COMPANY
+
+/// @brief
+#define PLUGIN_TYPE LIBPLUGIN_PLUGIN_TYPE
+
+/// @brief
+#define PLUGIN_DESCRIPTION LIBPLUGIN_PLUGIN_DESCRIPTION
+
+/// @brief
+#define PLUGIN_VERSION VERSION_STR
+
+/// @brief
+#define PLUGIN_VERSION_FULL FULL_VERSION_STR
+
+/// @brief
+#define PLUGIN_VERSION_MAJOR_STR MAJOR_VERSION_STR
+
+/// @brief
+#define PLUGIN_VERSION_MAJOR_INT MAJOR_VERSION_INT
+
+/// @brief
+#define PLUGIN_VERSION_SUB_STR SUB_VERSION_STR
+
+/// @brief
+#define PLUGIN_VERSION_SUB_INT SUB_VERSION_INT
+
+/// @brief
+#define PLUGIN_VERSION_RELEASE_STR RELEASE_NUMBER_STR
+
+/// @brief
+#define PLUGIN_VERSION_RELEASE_INT RELEASE_NUMBER_INT
+
+/// @brief
+#define PLUGIN_VERSION_BUILD_STR BUILD_NUMBER_STR
+
+/// @brief
+#define PLUGIN_VERSION_BUILD_INT BUILD_NUMBER_INT
+
+/// @brief
+#define PLUGIN_EMAIL LIBPLUGIN_PLUGIN_EMAIL
+
+/// @brief
+#define PLUGIN_WEBSITE LIBPLUGIN_PLUGIN_WEBSITE
+
+/// @brief
+#define PLUGIN_FILENAME LIBPLUGIN_PLUGIN_NAME ".vst3"
+
+/// @brief
+#define PLUGIN_FILEDESC LIBPLUGIN_PLUGIN_NAME
+
+/// @brief
+#define PLUGIN_COPYRIGHT "Copyright(c) 2023 " PLUGIN_COMPANY
+
+/// @brief
+#define PLUGIN_LEGAL "VST is a trademark of Steinberg Media Technologies GmbH"
+
+

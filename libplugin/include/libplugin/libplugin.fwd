@@ -1,0 +1,130 @@
+#pragma once
+
+#include <type_traits>
+
+namespace stdx {
+
+// https://en.cppreference.com/w/cpp/experimental/is_detected
+
+// these will no longer be useful with C++20 thanks to concepts (!)
+
+template <typename default_t, typename always_void_t, template <typename...> typename op_t, typename... args_t>
+struct detector {
+    using value_t = std::false_type;
+    using type = default_t;
+};
+
+template <typename default_t, template <typename...> typename op_t, typename... args_t>
+struct detector<default_t, std::void_t<op_t<args_t...>>, op_t, args_t...> {
+    using value_t = std::true_type;
+    using type = op_t<args_t...>;
+};
+
+struct nonesuch {
+    nonesuch() = delete;
+    ~nonesuch() = delete;
+    nonesuch(nonesuch const&) = delete;
+    void operator=(nonesuch const&) = delete;
+};
+
+template <template <typename...> typename op_t, typename... args_t>
+using is_detected = typename detector<nonesuch, void, op_t, args_t...>::value_t;
+
+template <template <typename...> typename op_t, typename... args_t>
+using detected_t = typename detector<nonesuch, void, op_t, args_t...>::type;
+
+template <typename default_t, template <typename...> typename op_t, typename... args_t>
+using detected_or = detector<default_t, void, op_t, args_t...>;
+
+template <template <typename...> typename op_t, typename... args_t>
+constexpr inline bool is_detected_v = is_detected<op_t, args_t...>::value;
+
+template <typename default_t, template <typename...> typename op_t, typename... args_t>
+using detected_or_t = typename detected_or<default_t, op_t, args_t...>::type;
+
+template <typename expected_t, template <typename...> typename op_t, typename... args_t>
+using is_detected_exact = std::is_same<expected_t, detected_t<op_t, args_t...>>;
+
+template <typename expected_t, template <typename...> typename op_t, typename... args_t>
+constexpr inline bool is_detected_exact_v = is_detected_exact<expected_t, op_t, args_t...>::value;
+
+template <typename to_t, template <typename...> typename op_t, typename... args_t>
+using is_detected_convertible = std::is_convertible<detected_t<op_t, args_t...>, to_t>;
+
+template <typename to_t, template <typename...> typename op_t, typename... args_t>
+constexpr inline bool is_detected_convertible_v = is_detected_convertible<to_t, op_t, args_t...>::value;
+}
+
+#include <libplugin/pluginfo.h>
+
+#define VERIFY_PLUGIN(processor_class_m, controller_class_m)                                                          \
+    namespace detail {                                                                                                \
+        constexpr inline bool result_processor_valid = libplugin::detail::is_processor_valid<processor_class_m>();    \
+        constexpr inline bool result_controller_valid = libplugin::detail::is_controller_valid<controller_class_m>(); \
+    }
+
+#define COMPILE_PLUGIN_AAX(processor_class_m, controller_class_m)
+// TODO
+
+#define COMPILE_PLUGIN_AU2(processor_class_m, controller_class_m)
+// TODO
+
+#define COMPILE_PLUGIN_AU3(processor_class_m, controller_class_m)
+// TODO
+
+#define COMPILE_PLUGIN_VST2(processor_class_m, controller_class_m)
+// TODO
+
+#include <public.sdk/source/main/pluginfactory.h>
+
+#define COMPILE_PLUGIN_VST3(processor_class_m, controller_class_m) \
+    BEGIN_FACTORY_DEF(                                             \
+        PLUGIN_COMPANY,                                            \
+        PLUGIN_WEBSITE,                                            \
+        "mailto:" PLUGIN_EMAIL)                                    \
+    DEF_CLASS2(                                                    \
+        INLINE_UID_FROM_FUID(PLUGIN_PROCESSOR_UID),                \
+        PClassInfo::kManyInstances,                                \
+        kVstAudioEffectClass,                                      \
+        PLUGIN_NAME,                                               \
+        Vst::kDistributable,                                       \
+        PLUGIN_TYPE,                                               \
+        PLUGIN_VERSION,                                            \
+        kVstVersionString,                                         \
+        processor_class_m::createInstance)                         \
+    DEF_CLASS2(                                                    \
+        INLINE_UID_FROM_FUID(PLUGIN_CONTROLLER_UID),               \
+        PClassInfo::kManyInstances,                                \
+        kVstComponentControllerClass,                              \
+        PLUGIN_NAME "Controller",                                  \
+        0,                                                         \
+        "",                                                        \
+        PLUGIN_VERSION,                                            \
+        kVstVersionString,                                         \
+        controller_class_m::createInstance)                        \
+    END_FACTORY
+
+namespace libplugin {
+namespace detail {
+
+    static const Steinberg::FUID processor_uid(0xAA2A0417, 0x063258BE, 0xB5FBD442, 0x8AC87FF6);
+    static const Steinberg::FUID controller_uid(0x3C7F1B00, 0x60895F92, 0x98387CFE, 0x73381868);
+
+    template <typename vst3_processor_t>
+    constexpr bool is_processor_valid()
+    {
+        // has processor createInstance
+        // has processor initialize
+        // has processor initialize
+        return true;
+    }
+
+    template <typename vst3_controller_t>
+    constexpr bool is_controller_valid()
+    {
+
+        return true;
+    }
+
+}
+}
