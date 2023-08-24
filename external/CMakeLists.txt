@@ -11,7 +11,7 @@ set(SMTG_ENABLE_ADDRESS_SANITIZER OFF CACHE BOOL "We trust Steinberg I guess." F
 
 # SMTG_ENABLE_TARGET_VARS_LOG bizarre
 set(SMTG_ENABLE_USE_OF_JACK OFF CACHE BOOL "We do not need Jack." FORCE)
-set(SMTG_MDA_VST3_VST2_COMPATIBLE OFF CACHE BOOL "We do not need this." FORCE)
+set(SMTG_MDA_VST3_VST2_COMPATIBLE ON CACHE BOOL "We do not need this." FORCE)
 
 # SMTG_IOS_DEVELOPMENT_TEAM: Needed for building the InterAppAudio and AUv3 examples for iOS (Mac only)
 # SMTG_MYPLUGINS_SRC_PATH: Here you can add your VST 3 plug-ins folder
@@ -19,9 +19,18 @@ set(SMTG_MDA_VST3_VST2_COMPATIBLE OFF CACHE BOOL "We do not need this." FORCE)
 # SMTG_PLUGIN_TARGET_USER_PROGRAM_FILES_COMMON: use FOLDERID_UserProgramFilesCommon as VST 3 target path (Windows only) (default ON)
 # SMTG_RENAME_ASSERT: Rename ASSERT to SMTG_ASSERT to avoid conflicts with 3rd party libraries (default ON)
 # SMTG_RUN_VST_VALIDATOR: Run the VST validator on VST 3 plug-ins each time they are built (default ON)
-# SMTG_USE_STATIC_CRT: Use static CRuntime on Windows (option /MT) (default OFF: /MD is used) (Windows only)
+
+# Use static CRuntime on Windows (option /MT) (default OFF: /MD is used) (Windows only)
+set(SMTG_USE_STATIC_CRT OFF CACHE BOOL "Test." FORCE)
+
 add_subdirectory(vst3sdk)
 target_include_directories(sdk PUBLIC vst3sdk)
+
+if(LIBPLUGIN_BUILD_VST2)
+	add_subdirectory(vst2sdk)
+	target_include_directories(sdk PUBLIC vst2sdk)
+	# target_link_libraries(sdk PUBLIC $<LINK_LIBRARY:WHOLE_ARCHIVE,vst2sdk>)
+endif()
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE STRING "")
 

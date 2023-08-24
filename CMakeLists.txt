@@ -106,10 +106,20 @@ function(add_plugin plugin_name)
 	project(${plugin_name}
 		VERSION ${LIBPLUGIN_PLUGIN_VERSION}
 		DESCRIPTION ${LIBPLUGIN_PLUGIN_DESCRIPTION})
-
-	smtg_add_vst3plugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
+	
+	smtg_add_vst3plugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})	
 
 	target_link_libraries(${plugin_name} PRIVATE sdk)
+	
+	if(LIBPLUGIN_BUILD_VST2)
+		target_sources(${plugin_name} PRIVATE
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/dllmain.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/vst/vst2wrapper/vst2wrapper.sdk.cpp)
+		
+		target_link_libraries(${plugin_name} PRIVATE vst2sdk)
+		# target_link_libraries(${plugin_name} PRIVATE $<LINK_LIBRARY:WHOLE_ARCHIVE,vst2sdk>)
+		
+	endif()
 
 	target_include_directories(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include)
 

@@ -1,0 +1,18 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  surrounddelay.cpp
+  sdeditor.cpp
+  adelay.cpp
+  vstplugmain.cpp
+  audioeffectx.cpp
+  audioeffect.cpp
+  vstgui.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\vstgui.sf\vstgui\vstgui.cpp(751,19): warning C4838: conversion from 'long' to 'UINT' requires a narrowing conversion
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\vstgui.sf\vstgui\vstgui.cpp(819,19): warning C4838: conversion from 'long' to 'UINT' requires a narrowing conversion
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\vstgui.sf\vstgui\vstgui.cpp(2102,19): warning C4838: conversion from 'long' to 'UINT' requires a narrowing conversion
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\vstgui.sf\vstgui\vstgui.cpp(4080,7): warning C4996: 'GetVersionExA': was declared deprecated
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\vstgui.sf\vstgui\vstgui.cpp(4164,7): warning C4996: 'GetVersionExA': was declared deprecated
+  vstcontrols.cpp
+  aeffguieditor.cpp
+  Generating Code...
+     Creating library C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\win\x64\Debug\surrounddelay.lib and object C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\win\x64\Debug\surrounddelay.exp
+  surrounddelay.vcxproj -> C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\win\x64\Debug\surrounddelay.dll

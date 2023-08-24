@@ -66,28 +66,34 @@ constexpr inline bool is_detected_convertible_v = is_detected_convertible<to_t, 
 #if LIBPLUGIN_BUILD_AAX
 #define COMPILE_PLUGIN_AAX(processor_class_m, controller_class_m)
 // TODO
-#else 
+#else
 #define COMPILE_PLUGIN_AAX(processor_class_m, controller_class_m)
 #endif
 
 #if LIBPLUGIN_BUILD_AU2
 #define COMPILE_PLUGIN_AU2(processor_class_m, controller_class_m)
 // TODO
-#else 
+#else
 #define COMPILE_PLUGIN_AU2(processor_class_m, controller_class_m)
 #endif
 
 #if LIBPLUGIN_BUILD_AU3
 #define COMPILE_PLUGIN_AU3(processor_class_m, controller_class_m)
 // TODO
-#else 
+#else
 #define COMPILE_PLUGIN_AU3(processor_class_m, controller_class_m)
 #endif
 
+#include <public.sdk/source/main/pluginfactory.h>
+
 #if LIBPLUGIN_BUILD_VST2
-#define COMPILE_PLUGIN_VST2(processor_class_m, controller_class_m)
-// TODO
-#else 
+#include <public.sdk/source/vst/vst2wrapper/vst2wrapper.h>
+#define COMPILE_PLUGIN_VST2(processor_class_m, controller_class_m)                                                        \
+    ::AudioEffect* createEffectInstance(audioMasterCallback audioMaster)                                                  \
+    {                                                                                                                     \
+        return Steinberg::Vst::Vst2Wrapper::create(GetPluginFactory(), PLUGIN_PROCESSOR_UID, 666, audioMaster); \
+    }
+#else
 #define COMPILE_PLUGIN_VST2(processor_class_m, controller_class_m)
 #endif
 

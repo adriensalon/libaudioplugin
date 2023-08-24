@@ -24,3 +24,5 @@ add_plugin(ExamplePlugin
 
 # target_compile_definitions(ExamplePlugin PUBLIC DMYDEFINITION=1)
 
+set_target_properties(ExamplePlugin PROPERTIES CXX_STANDARD 17)
+

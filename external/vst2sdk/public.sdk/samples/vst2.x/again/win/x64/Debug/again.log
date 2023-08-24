@@ -1,0 +1,8 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  again.cpp
+  vstplugmain.cpp
+  audioeffectx.cpp
+  audioeffect.cpp
+  Generating Code...
+     Creating library C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\win\x64\Debug\again.lib and object C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\win\x64\Debug\again.exp
+  again.vcxproj -> C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\win\x64\Debug\again.dll

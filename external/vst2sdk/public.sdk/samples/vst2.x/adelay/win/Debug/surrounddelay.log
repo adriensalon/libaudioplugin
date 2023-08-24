@@ -1,0 +1,25 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(39,5): warning MSB4211: The property "IntermediateOutputPath" is being set to a value for the first time, but it was already consumed at "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets (38,5)".
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.BuildSteps.Targets(30,5): warning MSB4211: The property "DebugType" is being set to a value for the first time, but it was already consumed at "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.BuildSteps.Targets (29,5)".
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets(373,5): warning MSB4211: The property "CleanFile" is being set to a value for the first time, but it was already consumed at "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets (38,5)".
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (adelay.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  surrounddelay.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\surrounddelay.cpp : fatal error C1041: cannot open program database 'C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\win\Debug\vc142.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS
+  sdeditor.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\editor\sdeditor.cpp : fatal error C1041: cannot open program database 'C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\win\Debug\vc142.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS
+  adelay.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\adelay.cpp : fatal error C1041: cannot open program database 'C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\win\Debug\vc142.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS
+  vstplugmain.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\source\vst2.x\vstplugmain.cpp : fatal error C1041: cannot open program database 'C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\win\Debug\vc142.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS
+  audioeffectx.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\source\vst2.x\audioeffectx.cpp : fatal error C1041: cannot open program database 'C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\win\Debug\vc142.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS
+  audioeffect.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\source\vst2.x\audioeffect.cpp : fatal error C1041: cannot open program database 'C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\win\Debug\vc142.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS
+  vstgui.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\vstgui.sf\vstgui\vstgui.cpp : fatal error C1041: cannot open program database 'C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\win\Debug\vc142.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS
+  vstcontrols.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\vstgui.sf\vstgui\vstcontrols.cpp : fatal error C1041: cannot open program database 'C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\win\Debug\vc142.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS
+  aeffguieditor.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\vstgui.sf\vstgui\aeffguieditor.cpp : fatal error C1041: cannot open program database 'C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\adelay\win\Debug\vc142.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS
+  Generating Code...
+cl : command line warning D9028: minimal rebuild failure, reverting to normal build

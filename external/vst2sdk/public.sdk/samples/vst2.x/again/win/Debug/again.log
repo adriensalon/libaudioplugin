@@ -1,0 +1,9 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  again.cpp
+  vstplugmain.cpp
+  audioeffectx.cpp
+  audioeffect.cpp
+  Generating Code...
+audioeffect.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+     Creating library C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\win\Debug\again.lib and object C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\win\Debug\again.exp
+  again.vcxproj -> C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\win\Debug\again.dll

@@ -1,0 +1,20 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(39,5): warning MSB4211: The property "IntermediateOutputPath" is being set to a value for the first time, but it was already consumed at "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets (38,5)".
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.BuildSteps.Targets(30,5): warning MSB4211: The property "DebugType" is being set to a value for the first time, but it was already consumed at "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.BuildSteps.Targets (29,5)".
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets(373,5): warning MSB4211: The property "CleanFile" is being set to a value for the first time, but it was already consumed at "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets (38,5)".
+cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  pprimitivesviews.cpp
+  pdrawtestview.cpp
+  pdrawtestmain.cpp
+  pdrawtesteffect.cpp
+  pdrawtesteditor.cpp
+  controlsgui.cpp
+  vstgui.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\vstgui.sf\vstgui\vstgui.cpp(208,10): fatal error C1083: Cannot open include file: 'png.h': No such file or directory
+  vstcontrols.cpp
+  ctabview.cpp
+  cscrollview.cpp
+  cfileselector.cpp
+  aeffguieditor.cpp
+  audioeffectx.cpp
+  audioeffect.cpp
+  Generating Code...

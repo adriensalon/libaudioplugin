@@ -98,6 +98,7 @@ if(VST_SDK)
             source/vst/vsthelpers.h
             source/vst/vstinitiids.cpp
             source/vst/vstnoteexpressiontypes.cpp
+            source/vst/vstnoteexpressiontypes.cpp
             source/vst/vstnoteexpressiontypes.h
             source/vst/vstparameters.cpp
             source/vst/vstparameters.h

@@ -1,0 +1,17 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  pprimitivesviews.cpp
+  pdrawtestview.cpp
+  pdrawtestmain.cpp
+  pdrawtesteffect.cpp
+  pdrawtesteditor.cpp
+  controlsgui.cpp
+  vstgui.cpp
+C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\vstgui.sf\vstgui\vstgui.cpp(208,10): fatal error C1083: Cannot open include file: 'png.h': No such file or directory
+  vstcontrols.cpp
+  ctabview.cpp
+  cscrollview.cpp
+  cfileselector.cpp
+  aeffguieditor.cpp
+  audioeffectx.cpp
+  audioeffect.cpp
+  Generating Code...

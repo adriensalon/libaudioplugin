@@ -1,0 +1,5 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  minihost.cpp
+  minieditor.cpp
+  Generating Code...
+  minihost.vcxproj -> C:\Users\adri\dev\dsppp\dsppp\modules\libdsp\external\vst2\public.sdk\samples\vst2.x\win\x64\Debug\minihost.exe
