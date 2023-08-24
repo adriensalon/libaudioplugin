@@ -30,7 +30,7 @@ if(libplugin_platform MATCHES "Apple")
 	set(libplugin_available_backends ${libplugin_available_backends} "AU2" "AU3")
 endif()
 
-set(LIBPLUGIN_BUILD_BACKEND "VST2" CACHE STRING "Selected plugin backend")
+set(LIBPLUGIN_BUILD_BACKEND "AAX" CACHE STRING "Selected plugin backend")
 set_property(CACHE LIBPLUGIN_BUILD_BACKEND PROPERTY STRINGS ${libplugin_available_backends})
 
 if(NOT LIBPLUGIN_BUILD_BACKEND IN_LIST libplugin_available_backends)
@@ -112,7 +112,9 @@ function(add_plugin plugin_name)
 	target_link_libraries(${plugin_name} PRIVATE sdk)
 
 	if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
-		# TODO
+	
+		target_link_libraries(${plugin_name} PRIVATE aaxwrapper)
+
 		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_AAX_WRAPPER)
 
 	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU2")

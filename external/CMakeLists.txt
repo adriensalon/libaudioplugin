@@ -1,3 +1,17 @@
+
+
+if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
+
+	set(SMTG_AAX_SDK_PATH ${CMAKE_CURRENT_LIST_DIR}/aax-sdk)
+	# add_subdirectory(aax-sdk)
+
+	# target_include_directories(sdk PUBLIC vst2sdk)	
+
+	# if(libplugin_platform MATCHES "Windows")
+	# 		target_compile_definitions(vst2sdk PUBLIC -D_CRT_SECURE_NO_WARNINGS)
+	# endif()
+endif()
+
 set(SMTG_ENABLE_VST3_HOSTING_EXAMPLES OFF CACHE BOOL "We do not need examples." FORCE)
 set(SMTG_ENABLE_VST3_PLUGIN_EXAMPLES OFF CACHE BOOL "We do not need examples." FORCE)
 set(SMTG_ENABLE_VSTGUI_SUPPORT OFF CACHE BOOL "We do not need VSTGUI." FORCE)
