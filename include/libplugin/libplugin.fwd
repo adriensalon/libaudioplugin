@@ -63,7 +63,7 @@ constexpr inline bool is_detected_convertible_v = is_detected_convertible<to_t, 
 
 #include <public.sdk/source/main/pluginfactory.h>
 
-#define COMPILE_PLUGIN_VST3(processor_class_m, controller_class_m) \
+#define ADD_PLUGIN(processor_class_m, controller_class_m) \
     BEGIN_FACTORY_DEF(                                             \
         PLUGIN_COMPANY,                                            \
         PLUGIN_WEBSITE,                                            \
@@ -90,39 +90,37 @@ constexpr inline bool is_detected_convertible_v = is_detected_convertible<to_t, 
         controller_class_m::createInstance)                        \
     END_FACTORY
 
-#if LIBPLUGIN_BUILD_VST2_WRAPPER
-
+#if defined(LIBPLUGIN_BUILD_VST2_WRAPPER)
 #include <public.sdk/source/vst/vst2wrapper/vst2wrapper.h>
-
-#define COMPILE_PLUGIN_VST2_WRAPPER(processor_class_m, controller_class_m)                                      \
+#define ADD_PLUGIN_VST2_WRAPPER(processor_class_m, controller_class_m)                                      \
     AudioEffect* createEffectInstance(audioMasterCallback audioMaster)                                          \
     {                                                                                                           \
         return Steinberg::Vst::Vst2Wrapper::create(GetPluginFactory(), PLUGIN_PROCESSOR_UID, 666, audioMaster); \
     }
 
 #else
-#define COMPILE_PLUGIN_VST2_WRAPPER(processor_class_m, controller_class_m)
+#define ADD_PLUGIN_VST2_WRAPPER(processor_class_m, controller_class_m)
 #endif
 
-#if LIBPLUGIN_BUILD_AAX_WRAPPER
-#define COMPILE_PLUGIN_AAX_WRAPPER(processor_class_m, controller_class_m)
+#if defined(LIBPLUGIN_BUILD_AAX_WRAPPER)
+#define ADD_PLUGIN_AAX_WRAPPER(processor_class_m, controller_class_m)
 // TODO
 #else
-#define COMPILE_PLUGIN_AAX_WRAPPER(processor_class_m, controller_class_m)
+#define ADD_PLUGIN_AAX_WRAPPER(processor_class_m, controller_class_m)
 #endif
 
-#if LIBPLUGIN_BUILD_AU2_WRAPPER
-#define COMPILE_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m)
+#if defined(LIBPLUGIN_BUILD_AU2_WRAPPER)
+#define ADD_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m)
 // TODO
 #else
-#define COMPILE_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m)
+#define ADD_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m)
 #endif
 
-#if LIBPLUGIN_BUILD_AU3_WRAPPER
-#define COMPILE_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m)
+#if defined(LIBPLUGIN_BUILD_AU3_WRAPPER)
+#define ADD_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m)
 // TODO
 #else
-#define COMPILE_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m)
+#define ADD_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m)
 #endif
 
 

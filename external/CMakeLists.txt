@@ -24,11 +24,17 @@ set(SMTG_MDA_VST3_VST2_COMPATIBLE ON CACHE BOOL "We do not need this." FORCE)
 set(SMTG_USE_STATIC_CRT OFF CACHE BOOL "Test." FORCE)
 
 add_subdirectory(vst3sdk)
+
 target_include_directories(sdk PUBLIC vst3sdk)
 
-if(LIBPLUGIN_BUILD_VST2_WRAPPER)
+if(LIBPLUGIN_BUILD_BACKEND STREQUAL "VST2")
 	add_subdirectory(vst2sdk)
-	target_include_directories(sdk PUBLIC vst2sdk)
+
+	target_include_directories(sdk PUBLIC vst2sdk)	
+
+	if(libplugin_platform MATCHES "Windows")
+			target_compile_definitions(vst2sdk PUBLIC -D_CRT_SECURE_NO_WARNINGS)
+	endif()
 endif()
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE STRING "")

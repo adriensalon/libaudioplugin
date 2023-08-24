@@ -17,7 +17,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 	set(libplugin_vst2_extension "dll")
 
 else()
-	message("[libplugin] Invalid platform ${CMAKE_SYSTEM_NAME}, aborting configuration")
+	message(FATAL_ERROR "[libplugin] Invalid platform ${CMAKE_SYSTEM_NAME}, aborting configuration")
 endif()
 
 set(libplugin_available_backends "VST2" "VST3")
@@ -30,35 +30,11 @@ if(libplugin_platform MATCHES "Apple")
 	set(libplugin_available_backends ${libplugin_available_backends} "AU2" "AU3")
 endif()
 
-set(LIBPLUGIN_BUILD_BACKEND "VST3" CACHE STRING "Selected plugin backend")
+set(LIBPLUGIN_BUILD_BACKEND "VST2" CACHE STRING "Selected plugin backend")
 set_property(CACHE LIBPLUGIN_BUILD_BACKEND PROPERTY STRINGS ${libplugin_available_backends})
 
 if(NOT LIBPLUGIN_BUILD_BACKEND IN_LIST libplugin_available_backends)
-	message(FATAL_ERROR "Wrong value of the parameter LIBPLUGIN_BUILD_BACKEND")
-endif()
-
-if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
-	set(LIBPLUGIN_BUILD_AAX_WRAPPER ON)
-else()
-	set(LIBPLUGIN_BUILD_AAX_WRAPPER OFF)
-endif()
-
-if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU2")
-	set(LIBPLUGIN_BUILD_AU2_WRAPPER ON)
-else()
-	set(LIBPLUGIN_BUILD_AU2_WRAPPER OFF)
-endif()
-
-if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU3")
-	set(LIBPLUGIN_BUILD_AU3_WRAPPER ON)
-else()
-	set(LIBPLUGIN_BUILD_AU3_WRAPPER OFF)
-endif()
-
-if(LIBPLUGIN_BUILD_BACKEND STREQUAL "VST2")
-	set(LIBPLUGIN_BUILD_VST2_WRAPPER ON)
-else()
-	set(LIBPLUGIN_BUILD_VST2_WRAPPER OFF)
+	message(FATAL_ERROR "[libplugin] Wrong value of the parameter LIBPLUGIN_BUILD_BACKEND")
 endif()
 
 option(LIBPLUGIN_BUILD_EXAMPLE "Build example executable" ON)
@@ -135,7 +111,19 @@ function(add_plugin plugin_name)
 
 	target_link_libraries(${plugin_name} PRIVATE sdk)
 
-	if(LIBPLUGIN_BUILD_VST2_WRAPPER)
+	if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
+		# TODO
+		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_AAX_WRAPPER)
+
+	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU2")
+		# TODO
+		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_AU2_WRAPPER)
+
+	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU3")
+		# TODO
+		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_AU2_WRAPPER)
+
+	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "VST2")
 		target_sources(${plugin_name} PRIVATE
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/dllmain.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/vst/vst2wrapper/vst2wrapper.sdk.cpp)
@@ -147,14 +135,12 @@ function(add_plugin plugin_name)
 
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/VST3)
+
+		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_VST2_WRAPPER)
 	endif()
 
 	target_include_directories(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include)
 
-	target_compile_definitions(${plugin_name} PUBLIC LIBPLUGIN_BUILD_AAX_WRAPPER)
-	target_compile_definitions(${plugin_name} PUBLIC LIBPLUGIN_BUILD_AU2_WRAPPER)
-	target_compile_definitions(${plugin_name} PUBLIC LIBPLUGIN_BUILD_AU3_WRAPPER)
-	target_compile_definitions(${plugin_name} PUBLIC LIBPLUGIN_BUILD_VST2_WRAPPER)
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_NAME="${plugin_name}")
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_TYPE="${LIBPLUGIN_PLUGIN_TYPE}")
 	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_COMPANY="${LIBPLUGIN_PLUGIN_COMPANY}")
@@ -167,24 +153,22 @@ function(add_plugin plugin_name)
 
 	if(SMTG_MAC)
 		smtg_target_set_bundle(${plugin_name}
-			BUNDLE_IDENTIFIER com.PLSOVERRIDECOMPANY.ANDNAME
-			COMPANY_NAME "My Plug-in Company")
+			BUNDLE_IDENTIFIER com.${LIBPLUGIN_PLUGIN_COMPANY}.${plugin_name}
+			COMPANY_NAME "${LIBPLUGIN_PLUGIN_COMPANY}")
 
-		smtg_target_set_debug_executable(${plugin_name}
-			"/Applications/VST3PluginTestHost.app"
-			"--pluginfolder;$(BUILT_PRODUCTS_DIR)")
+		# smtg_target_set_debug_executable(${plugin_name}
+		# 	"/Applications/VST3PluginTestHost.app"
+		# 	"--pluginfolder;$(BUILT_PRODUCTS_DIR)")
 
 	elseif(SMTG_WIN)
 		target_sources(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/resource/win32resource.rc)
 
 		if(MSVC)
 			set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${plugin_name})
-			smtg_target_set_debug_executable(${plugin_name}
-				"$(ProgramW6432)/Steinberg/VST3PluginTestHost/VST3PluginTestHost.exe"
-				"--pluginfolder \"$(OutDir)/\"")
+			# smtg_target_set_debug_executable(${plugin_name}
+			# 	"$(ProgramW6432)/Steinberg/VST3PluginTestHost/VST3PluginTestHost.exe"
+			# 	"--pluginfolder \"$(OutDir)/\"")
 		endif()
-
-		set(libplugin_vst2_extension "dll")
 	endif(SMTG_MAC)
 endfunction()
 
