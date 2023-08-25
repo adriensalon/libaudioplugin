@@ -1,21 +1,21 @@
-name: Windows CI
+name: MacOS CI
 
 on: 
   workflow_dispatch:
   schedule:
     - cron:  '0 0 * * 0'
-  
+
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: macos-latest
 
     strategy:
       fail-fast: false
       matrix:
         build_type: ["Debug", "Release"]
-        backend: ["AAX", "VST2", "VST3"]
+        build_type: ["AAX", "AU2", "AU3", "VST2", "VST3"]
 
-    name: ${{ matrix.backend }} (${{ matrix.build_type }})
+    name: ${{ matrix.build_type }}
 
     steps:
       - uses: actions/checkout@v3

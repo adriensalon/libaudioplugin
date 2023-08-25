@@ -30,7 +30,7 @@ if(libplugin_platform MATCHES "Apple")
 	set(libplugin_available_backends ${libplugin_available_backends} "AU2" "AU3")
 endif()
 
-set(LIBPLUGIN_BUILD_BACKEND "VST3" CACHE STRING "Selected plugin backend")
+set(LIBPLUGIN_BUILD_BACKEND "VST2" CACHE STRING "Selected plugin backend")
 set_property(CACHE LIBPLUGIN_BUILD_BACKEND PROPERTY STRINGS ${libplugin_available_backends})
 
 if(NOT LIBPLUGIN_BUILD_BACKEND IN_LIST libplugin_available_backends)

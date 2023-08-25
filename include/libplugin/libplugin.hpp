@@ -43,9 +43,11 @@
 #define AAX_MIDI_INPUTS_ARRAY(...) \
     AAX_MIDI_Desc effMIDI[] = { __VA_ARGS__, { nullptr } };
 
+/// @brief
 #define AAX_METER(meter_name_m, parameter_id_m, is_output_m) \
     AAX_Meter_Desc { meter_name_m, parameter_id_m, 0, is_output_m }
 
+/// @brief
 #define AAX_METERS_ARRAY(...) \
     AAX_Meter_Desc effMeters[] = { __VA_ARGS__, { nullptr } };
 
@@ -65,10 +67,6 @@
 
 /// @brief
 #define AAX_VARIANTS_ARRAY(...) \
-    AAX_Plugin_Desc effPlugins[] = { __VA_ARGS__, { nullptr } };
-
-/// @brief
-#define REGISTER_AAX(...) \
     AAX_Plugin_Desc effPlugins[] = { __VA_ARGS__, { nullptr } };
 
 #endif

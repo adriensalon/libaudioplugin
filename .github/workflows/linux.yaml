@@ -1,4 +1,4 @@
-name: Windows CI
+name: Linux CI
 
 on: 
   workflow_dispatch:
@@ -7,22 +7,33 @@ on:
   
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
         build_type: ["Debug", "Release"]
-        backend: ["AAX", "VST2", "VST3"]
-
-    name: ${{ matrix.backend }} (${{ matrix.build_type }})
+        backend: ["VST2", "VST3"]    
+        
+    name: ${{ matrix.build_type }}
 
     steps:
       - uses: actions/checkout@v3
+
+      # - name: Setup cached libs
+      #   uses: awalsh128/cache-apt-pkgs-action@latest
+      #   with:
+      #     packages: mesa-common-dev mesa-utils libgl-dev libgl1-mesa-dev
+      #     version: 1.0
+
+      # - name: Setup xmllint
+      #   run: sudo apt-get install -y libxml2-utils
+
+      # - name: Setup gtk
+      #   run: sudo apt-get install -y gtk+-3.0
       
       - name: Configure
         run: cmake -B ${{ github.workspace }}/build -DLIBPLUGIN_BUILD_EXAMPLE:BOOL=ON -DLIBPLUGIN_BUILD_BACKEND:STRING=${{ matrix.backend }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --target ExamplePlugin --config ${{ matrix.build_type }}
-

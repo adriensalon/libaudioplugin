@@ -153,9 +153,8 @@ namespace detail {
     template <typename vst3_processor_t>
     constexpr bool is_processor_valid()
     {
-        // constexpr unsigned int backends_count = LIBPLUGIN_BUILD_AAX + LIBPLUGIN_BUILD_AU2 + LIBPLUGIN_BUILD_AU3 + LIBPLUGIN_BUILD_VST2 + LIBPLUGIN_BUILD_VST3;
-        // static_assert(backends_count == 1, "Error : multiple backends selected");
-
+		// https://marcofoco.com/blog/2016/10/03/the-power-of-devirtualization/
+		
         // has processor createInstance
         // has processor initialize
         // has processor initialize
