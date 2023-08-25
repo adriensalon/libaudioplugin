@@ -26,7 +26,7 @@ set(SMTG_MDA_VST3_VST2_COMPATIBLE ON CACHE BOOL "We do not need this." FORCE)
 set(SMTG_USE_STATIC_CRT OFF CACHE BOOL "Test." FORCE)
 
 if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
-	set(SMTG_AAX_SDK_PATH ${CMAKE_CURRENT_LIST_DIR}/aax-sdk CACHE STRING "The location where we store the AAX SDK." FORCE)
+	set(SMTG_AAX_SDK_PATH ${CMAKE_CURRENT_LIST_DIR}/aaxsdk CACHE STRING "The location where we store the AAX SDK." FORCE)
 endif()
 
 add_subdirectory(vst3sdk)

@@ -9,23 +9,22 @@
 
 struct vst3_processor final : public Steinberg::Vst::AudioEffect {
 
-	vst3_processor()
-	{
+    vst3_processor()
+    {
         setControllerClass(PLUGIN_CONTROLLER_UID);
     }
 
-	~vst3_processor() override
-	{
-		
-	}
+    ~vst3_processor() override
+    {
+    }
 
-	static Steinberg::FUnknown* createInstance(void* context)
-	{
+    static Steinberg::FUnknown* createInstance(void* context)
+    {
         return reinterpret_cast<Steinberg::Vst::IAudioProcessor*>(new vst3_processor);
     }
 
-	Steinberg::tresult PLUGIN_API initialize(Steinberg::FUnknown* context) override
-	{
+    Steinberg::tresult PLUGIN_API initialize(Steinberg::FUnknown* context) override
+    {
         // Here the Plug-in will be instantiated
 
         //---always initialize the parent-------
@@ -44,32 +43,32 @@ struct vst3_processor final : public Steinberg::Vst::AudioEffect {
 
         return Steinberg::kResultOk;
     }
-	
-	Steinberg::tresult PLUGIN_API terminate() override
-	{
-		// Here the Plug-in will be de-instantiated, last possibility to remove some memory!
+
+    Steinberg::tresult PLUGIN_API terminate() override
+    {
+        // Here the Plug-in will be de-instantiated, last possibility to remove some memory!
 
         //---do not forget to call parent ------
         return AudioEffect::terminate();
-	}
-	
-	Steinberg::tresult PLUGIN_API setActive(Steinberg::TBool state) override
-	{
-		// Here the Plug-in will be de-instantiated, last possibility to remove some memory!
+    }
+
+    Steinberg::tresult PLUGIN_API setActive(Steinberg::TBool state) override
+    {
+        // Here the Plug-in will be de-instantiated, last possibility to remove some memory!
 
         //---do not forget to call parent ------
         return AudioEffect::terminate();
-	}
-	
-	Steinberg::tresult PLUGIN_API setupProcessing(Steinberg::Vst::ProcessSetup& newSetup) override
-	{
-		//--- called before any processing ----
+    }
+
+    Steinberg::tresult PLUGIN_API setupProcessing(Steinberg::Vst::ProcessSetup& newSetup) override
+    {
+        //--- called before any processing ----
         return AudioEffect::setupProcessing(newSetup);
-	}
-	
-	Steinberg::tresult PLUGIN_API canProcessSampleSize(Steinberg::int32 symbolicSampleSize) override
-	{
-		// by default kSample32 is supported
+    }
+
+    Steinberg::tresult PLUGIN_API canProcessSampleSize(Steinberg::int32 symbolicSampleSize) override
+    {
+        // by default kSample32 is supported
         if (symbolicSampleSize == Steinberg::Vst::kSample32)
             return Steinberg::kResultTrue;
 
@@ -78,11 +77,11 @@ struct vst3_processor final : public Steinberg::Vst::AudioEffect {
                 return kResultTrue; */
 
         return Steinberg::kResultFalse;
-	}
-	
-	Steinberg::tresult PLUGIN_API process(Steinberg::Vst::ProcessData& data) override
-	{
-		//--- First : Read inputs parameter changes-----------
+    }
+
+    Steinberg::tresult PLUGIN_API process(Steinberg::Vst::ProcessData& data) override
+    {
+        //--- First : Read inputs parameter changes-----------
 
         /*if (data.inputParameterChanges)
         {
@@ -104,35 +103,35 @@ struct vst3_processor final : public Steinberg::Vst::AudioEffect {
         //--- Here you have to implement your processing
 
         return Steinberg::kResultOk;
-	}
-	
-	Steinberg::tresult PLUGIN_API setState(Steinberg::IBStream* state) override
-	{
-		// called when we load a preset, the model has to be reloaded
+    }
+
+    Steinberg::tresult PLUGIN_API setState(Steinberg::IBStream* state) override
+    {
+        // called when we load a preset, the model has to be reloaded
         Steinberg::IBStreamer streamer(state, kLittleEndian);
 
         return Steinberg::kResultOk;
-	}
-	
-	Steinberg::tresult PLUGIN_API getState(Steinberg::IBStream* state) override
-	{
-		// here we need to save the model
+    }
+
+    Steinberg::tresult PLUGIN_API getState(Steinberg::IBStream* state) override
+    {
+        // here we need to save the model
         Steinberg::IBStreamer streamer(state, kLittleEndian);
 
         return Steinberg::kResultOk;
-	}	
+    }
 };
 
 struct vst3_controller final : public Steinberg::Vst::EditControllerEx1 {
 
     static Steinberg::FUnknown* createInstance(void* context)
-	{
-		return reinterpret_cast<Steinberg::Vst::IEditController*>(new vst3_controller);
-	}
+    {
+        return reinterpret_cast<Steinberg::Vst::IEditController*>(new vst3_controller);
+    }
 
     Steinberg::tresult PLUGIN_API initialize(Steinberg::FUnknown* context) override
-	{
-		// Here the Plug-in will be instantiated
+    {
+        // Here the Plug-in will be instantiated
 
         //---do not forget to call parent ------
         Steinberg::tresult result = EditControllerEx1::initialize(context);
@@ -142,85 +141,104 @@ struct vst3_controller final : public Steinberg::Vst::EditControllerEx1 {
         // Here you could register some parameters
 
         return result;
-	}
+    }
 
     Steinberg::tresult PLUGIN_API terminate() override
-	{
-		// Here the Plug-in will be de-instantiated, last possibility to remove some memory!
+    {
+        // Here the Plug-in will be de-instantiated, last possibility to remove some memory!
 
         //---do not forget to call parent ------
         return EditControllerEx1::terminate();
-	}
+    }
 
     Steinberg::tresult PLUGIN_API setComponentState(Steinberg::IBStream* state) override
-	{
-		// Here you get the state of the component (Processor part)
+    {
+        // Here you get the state of the component (Processor part)
         if (!state)
             return Steinberg::kResultFalse;
 
         return Steinberg::kResultOk;
-	}
+    }
 
     Steinberg::IPlugView* PLUGIN_API createView(Steinberg::FIDString name) override
-	{
-		// Here the Host wants to open your editor (if you have one)
+    {
+        // Here the Host wants to open your editor (if you have one)
         if (Steinberg::FIDStringsEqual(name, Steinberg::Vst::ViewType::kEditor)) {
             // create your editor here and return a IPlugView ptr of it
             return nullptr;
         }
-        return nullptr;		
-	}
+        return nullptr;
+    }
 
     Steinberg::tresult PLUGIN_API setState(Steinberg::IBStream* state) override
-	{
-		// Here you are asked to deliver the state of the controller (if needed)
+    {
+        // Here you are asked to deliver the state of the controller (if needed)
         // Note: the real state of your plug-in is saved in the processor
 
         return Steinberg::kResultTrue;
-	}
+    }
 
     Steinberg::tresult PLUGIN_API getState(Steinberg::IBStream* state) override
-	{		
-		// Here you get the state of the controller
+    {
+        // Here you get the state of the controller
 
         return Steinberg::kResultTrue;
-	}
+    }
 
     Steinberg::tresult PLUGIN_API setParamNormalized(Steinberg::Vst::ParamID tag, Steinberg::Vst::ParamValue value) override
-	{
-		// called by host to update your parameters
+    {
+        // called by host to update your parameters
         Steinberg::tresult result = EditControllerEx1::setParamNormalized(tag, value);
         return result;
-	}
+    }
 
     Steinberg::tresult PLUGIN_API getParamStringByValue(Steinberg::Vst::ParamID tag, Steinberg::Vst::ParamValue valueNormalized, Steinberg::Vst::String128 string) override
-	{
-		// called by host to get a string for given normalized value of a specific parameter
+    {
+        // called by host to get a string for given normalized value of a specific parameter
         // (without having to set the value!)
         return Steinberg::Vst::EditControllerEx1::getParamStringByValue(tag, valueNormalized, string);
-	}
+    }
 
     Steinberg::tresult PLUGIN_API getParamValueByString(Steinberg::Vst::ParamID tag, Steinberg::Vst::TChar* string, Steinberg::Vst::ParamValue& valueNormalized) override
-	{
-		// called by host to get a normalized value from a string representation of a specific parameter
+    {
+        // called by host to get a normalized value from a string representation of a specific parameter
         // (without having to set the value!)
         return Steinberg::Vst::EditControllerEx1::getParamValueByString(tag, string, valueNormalized);
-	}
+    }
 
-    Steinberg::tresult PLUGIN_API queryInterface(const Steinberg::TUID iid, void** obj) override 
-	{ 
-		return Steinberg::Vst::EditController::queryInterface(iid, obj); 
-	}
+    Steinberg::tresult PLUGIN_API queryInterface(const Steinberg::TUID iid, void** obj) override
+    {
+        return Steinberg::Vst::EditController::queryInterface(iid, obj);
+    }
 
-    Steinberg::uint32 PLUGIN_API addRef() override 
-	{ 
-		return Steinberg::Vst::EditController::addRef(); 
-	}
+    Steinberg::uint32 PLUGIN_API addRef() override
+    {
+        return Steinberg::Vst::EditController::addRef();
+    }
 
-    Steinberg::uint32 PLUGIN_API release() override 
-	{ 
-		return Steinberg::Vst::EditController::release(); 
-	}
+    Steinberg::uint32 PLUGIN_API release() override
+    {
+        return Steinberg::Vst::EditController::release();
+    }
 };
+
+#if defined(LIBPLUGIN_BUILD_AAX_WRAPPER)
+
+// AAX_ADDITIONAL_OUTPUTS_ARRAY(
+// 	AAX_ADDITIONAL_OUTPUT("AUX2", 2),
+// 	AAX_ADDITIONAL_OUTPUT("AUX3", 2))
+
+// AAX_MIDI_INPUTS_ARRAY(
+// 	AAX_MIDI_INPUT(PLUGIN_NAME "MidiInA", 0xffff << 0),
+// 	AAX_MIDI_INPUT(PLUGIN_NAME "MidiInB", 0xffff << 1))
+
+// AAX_METERS_ARRAY(
+// 	AAX_METER("Output", 555 /* must be a parameter ID for the vu (see again)*/, 1))
+
+AAX_VARIANTS_ARRAY(
+	AAX_VARIANT("mono", 1, 1, 0, 0),
+	AAX_VARIANT("stereo", 2, 2, 0, 0))
+
+#endif
 
 REGISTER_PLUGIN(vst3_processor, vst3_controller)

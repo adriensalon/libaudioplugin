@@ -109,8 +109,10 @@ function(add_plugin plugin_name)
 
 	if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
 		smtg_add_aaxplugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
+		target_sources(${plugin_name} PRIVATE
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/dllmain.cpp)
 		target_link_libraries(${plugin_name} PRIVATE aaxwrapper)
-		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_AAX_WRAPPER)
+		target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_BUILD_AAX_WRAPPER)
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/AAXPLUGIN ${CMAKE_BINARY_DIR}/AAX)
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
@@ -118,11 +120,11 @@ function(add_plugin plugin_name)
 
 	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU2")
 		# TODO
-		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_AU2_WRAPPER)
+		target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_BUILD_AU2_WRAPPER)
 
 	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU3")
 		# TODO
-		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_AU2_WRAPPER)
+		target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_BUILD_AU2_WRAPPER)
 
 	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "VST2")
 		smtg_add_vst3plugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
@@ -134,7 +136,7 @@ function(add_plugin plugin_name)
 			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${plugin_name}> ${CMAKE_BINARY_DIR}/VST2/$<CONFIGURATION>/${plugin_name}.${libplugin_vst2_extension})
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/VST3)
-		target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_BUILD_VST2_WRAPPER)
+		target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_BUILD_VST2_WRAPPER)
 
 	else()
 		smtg_add_vst3plugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
@@ -144,13 +146,13 @@ function(add_plugin plugin_name)
 
 	target_include_directories(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include)
 
-	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_NAME="${plugin_name}")
-	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_TYPE="${LIBPLUGIN_PLUGIN_TYPE}")
-	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_COMPANY="${LIBPLUGIN_PLUGIN_COMPANY}")
-	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_DESCRIPTION="${LIBPLUGIN_PLUGIN_DESCRIPTION}")
-	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_VERSION="${LIBPLUGIN_PLUGIN_VERSION}")
-	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_EMAIL="${LIBPLUGIN_PLUGIN_EMAIL}")
-	target_compile_definitions(${plugin_name} PUBLIC -DLIBPLUGIN_PLUGIN_WEBSITE="${LIBPLUGIN_PLUGIN_WEBSITE}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_NAME="${plugin_name}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_TYPE="${LIBPLUGIN_PLUGIN_TYPE}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_COMPANY="${LIBPLUGIN_PLUGIN_COMPANY}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_DESCRIPTION="${LIBPLUGIN_PLUGIN_DESCRIPTION}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_VERSION="${LIBPLUGIN_PLUGIN_VERSION}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_EMAIL="${LIBPLUGIN_PLUGIN_EMAIL}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_WEBSITE="${LIBPLUGIN_PLUGIN_WEBSITE}")
 
 	smtg_target_configure_version_file(${plugin_name})
 
