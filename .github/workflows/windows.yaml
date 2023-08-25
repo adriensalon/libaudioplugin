@@ -15,7 +15,7 @@ jobs:
         build_type: ["Debug", "Release"]
         backend: ["AAX", "VST2", "VST3"]
 
-    name: ${{ matrix.build_type }}
+    name: ${{ matrix.backend }} (${{ matrix.build_type }})
 
     steps:
       - uses: actions/checkout@v3
