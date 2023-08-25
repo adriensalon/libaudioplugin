@@ -40,7 +40,7 @@ endif()
 option(LIBAUDIOPLUGIN_BUILD_DOC "Build Doxygen documentation" ON)
 option(LIBAUDIOPLUGIN_BUILD_EXAMPLE "Build example executable" ON)
 
-message("-- [libaudioplugin] Configuring for ${CMAKE_SYSTEM_NAME} platform")
+message("-- [libaudioplugin] Configuring for ${libaudioplugin_platform} platform")
 message("-- [libaudioplugin] Building for ${LIBAUDIOPLUGIN_BUILD_BACKEND} backend")
 message("-- [libaudioplugin] Building doc is ${LIBAUDIOPLUGIN_BUILD_DOC}")
 message("-- [libaudioplugin] Building example is ${LIBAUDIOPLUGIN_BUILD_EXAMPLE}")
@@ -158,6 +158,8 @@ function(add_plugin plugin_name)
 
 	else()
 		smtg_add_vst3plugin(${plugin_name} ${LIBAUDIOPLUGIN_PLUGIN_SOURCES})
+		target_sources(${plugin_name} PRIVATE
+			${libaudioplugin_wrapper_main})
 		set(LIBAUDIOPLUGIN_BUILD_PATH ${libaudioplugin_binary_dir}/${plugin_name}.vst3)
 		# # add_custom_command(TARGET ${plugin_name} PRE_BUILD
 		# # 	COMMAND ${CMAKE_COMMAND} -E rm -R ${LIBAUDIOPLUGIN_BUILD_PATH})
