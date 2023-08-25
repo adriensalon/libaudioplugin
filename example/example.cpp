@@ -20,7 +20,7 @@ struct vst3_processor final : public Steinberg::Vst::AudioEffect {
 
     static Steinberg::FUnknown* createInstance(void* context)
     {
-        return reinterpret_cast<Steinberg::Vst::IAudioProcessor*>(new vst3_processor);
+        return static_cast<Steinberg::Vst::IAudioProcessor*>(new vst3_processor);
     }
 
     Steinberg::tresult PLUGIN_API initialize(Steinberg::FUnknown* context) override
@@ -126,7 +126,7 @@ struct vst3_controller final : public Steinberg::Vst::EditControllerEx1 {
 
     static Steinberg::FUnknown* createInstance(void* context)
     {
-        return reinterpret_cast<Steinberg::Vst::IEditController*>(new vst3_controller);
+        return static_cast<Steinberg::Vst::IEditController*>(new vst3_controller);
     }
 
     Steinberg::tresult PLUGIN_API initialize(Steinberg::FUnknown* context) override
