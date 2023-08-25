@@ -10,6 +10,7 @@ project(libaudioplugin_example)
 
 # Creates a target named ExamplePlugin that we can use as if created by the add_library function.
 add_plugin(ExamplePlugin 
+	PLUGIN_VALIDATE
 	PLUGIN_SOURCES "example.cpp"
 	PLUGIN_FX
 	PLUGIN_COMPANY "adrien salon"
@@ -17,6 +18,7 @@ add_plugin(ExamplePlugin
 	PLUGIN_VERSION "1.0.0.0"
 	PLUGIN_EMAIL "mail@me.com"
 	PLUGIN_WEBSITE "mywebsite.com")
+	
 
 # target_include_directories(ExamplePlugin PRIVATE mylib_headers_dir)
 
@@ -25,4 +27,3 @@ add_plugin(ExamplePlugin
 # target_compile_definitions(ExamplePlugin PUBLIC DMYDEFINITION=1)
 
 set_target_properties(ExamplePlugin PROPERTIES CXX_STANDARD 17)
-

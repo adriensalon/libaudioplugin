@@ -21,6 +21,7 @@ set(SMTG_MDA_VST3_VST2_COMPATIBLE ON CACHE BOOL "We do not need this." FORCE)
 # SMTG_PLUGIN_TARGET_USER_PROGRAM_FILES_COMMON: use FOLDERID_UserProgramFilesCommon as VST 3 target path (Windows only) (default ON)
 # SMTG_RENAME_ASSERT: Rename ASSERT to SMTG_ASSERT to avoid conflicts with 3rd party libraries (default ON)
 # SMTG_RUN_VST_VALIDATOR: Run the VST validator on VST 3 plug-ins each time they are built (default ON)
+set(SMTG_RUN_VST_VALIDATOR OFF CACHE BOOL "Test." FORCE)
 
 # Use static CRuntime on Windows (option /MT) (default OFF: /MD is used) (Windows only)
 set(SMTG_USE_STATIC_CRT OFF CACHE BOOL "Test." FORCE)
@@ -49,10 +50,3 @@ endif()
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE STRING "")
 
 smtg_enable_vst3_sdk()
-
-if(LIBAUDIOPLUGIN_BUILD_TEST)	
-	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-	set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
-	set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
-	add_subdirectory(googletest)
-endif()

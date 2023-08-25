@@ -30,7 +30,7 @@ if(libaudioplugin_platform MATCHES "Apple")
 	set(libaudioplugin_available_backends ${libaudioplugin_available_backends} "AU2" "AU3")
 endif()
 
-set(LIBAUDIOPLUGIN_BUILD_BACKEND "VST2" CACHE STRING "Selected plugin backend")
+set(LIBAUDIOPLUGIN_BUILD_BACKEND "VST3" CACHE STRING "Selected plugin backend")
 set_property(CACHE LIBAUDIOPLUGIN_BUILD_BACKEND PROPERTY STRINGS ${libaudioplugin_available_backends})
 
 if(NOT LIBAUDIOPLUGIN_BUILD_BACKEND IN_LIST libaudioplugin_available_backends)
@@ -39,17 +39,16 @@ endif()
 
 option(LIBAUDIOPLUGIN_BUILD_DOC "Build Doxygen documentation" ON)
 option(LIBAUDIOPLUGIN_BUILD_EXAMPLE "Build example executable" ON)
-option(LIBAUDIOPLUGIN_BUILD_TEST "Build test executable" ON)
 
 message("-- [libaudioplugin] Configuring for ${CMAKE_SYSTEM_NAME} platform")
 message("-- [libaudioplugin] Building for ${LIBAUDIOPLUGIN_BUILD_BACKEND} backend")
 message("-- [libaudioplugin] Building doc is ${LIBAUDIOPLUGIN_BUILD_DOC}")
 message("-- [libaudioplugin] Building example is ${LIBAUDIOPLUGIN_BUILD_EXAMPLE}")
-message("-- [libaudioplugin] Building test is ${LIBAUDIOPLUGIN_BUILD_TEST}")
 
 add_subdirectory(external)
 
 # @param plugin_name The target that implements the libaudioplugin interface
+# @param PLUGIN_VALIDATE
 # @param PLUGIN_FX
 # @param PLUGIN_INSTRUMENT
 # @param PLUGIN_NAME <name>
@@ -59,7 +58,7 @@ add_subdirectory(external)
 # @param PLUGIN_EMAIL <email>
 # @param PLUGIN_WEBSITE <website>
 function(add_plugin plugin_name)
-	set(options PLUGIN_FX PLUGIN_INSTRUMENT)
+	set(options PLUGIN_VALIDATE PLUGIN_FX PLUGIN_INSTRUMENT)
 	set(oneValueArgs PLUGIN_COMPANY PLUGIN_DESCRIPTION PLUGIN_VERSION PLUGIN_EMAIL PLUGIN_WEBSITE)
 	set(multipleValuesArgs PLUGIN_SOURCES)
 	cmake_parse_arguments(PARSE_ARGV 1 LIBAUDIOPLUGIN "${options}" "${oneValueArgs}" "${multipleValuesArgs}")
@@ -123,13 +122,16 @@ function(add_plugin plugin_name)
 		set(libaudioplugin_wrapper_main ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/linuxmain.cpp)
 	endif()
 
+	set(libaudioplugin_binary_dir "${CMAKE_BINARY_DIR}/${LIBAUDIOPLUGIN_BUILD_BACKEND}/$<CONFIGURATION>")
+
 	if(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "AAX")
 		smtg_add_aaxplugin(${plugin_name} ${LIBAUDIOPLUGIN_PLUGIN_SOURCES})
 		target_sources(${plugin_name} PRIVATE ${libaudioplugin_wrapper_main})
 		target_link_libraries(${plugin_name} PRIVATE aaxwrapper)
 		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_AAX_WRAPPER)
+		set(LIBAUDIOPLUGIN_BUILD_PATH ${libaudioplugin_binary_dir}/${plugin_name}.aaxplugin)
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/AAXPLUGIN ${CMAKE_BINARY_DIR}/AAX)
+			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${plugin_name}> ${LIBAUDIOPLUGIN_BUILD_PATH})
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/AAXPLUGIN)
 
@@ -147,16 +149,26 @@ function(add_plugin plugin_name)
 			${libaudioplugin_wrapper_main}
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/vst/vst2wrapper/vst2wrapper.sdk.cpp)
 		target_link_libraries(${plugin_name} PRIVATE vst2sdk)
+		set(LIBAUDIOPLUGIN_BUILD_PATH ${libaudioplugin_binary_dir}/${plugin_name}.${libaudioplugin_vst2_extension})
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${plugin_name}> ${CMAKE_BINARY_DIR}/VST2/$<CONFIGURATION>/${plugin_name}.${libaudioplugin_vst2_extension})
+			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${plugin_name}> ${LIBAUDIOPLUGIN_BUILD_PATH})
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/VST3)
 		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_VST2_WRAPPER)
 
 	else()
 		smtg_add_vst3plugin(${plugin_name} ${LIBAUDIOPLUGIN_PLUGIN_SOURCES})
+		set(LIBAUDIOPLUGIN_BUILD_PATH ${libaudioplugin_binary_dir}/${plugin_name}.vst3)
+		# # add_custom_command(TARGET ${plugin_name} PRE_BUILD
+		# # 	COMMAND ${CMAKE_COMMAND} -E rm -R ${LIBAUDIOPLUGIN_BUILD_PATH})
+		# add_custom_command(TARGET ${plugin_name} POST_BUILD
+		# 	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${plugin_name}> ${LIBAUDIOPLUGIN_BUILD_PATH}_temp)
+		# add_custom_command(TARGET ${plugin_name} POST_BUILD
+		# 	COMMAND ${CMAKE_COMMAND} -E remove_directory ${LIBAUDIOPLUGIN_BUILD_PATH})
+		# add_custom_command(TARGET ${plugin_name} POST_BUILD
+		# 	COMMAND ${CMAKE_COMMAND} -E rename ${LIBAUDIOPLUGIN_BUILD_PATH}_temp ${LIBAUDIOPLUGIN_BUILD_PATH})
 	endif()
-
+	
 	target_link_libraries(${plugin_name} PRIVATE sdk)
 
 	target_include_directories(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include)
@@ -190,14 +202,28 @@ function(add_plugin plugin_name)
 			# "--pluginfolder \"$(OutDir)/\"")
 		endif()
 	endif(SMTG_MAC)
+
+	# Validate step
+	if(LIBAUDIOPLUGIN_PLUGIN_VALIDATE)
+		
+		# VST2 & VST2 validator that came with the VST3 SDK
+		if(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "VST2" OR LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "VST3")
+			smtg_target_run_vst_validator(${plugin_name})
+
+		# AU validator that comes with MacOS
+		elseif(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "AU2" OR LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "AU3")
+			add_custom_command(TARGET ${plugin_name} POST_BUILD
+			COMMAND auval -v ${plugin_name}) # !!!!!!!!!!!!!!
+
+		endif()
+
+		# No validator for AAX go ask Avid
+
+	endif()
 endfunction()
 
 if(LIBAUDIOPLUGIN_BUILD_DOC)
 	add_subdirectory(doc)
-endif()
-
-if(LIBAUDIOPLUGIN_BUILD_TEST)
-	add_subdirectory(test)
 endif()
 
 if(LIBAUDIOPLUGIN_BUILD_EXAMPLE)
