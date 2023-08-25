@@ -49,3 +49,10 @@ endif()
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE STRING "")
 
 smtg_enable_vst3_sdk()
+
+if(LIBPLUGIN_BUILD_TEST)	
+	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+	set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
+	set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+	add_subdirectory(googletest)
+endif()

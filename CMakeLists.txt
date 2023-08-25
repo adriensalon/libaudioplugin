@@ -39,11 +39,13 @@ endif()
 
 option(LIBPLUGIN_BUILD_DOC "Build Doxygen documentation" ON)
 option(LIBPLUGIN_BUILD_EXAMPLE "Build example executable" ON)
+option(LIBPLUGIN_BUILD_TEST "Build test executable" ON)
 
 message("-- [libplugin] Configuring for ${CMAKE_SYSTEM_NAME} platform")
 message("-- [libplugin] Building for ${LIBPLUGIN_BUILD_BACKEND} backend")
 message("-- [libplugin] Building doc is ${LIBPLUGIN_BUILD_DOC}")
 message("-- [libplugin] Building example is ${LIBPLUGIN_BUILD_EXAMPLE}")
+message("-- [libplugin] Building test is ${LIBPLUGIN_BUILD_TEST}")
 
 add_subdirectory(external)
 
@@ -118,7 +120,7 @@ function(add_plugin plugin_name)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/macexport.exp)
 	
 	elseif(libplugin_platform MATCHES "Linux")
-		set(libplugin_wrapper_main ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/linux.cpp)
+		set(libplugin_wrapper_main ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/linuxmain.cpp)
 	endif()
 
 	if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
@@ -194,6 +196,11 @@ if(LIBPLUGIN_BUILD_DOC)
 	add_subdirectory(doc)
 endif()
 
+if(LIBPLUGIN_BUILD_TEST)
+	add_subdirectory(test)
+endif()
+
 if(LIBPLUGIN_BUILD_EXAMPLE)
 	add_subdirectory(example)
 endif()
+
