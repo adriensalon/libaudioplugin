@@ -37,10 +37,12 @@ if(NOT LIBPLUGIN_BUILD_BACKEND IN_LIST libplugin_available_backends)
 	message(FATAL_ERROR "[libplugin] Wrong value of the parameter LIBPLUGIN_BUILD_BACKEND")
 endif()
 
+option(LIBPLUGIN_BUILD_DOC "Build Doxygen documentation" ON)
 option(LIBPLUGIN_BUILD_EXAMPLE "Build example executable" ON)
 
 message("-- [libplugin] Configuring for ${CMAKE_SYSTEM_NAME} platform")
 message("-- [libplugin] Building for ${LIBPLUGIN_BUILD_BACKEND} backend")
+message("-- [libplugin] Building doc is ${LIBPLUGIN_BUILD_DOC}")
 message("-- [libplugin] Building example is ${LIBPLUGIN_BUILD_EXAMPLE}")
 
 add_subdirectory(external)
@@ -107,10 +109,21 @@ function(add_plugin plugin_name)
 		VERSION ${LIBPLUGIN_PLUGIN_VERSION}
 		DESCRIPTION ${LIBPLUGIN_PLUGIN_DESCRIPTION})
 
+	if(libplugin_platform MATCHES "Windows")
+		set(libplugin_wrapper_main ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/dllmain.cpp)
+	
+	elseif(libplugin_platform MATCHES "Apple")
+		set(libplugin_wrapper_main 
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/macmain.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/macexport.exp)
+	
+	elseif(libplugin_platform MATCHES "Linux")
+		set(libplugin_wrapper_main ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/linux.cpp)
+	endif()
+
 	if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
 		smtg_add_aaxplugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
-		target_sources(${plugin_name} PRIVATE
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/dllmain.cpp)
+		target_sources(${plugin_name} PRIVATE ${libplugin_wrapper_main})
 		target_link_libraries(${plugin_name} PRIVATE aaxwrapper)
 		target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_BUILD_AAX_WRAPPER)
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
@@ -119,17 +132,17 @@ function(add_plugin plugin_name)
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/AAXPLUGIN)
 
 	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU2")
-		# TODO
+		target_sources(${plugin_name} PRIVATE ${libplugin_wrapper_main})
 		target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_BUILD_AU2_WRAPPER)
 
 	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU3")
-		# TODO
+		target_sources(${plugin_name} PRIVATE ${libplugin_wrapper_main})
 		target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_BUILD_AU2_WRAPPER)
 
 	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "VST2")
 		smtg_add_vst3plugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
 		target_sources(${plugin_name} PRIVATE
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/dllmain.cpp
+			${libplugin_wrapper_main}
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/vst/vst2wrapper/vst2wrapper.sdk.cpp)
 		target_link_libraries(${plugin_name} PRIVATE vst2sdk)
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
@@ -176,6 +189,10 @@ function(add_plugin plugin_name)
 		endif()
 	endif(SMTG_MAC)
 endfunction()
+
+if(LIBPLUGIN_BUILD_DOC)
+	add_subdirectory(doc)
+endif()
 
 if(LIBPLUGIN_BUILD_EXAMPLE)
 	add_subdirectory(example)

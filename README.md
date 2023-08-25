@@ -9,3 +9,6 @@
 ## Motivation
 
 ## Features
+- Builds to all the plugin formats supported by the OS
+- Provides a single CMake command 'add_plugin'
+- 

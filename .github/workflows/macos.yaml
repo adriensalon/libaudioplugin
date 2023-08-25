@@ -13,9 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         build_type: ["Debug", "Release"]
-        build_type: ["AAX", "AU2", "AU3", "VST2", "VST3"]
+        backend: ["AAX", "AU2", "AU3", "VST2", "VST3"]
 
-    name: ${{ matrix.build_type }}
+    name: ${{ matrix.backend }} (${{ matrix.build_type }})
 
     steps:
       - uses: actions/checkout@v3
