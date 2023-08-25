@@ -6,26 +6,26 @@
 
 /// @brief
 #if !defined(PLUGIN_PROCESSOR_UID)
-#define PLUGIN_PROCESSOR_UID libplugin::detail::processor_uid
+#define PLUGIN_PROCESSOR_UID libaudioplugin::detail::processor_uid
 #endif
 
 /// @brief
 #if !defined(PLUGIN_CONTROLLER_UID)
-#define PLUGIN_CONTROLLER_UID libplugin::detail::controller_uid
+#define PLUGIN_CONTROLLER_UID libaudioplugin::detail::controller_uid
 #endif
 
-#include <libplugin/libplugin.fwd>
+#include <libaudioplugin/libplugin.fwd>
 
 /// @brief
 #define REGISTER_PLUGIN(processor_class_m, controller_class_m)              \
-    LIBPLUGIN_VERIFY_PLUGIN(processor_class_m, controller_class_m)          \
-    LIBPLUGIN_ADD_PLUGIN(processor_class_m, controller_class_m)             \
-    LIBPLUGIN_ADD_PLUGIN_AAX_WRAPPER()                                      \
-    LIBPLUGIN_ADD_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m) \
-    LIBPLUGIN_ADD_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m) \
-    LIBPLUGIN_ADD_PLUGIN_VST2_WRAPPER()
+    LIBAUDIOPLUGIN_VERIFY_PLUGIN(processor_class_m, controller_class_m)          \
+    LIBAUDIOPLUGIN_ADD_PLUGIN(processor_class_m, controller_class_m)             \
+    LIBAUDIOPLUGIN_ADD_PLUGIN_AAX_WRAPPER()                                      \
+    LIBAUDIOPLUGIN_ADD_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m) \
+    LIBAUDIOPLUGIN_ADD_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m) \
+    LIBAUDIOPLUGIN_ADD_PLUGIN_VST2_WRAPPER()
 
-#if defined(LIBPLUGIN_BUILD_AAX_WRAPPER)
+#if defined(LIBAUDIOPLUGIN_BUILD_AAX_WRAPPER)
 
 /// @brief
 #define AAX_ADDITIONAL_OUTPUT(output_name_m, channels_count_m) \

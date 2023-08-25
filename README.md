@@ -1,4 +1,4 @@
-# libplugin
+# libaudioplugin
 
 ![licence badge](https://img.shields.io/badge/licence-MIT-blue?style=for-the-badge)
 ![cpp badge](https://img.shields.io/badge/C%2B%2B-17-blue?style=for-the-badge)

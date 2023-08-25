@@ -1,12 +1,12 @@
-project(libplugin_example)
+project(libaudioplugin_example)
 
-# Here you are supposed to add the libplugin root folder 
+# Here you are supposed to add the libaudioplugin root folder 
 # as a subdirectory of your project
 # But we alread
 # add_subdirectory(external/aaxsdk)
 # add_subdirectory(external/auv2sdk)
 # add_subdirectory(external/auv3sdk)
-# add_subdirectory(external/libplugin)
+# add_subdirectory(external/libaudioplugin)
 
 # Creates a target named ExamplePlugin that we can use as if created by the add_library function.
 add_plugin(ExamplePlugin 

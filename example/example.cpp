@@ -1,4 +1,4 @@
-#include <libplugin/libplugin.hpp>
+#include <libaudioplugin/libaudioplugin.hpp>
 
 #include <public.sdk/source/vst/vstaudioeffect.h>
 #include <public.sdk/source/vst/vsteditcontroller.h>
@@ -222,7 +222,7 @@ struct vst3_controller final : public Steinberg::Vst::EditControllerEx1 {
     }
 };
 
-#if defined(LIBPLUGIN_BUILD_AAX_WRAPPER)
+#if defined(LIBAUDIOPLUGIN_BUILD_AAX_WRAPPER)
 
 // AAX_ADDITIONAL_OUTPUTS_ARRAY(
 // 	AAX_ADDITIONAL_OUTPUT("AUX2", 2),

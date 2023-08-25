@@ -55,15 +55,15 @@ template <typename to_t, template <typename...> typename op_t, typename... args_
 constexpr inline bool is_detected_convertible_v = is_detected_convertible<to_t, op_t, args_t...>::value;
 }
 
-#include <libplugin/pluginfo.h>
+#include <libaudioplugin/pluginfo.h>
 
-#define LIBPLUGIN_VERIFY_PLUGIN(processor_class_m, controller_class_m)         \
-    static_assert(libplugin::detail::is_processor_valid<processor_class_m>()); \
-    static_assert(libplugin::detail::is_controller_valid<controller_class_m>());
+#define LIBAUDIOPLUGIN_VERIFY_PLUGIN(processor_class_m, controller_class_m)         \
+    static_assert(libaudioplugin::detail::is_processor_valid<processor_class_m>()); \
+    static_assert(libaudioplugin::detail::is_controller_valid<controller_class_m>());
 
 #include <public.sdk/source/main/pluginfactory.h>
 
-#define LIBPLUGIN_ADD_PLUGIN(processor_class_m, controller_class_m) \
+#define LIBAUDIOPLUGIN_ADD_PLUGIN(processor_class_m, controller_class_m) \
     BEGIN_FACTORY_DEF(                                              \
         PLUGIN_COMPANY,                                             \
         PLUGIN_WEBSITE,                                             \
@@ -90,10 +90,10 @@ constexpr inline bool is_detected_convertible_v = is_detected_convertible<to_t, 
         controller_class_m::createInstance)                         \
     END_FACTORY
 
-#if defined(LIBPLUGIN_BUILD_AAX_WRAPPER)
+#if defined(LIBAUDIOPLUGIN_BUILD_AAX_WRAPPER)
 #include <pluginterfaces/base/futils.h>
 #include <public.sdk/source/vst/aaxwrapper/aaxwrapper_description.h>
-#define LIBPLUGIN_ADD_PLUGIN_AAX_WRAPPER()                                    \
+#define LIBAUDIOPLUGIN_ADD_PLUGIN_AAX_WRAPPER()                                    \
     AAX_Effect_Desc effDesc = {                                               \
         PLUGIN_COMPANY,                                                       \
         PLUGIN_NAME,                                                          \
@@ -115,36 +115,36 @@ constexpr inline bool is_detected_convertible_v = is_detected_convertible<to_t, 
         return &effDesc;                                                      \
     }
 #else
-#define LIBPLUGIN_ADD_PLUGIN_AAX_WRAPPER()
+#define LIBAUDIOPLUGIN_ADD_PLUGIN_AAX_WRAPPER()
 #endif
 
-#if defined(LIBPLUGIN_BUILD_AU2_WRAPPER)
-#define LIBPLUGIN_ADD_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m)
+#if defined(LIBAUDIOPLUGIN_BUILD_AU2_WRAPPER)
+#define LIBAUDIOPLUGIN_ADD_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m)
 // TODO
 #else
-#define LIBPLUGIN_ADD_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m)
+#define LIBAUDIOPLUGIN_ADD_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m)
 #endif
 
-#if defined(LIBPLUGIN_BUILD_AU3_WRAPPER)
-#define LIBPLUGIN_ADD_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m)
+#if defined(LIBAUDIOPLUGIN_BUILD_AU3_WRAPPER)
+#define LIBAUDIOPLUGIN_ADD_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m)
 // TODO
 #else
-#define LIBPLUGIN_ADD_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m)
+#define LIBAUDIOPLUGIN_ADD_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m)
 #endif
 
-#if defined(LIBPLUGIN_BUILD_VST2_WRAPPER)
+#if defined(LIBAUDIOPLUGIN_BUILD_VST2_WRAPPER)
 #include <public.sdk/source/vst/vst2wrapper/vst2wrapper.h>
-#define LIBPLUGIN_ADD_PLUGIN_VST2_WRAPPER()                                                                     \
+#define LIBAUDIOPLUGIN_ADD_PLUGIN_VST2_WRAPPER()                                                                     \
     AudioEffect* createEffectInstance(audioMasterCallback audioMaster)                                          \
     {                                                                                                           \
         return Steinberg::Vst::Vst2Wrapper::create(GetPluginFactory(), PLUGIN_PROCESSOR_UID, 666, audioMaster); \
     }
 
 #else
-#define LIBPLUGIN_ADD_PLUGIN_VST2_WRAPPER()
+#define LIBAUDIOPLUGIN_ADD_PLUGIN_VST2_WRAPPER()
 #endif
 
-namespace libplugin {
+namespace libaudioplugin {
 namespace detail {
 
     static const Steinberg::FUID processor_uid(0xAA2A0417, 0x063258BE, 0xB5FBD442, 0x8AC87FF6);

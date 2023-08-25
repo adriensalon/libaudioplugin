@@ -1,55 +1,55 @@
 cmake_minimum_required(VERSION 3.14.0)
 
-project(libplugin_all)
+project(libaudioplugin_all)
 
-set(libplugin_version "v0.1.0-alpha")
+set(libaudioplugin_version "v0.1.0-alpha")
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Android")
-	set(libplugin_platform "Linux")
-	set(libplugin_vst2_extension "so")
+	set(libaudioplugin_platform "Linux")
+	set(libaudioplugin_vst2_extension "so")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin" OR CMAKE_SYSTEM_NAME MATCHES "iOS")
-	set(libplugin_platform "Apple")
-	set(libplugin_vst2_extension "app")
+	set(libaudioplugin_platform "Apple")
+	set(libaudioplugin_vst2_extension "app")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-	set(libplugin_platform "Windows")
-	set(libplugin_vst2_extension "dll")
+	set(libaudioplugin_platform "Windows")
+	set(libaudioplugin_vst2_extension "dll")
 
 else()
-	message(FATAL_ERROR "[libplugin] Invalid platform ${CMAKE_SYSTEM_NAME}, aborting configuration")
+	message(FATAL_ERROR "[libaudioplugin] Invalid platform ${CMAKE_SYSTEM_NAME}, aborting configuration")
 endif()
 
-set(libplugin_available_backends "VST2" "VST3")
+set(libaudioplugin_available_backends "VST2" "VST3")
 
-if(libplugin_platform MATCHES "Windows" OR libplugin_platform MATCHES "Apple")
-	set(libplugin_available_backends ${libplugin_available_backends} "AAX")
+if(libaudioplugin_platform MATCHES "Windows" OR libaudioplugin_platform MATCHES "Apple")
+	set(libaudioplugin_available_backends ${libaudioplugin_available_backends} "AAX")
 endif()
 
-if(libplugin_platform MATCHES "Apple")
-	set(libplugin_available_backends ${libplugin_available_backends} "AU2" "AU3")
+if(libaudioplugin_platform MATCHES "Apple")
+	set(libaudioplugin_available_backends ${libaudioplugin_available_backends} "AU2" "AU3")
 endif()
 
-set(LIBPLUGIN_BUILD_BACKEND "VST2" CACHE STRING "Selected plugin backend")
-set_property(CACHE LIBPLUGIN_BUILD_BACKEND PROPERTY STRINGS ${libplugin_available_backends})
+set(LIBAUDIOPLUGIN_BUILD_BACKEND "VST2" CACHE STRING "Selected plugin backend")
+set_property(CACHE LIBAUDIOPLUGIN_BUILD_BACKEND PROPERTY STRINGS ${libaudioplugin_available_backends})
 
-if(NOT LIBPLUGIN_BUILD_BACKEND IN_LIST libplugin_available_backends)
-	message(FATAL_ERROR "[libplugin] Wrong value of the parameter LIBPLUGIN_BUILD_BACKEND")
+if(NOT LIBAUDIOPLUGIN_BUILD_BACKEND IN_LIST libaudioplugin_available_backends)
+	message(FATAL_ERROR "[libaudioplugin] Wrong value of the parameter LIBAUDIOPLUGIN_BUILD_BACKEND")
 endif()
 
-option(LIBPLUGIN_BUILD_DOC "Build Doxygen documentation" ON)
-option(LIBPLUGIN_BUILD_EXAMPLE "Build example executable" ON)
-option(LIBPLUGIN_BUILD_TEST "Build test executable" ON)
+option(LIBAUDIOPLUGIN_BUILD_DOC "Build Doxygen documentation" ON)
+option(LIBAUDIOPLUGIN_BUILD_EXAMPLE "Build example executable" ON)
+option(LIBAUDIOPLUGIN_BUILD_TEST "Build test executable" ON)
 
-message("-- [libplugin] Configuring for ${CMAKE_SYSTEM_NAME} platform")
-message("-- [libplugin] Building for ${LIBPLUGIN_BUILD_BACKEND} backend")
-message("-- [libplugin] Building doc is ${LIBPLUGIN_BUILD_DOC}")
-message("-- [libplugin] Building example is ${LIBPLUGIN_BUILD_EXAMPLE}")
-message("-- [libplugin] Building test is ${LIBPLUGIN_BUILD_TEST}")
+message("-- [libaudioplugin] Configuring for ${CMAKE_SYSTEM_NAME} platform")
+message("-- [libaudioplugin] Building for ${LIBAUDIOPLUGIN_BUILD_BACKEND} backend")
+message("-- [libaudioplugin] Building doc is ${LIBAUDIOPLUGIN_BUILD_DOC}")
+message("-- [libaudioplugin] Building example is ${LIBAUDIOPLUGIN_BUILD_EXAMPLE}")
+message("-- [libaudioplugin] Building test is ${LIBAUDIOPLUGIN_BUILD_TEST}")
 
 add_subdirectory(external)
 
-# @param plugin_name The target that implements the libplugin interface
+# @param plugin_name The target that implements the libaudioplugin interface
 # @param PLUGIN_FX
 # @param PLUGIN_INSTRUMENT
 # @param PLUGIN_NAME <name>
@@ -62,119 +62,119 @@ function(add_plugin plugin_name)
 	set(options PLUGIN_FX PLUGIN_INSTRUMENT)
 	set(oneValueArgs PLUGIN_COMPANY PLUGIN_DESCRIPTION PLUGIN_VERSION PLUGIN_EMAIL PLUGIN_WEBSITE)
 	set(multipleValuesArgs PLUGIN_SOURCES)
-	cmake_parse_arguments(PARSE_ARGV 1 LIBPLUGIN "${options}" "${oneValueArgs}" "${multipleValuesArgs}")
+	cmake_parse_arguments(PARSE_ARGV 1 LIBAUDIOPLUGIN "${options}" "${oneValueArgs}" "${multipleValuesArgs}")
 
-	if(LIBPLUGIN_PLUGIN_INSTRUMENT)
-		set(LIBPLUGIN_PLUGIN_TYPE "Instrument")
+	if(LIBAUDIOPLUGIN_PLUGIN_INSTRUMENT)
+		set(LIBAUDIOPLUGIN_PLUGIN_TYPE "Instrument")
 	else()
-		if(NOT LIBPLUGIN_PLUGIN_FX)
-			message("-- [libplugin] Plugin type is not defined, set it with FX or INSTRUMENT")
+		if(NOT LIBAUDIOPLUGIN_PLUGIN_FX)
+			message("-- [libaudioplugin] Plugin type is not defined, set it with FX or INSTRUMENT")
 		endif()
 
-		set(LIBPLUGIN_PLUGIN_TYPE "Fx")
+		set(LIBAUDIOPLUGIN_PLUGIN_TYPE "Fx")
 	endif()
 
-	if(NOT DEFINED LIBPLUGIN_PLUGIN_COMPANY)
-		message("-- [libplugin] Plugin company is not defined, set it with PLUGIN_COMPANY")
-		set(LIBPLUGIN_PLUGIN_COMPANY "MyPluginCompany")
+	if(NOT DEFINED LIBAUDIOPLUGIN_PLUGIN_COMPANY)
+		message("-- [libaudioplugin] Plugin company is not defined, set it with PLUGIN_COMPANY")
+		set(LIBAUDIOPLUGIN_PLUGIN_COMPANY "MyPluginCompany")
 	endif()
 
-	if(NOT DEFINED LIBPLUGIN_PLUGIN_DESCRIPTION)
-		message("-- [libplugin] Plugin description is not defined, set it with PLUGIN_DESCRIPTION")
-		set(LIBPLUGIN_PLUGIN_DESCRIPTION "MyPluginDescription")
+	if(NOT DEFINED LIBAUDIOPLUGIN_PLUGIN_DESCRIPTION)
+		message("-- [libaudioplugin] Plugin description is not defined, set it with PLUGIN_DESCRIPTION")
+		set(LIBAUDIOPLUGIN_PLUGIN_DESCRIPTION "MyPluginDescription")
 	endif()
 
-	if(NOT DEFINED LIBPLUGIN_PLUGIN_VERSION)
-		message("-- [libplugin] Plugin version is not defined, set it with PLUGIN_VERSION")
-		set(LIBPLUGIN_PLUGIN_VERSION "1.0.0.0")
+	if(NOT DEFINED LIBAUDIOPLUGIN_PLUGIN_VERSION)
+		message("-- [libaudioplugin] Plugin version is not defined, set it with PLUGIN_VERSION")
+		set(LIBAUDIOPLUGIN_PLUGIN_VERSION "1.0.0.0")
 	endif()
 
-	if(NOT DEFINED LIBPLUGIN_PLUGIN_EMAIL)
-		message("-- [libplugin] Plugin email is not defined, set it with PLUGIN_EMAIL")
-		set(LIBPLUGIN_PLUGIN_EMAIL "info@mycompanyname.com")
+	if(NOT DEFINED LIBAUDIOPLUGIN_PLUGIN_EMAIL)
+		message("-- [libaudioplugin] Plugin email is not defined, set it with PLUGIN_EMAIL")
+		set(LIBAUDIOPLUGIN_PLUGIN_EMAIL "info@mycompanyname.com")
 	endif()
 
-	if(NOT DEFINED LIBPLUGIN_PLUGIN_WEBSITE)
-		message("-- [libplugin] Plugin website is not defined, set it with PLUGIN_WEBSITE")
-		set(LIBPLUGIN_PLUGIN_WEBSITE "https://www.mycompanyname.com")
+	if(NOT DEFINED LIBAUDIOPLUGIN_PLUGIN_WEBSITE)
+		message("-- [libaudioplugin] Plugin website is not defined, set it with PLUGIN_WEBSITE")
+		set(LIBAUDIOPLUGIN_PLUGIN_WEBSITE "https://www.mycompanyname.com")
 	endif()
 
-	message("-- [libplugin] Plugin name is '${plugin_name}'")
-	message("-- [libplugin] Plugin category is '${LIBPLUGIN_PLUGIN_TYPE}'")
-	message("-- [libplugin] Plugin company is '${LIBPLUGIN_PLUGIN_COMPANY}'")
-	message("-- [libplugin] Plugin description is '${LIBPLUGIN_PLUGIN_DESCRIPTION}'")
-	message("-- [libplugin] Plugin version is '${LIBPLUGIN_PLUGIN_VERSION}'")
-	message("-- [libplugin] Plugin email is '${LIBPLUGIN_PLUGIN_EMAIL}'")
-	message("-- [libplugin] Plugin website is '${LIBPLUGIN_PLUGIN_WEBSITE}'")
+	message("-- [libaudioplugin] Plugin name is '${plugin_name}'")
+	message("-- [libaudioplugin] Plugin category is '${LIBAUDIOPLUGIN_PLUGIN_TYPE}'")
+	message("-- [libaudioplugin] Plugin company is '${LIBAUDIOPLUGIN_PLUGIN_COMPANY}'")
+	message("-- [libaudioplugin] Plugin description is '${LIBAUDIOPLUGIN_PLUGIN_DESCRIPTION}'")
+	message("-- [libaudioplugin] Plugin version is '${LIBAUDIOPLUGIN_PLUGIN_VERSION}'")
+	message("-- [libaudioplugin] Plugin email is '${LIBAUDIOPLUGIN_PLUGIN_EMAIL}'")
+	message("-- [libaudioplugin] Plugin website is '${LIBAUDIOPLUGIN_PLUGIN_WEBSITE}'")
 
 	project(${plugin_name}
-		VERSION ${LIBPLUGIN_PLUGIN_VERSION}
-		DESCRIPTION ${LIBPLUGIN_PLUGIN_DESCRIPTION})
+		VERSION ${LIBAUDIOPLUGIN_PLUGIN_VERSION}
+		DESCRIPTION ${LIBAUDIOPLUGIN_PLUGIN_DESCRIPTION})
 
-	if(libplugin_platform MATCHES "Windows")
-		set(libplugin_wrapper_main ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/dllmain.cpp)
+	if(libaudioplugin_platform MATCHES "Windows")
+		set(libaudioplugin_wrapper_main ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/dllmain.cpp)
 	
-	elseif(libplugin_platform MATCHES "Apple")
-		set(libplugin_wrapper_main 
+	elseif(libaudioplugin_platform MATCHES "Apple")
+		set(libaudioplugin_wrapper_main 
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/macmain.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/macexport.exp)
 	
-	elseif(libplugin_platform MATCHES "Linux")
-		set(libplugin_wrapper_main ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/linuxmain.cpp)
+	elseif(libaudioplugin_platform MATCHES "Linux")
+		set(libaudioplugin_wrapper_main ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/linuxmain.cpp)
 	endif()
 
-	if(LIBPLUGIN_BUILD_BACKEND STREQUAL "AAX")
-		smtg_add_aaxplugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
-		target_sources(${plugin_name} PRIVATE ${libplugin_wrapper_main})
+	if(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "AAX")
+		smtg_add_aaxplugin(${plugin_name} ${LIBAUDIOPLUGIN_PLUGIN_SOURCES})
+		target_sources(${plugin_name} PRIVATE ${libaudioplugin_wrapper_main})
 		target_link_libraries(${plugin_name} PRIVATE aaxwrapper)
-		target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_BUILD_AAX_WRAPPER)
+		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_AAX_WRAPPER)
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/AAXPLUGIN ${CMAKE_BINARY_DIR}/AAX)
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/AAXPLUGIN)
 
-	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU2")
-		target_sources(${plugin_name} PRIVATE ${libplugin_wrapper_main})
-		target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_BUILD_AU2_WRAPPER)
+	elseif(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "AU2")
+		target_sources(${plugin_name} PRIVATE ${libaudioplugin_wrapper_main})
+		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_AU2_WRAPPER)
 
-	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "AU3")
-		target_sources(${plugin_name} PRIVATE ${libplugin_wrapper_main})
-		target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_BUILD_AU2_WRAPPER)
+	elseif(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "AU3")
+		target_sources(${plugin_name} PRIVATE ${libaudioplugin_wrapper_main})
+		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_AU2_WRAPPER)
 
-	elseif(LIBPLUGIN_BUILD_BACKEND STREQUAL "VST2")
-		smtg_add_vst3plugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
+	elseif(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "VST2")
+		smtg_add_vst3plugin(${plugin_name} ${LIBAUDIOPLUGIN_PLUGIN_SOURCES})
 		target_sources(${plugin_name} PRIVATE
-			${libplugin_wrapper_main}
+			${libaudioplugin_wrapper_main}
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/vst/vst2wrapper/vst2wrapper.sdk.cpp)
 		target_link_libraries(${plugin_name} PRIVATE vst2sdk)
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${plugin_name}> ${CMAKE_BINARY_DIR}/VST2/$<CONFIGURATION>/${plugin_name}.${libplugin_vst2_extension})
+			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${plugin_name}> ${CMAKE_BINARY_DIR}/VST2/$<CONFIGURATION>/${plugin_name}.${libaudioplugin_vst2_extension})
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/VST3)
-		target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_BUILD_VST2_WRAPPER)
+		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_VST2_WRAPPER)
 
 	else()
-		smtg_add_vst3plugin(${plugin_name} ${LIBPLUGIN_PLUGIN_SOURCES})
+		smtg_add_vst3plugin(${plugin_name} ${LIBAUDIOPLUGIN_PLUGIN_SOURCES})
 	endif()
 
 	target_link_libraries(${plugin_name} PRIVATE sdk)
 
 	target_include_directories(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include)
 
-	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_NAME="${plugin_name}")
-	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_TYPE="${LIBPLUGIN_PLUGIN_TYPE}")
-	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_COMPANY="${LIBPLUGIN_PLUGIN_COMPANY}")
-	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_DESCRIPTION="${LIBPLUGIN_PLUGIN_DESCRIPTION}")
-	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_VERSION="${LIBPLUGIN_PLUGIN_VERSION}")
-	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_EMAIL="${LIBPLUGIN_PLUGIN_EMAIL}")
-	target_compile_definitions(${plugin_name} PRIVATE -DLIBPLUGIN_PLUGIN_WEBSITE="${LIBPLUGIN_PLUGIN_WEBSITE}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_PLUGIN_NAME="${plugin_name}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_PLUGIN_TYPE="${LIBAUDIOPLUGIN_PLUGIN_TYPE}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_PLUGIN_COMPANY="${LIBAUDIOPLUGIN_PLUGIN_COMPANY}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_PLUGIN_DESCRIPTION="${LIBAUDIOPLUGIN_PLUGIN_DESCRIPTION}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_PLUGIN_VERSION="${LIBAUDIOPLUGIN_PLUGIN_VERSION}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_PLUGIN_EMAIL="${LIBAUDIOPLUGIN_PLUGIN_EMAIL}")
+	target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_PLUGIN_WEBSITE="${LIBAUDIOPLUGIN_PLUGIN_WEBSITE}")
 
 	smtg_target_configure_version_file(${plugin_name})
 
 	if(SMTG_MAC)
 		smtg_target_set_bundle(${plugin_name}
-			BUNDLE_IDENTIFIER com.${LIBPLUGIN_PLUGIN_COMPANY}.${plugin_name}
-			COMPANY_NAME "${LIBPLUGIN_PLUGIN_COMPANY}")
+			BUNDLE_IDENTIFIER com.${LIBAUDIOPLUGIN_PLUGIN_COMPANY}.${plugin_name}
+			COMPANY_NAME "${LIBAUDIOPLUGIN_PLUGIN_COMPANY}")
 
 	# smtg_target_set_debug_executable(${plugin_name}
 	# "/Applications/VST3PluginTestHost.app"
@@ -192,15 +192,15 @@ function(add_plugin plugin_name)
 	endif(SMTG_MAC)
 endfunction()
 
-if(LIBPLUGIN_BUILD_DOC)
+if(LIBAUDIOPLUGIN_BUILD_DOC)
 	add_subdirectory(doc)
 endif()
 
-if(LIBPLUGIN_BUILD_TEST)
+if(LIBAUDIOPLUGIN_BUILD_TEST)
 	add_subdirectory(test)
 endif()
 
-if(LIBPLUGIN_BUILD_EXAMPLE)
+if(LIBAUDIOPLUGIN_BUILD_EXAMPLE)
 	add_subdirectory(example)
 endif()
 
