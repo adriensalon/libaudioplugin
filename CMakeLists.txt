@@ -20,10 +20,10 @@ else()
 	message(FATAL_ERROR "[libaudioplugin] Invalid platform ${CMAKE_SYSTEM_NAME}, aborting configuration")
 endif()
 
-set(libaudioplugin_available_backends "VST2" "VST3")
+set(libaudioplugin_available_backends "VST3")
 
 if(libaudioplugin_platform MATCHES "Windows" OR libaudioplugin_platform MATCHES "Apple")
-	set(libaudioplugin_available_backends ${libaudioplugin_available_backends} "AAX")
+	set(libaudioplugin_available_backends ${libaudioplugin_available_backends} "AAX" "VST2")
 endif()
 
 if(libaudioplugin_platform MATCHES "Apple")
