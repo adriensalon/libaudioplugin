@@ -39,6 +39,13 @@ if(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "AAX")
 	include(SMTG_AddAAXLibrary)
 endif()
 
+if(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "AU2")
+	list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/vst3sdk/cmake/modules")
+	if (XCODE AND SMTG_COREAUDIO_SDK_PATH)
+		include(SMTG_AddVST3AuV2)		
+	endif()
+endif()
+
 if(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "VST2")
 	add_subdirectory(vst2sdk)
 	target_include_directories(sdk PUBLIC vst2sdk)	

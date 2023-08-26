@@ -135,10 +135,6 @@ function(add_plugin plugin_name)
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/AAXPLUGIN)
 
-	elseif(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "AU2")
-		target_sources(${plugin_name} PRIVATE ${libaudioplugin_wrapper_main})
-		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_AU2_WRAPPER)
-
 	elseif(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "AU3")
 		target_sources(${plugin_name} PRIVATE ${libaudioplugin_wrapper_main})
 		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_AU2_WRAPPER)
@@ -169,6 +165,16 @@ function(add_plugin plugin_name)
 		# 	COMMAND ${CMAKE_COMMAND} -E remove_directory ${LIBAUDIOPLUGIN_BUILD_PATH})
 		# add_custom_command(TARGET ${plugin_name} POST_BUILD
 		# 	COMMAND ${CMAKE_COMMAND} -E rename ${LIBAUDIOPLUGIN_BUILD_PATH}_temp ${LIBAUDIOPLUGIN_BUILD_PATH})
+	endif()	
+
+	if(LIBAUDIOPLUGIN_BUILD_BACKEND STREQUAL "AU2")
+		smtg_target_add_auv2(${plugin_name}_au2
+			BUNDLE_NAME ${plugin_name}
+			BUNDLE_IDENTIFIER com.${LIBAUDIOPLUGIN_PLUGIN_COMPANY}.${plugin_name}.audiounit
+			INFO_PLIST_TEMPLATE ${CMAKE_CURRENT_SOURCE_DIR}/resource/au-info.plist
+			VST3_PLUGIN_TARGET ${plugin_name})
+		target_sources(${plugin_name} PRIVATE ${libaudioplugin_wrapper_main})
+		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_AU2_WRAPPER)
 	endif()
 	
 	target_link_libraries(${plugin_name} PRIVATE sdk)
