@@ -158,7 +158,7 @@ function(add_plugin plugin_name)
 		if(libaudioplugin_platform MATCHES "Apple")
 			# set(CMAKE_FIND_FRAMEWORK ONLY)
 			find_library(LIBAUDIOPLUGIN_MACOS_FOUNDATION Foundation)
-			target_link_libraries(${plugin_name} ${LIBAUDIOPLUGIN_MACOS_FOUNDATION})
+			target_link_libraries(${plugin_name} PRIVATE ${LIBAUDIOPLUGIN_MACOS_FOUNDATION})
 		endif()
 		
 	else()
