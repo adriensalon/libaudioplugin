@@ -150,10 +150,10 @@ function(add_plugin plugin_name)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/vst/vst2wrapper/vst2wrapper.sdk.cpp)
 		target_link_libraries(${plugin_name} PRIVATE vst2sdk)
 		set(LIBAUDIOPLUGIN_BUILD_PATH ${libaudioplugin_binary_dir}/${plugin_name}.${libaudioplugin_vst2_extension})
-		add_custom_command(TARGET ${plugin_name} POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${plugin_name}> ${LIBAUDIOPLUGIN_BUILD_PATH})
-		add_custom_command(TARGET ${plugin_name} POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/VST3)
+		# add_custom_command(TARGET ${plugin_name} POST_BUILD
+		# 	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${plugin_name}> ${LIBAUDIOPLUGIN_BUILD_PATH})
+		# add_custom_command(TARGET ${plugin_name} POST_BUILD
+		# 	COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/VST3)
 		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_VST2_WRAPPER)
 		if(libaudioplugin_platform MATCHES "Apple")
 			# set(CMAKE_FIND_FRAMEWORK ONLY)
