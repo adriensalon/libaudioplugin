@@ -117,6 +117,7 @@ function(add_plugin plugin_name)
 		set(libaudioplugin_wrapper_main 
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/macmain.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/macexport.exp)
+		target_link_libraries(${plugin_name} "-framework Foundation")
 	
 	elseif(libaudioplugin_platform MATCHES "Linux")
 		set(libaudioplugin_wrapper_main ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/linuxmain.cpp)
