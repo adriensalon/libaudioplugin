@@ -10,7 +10,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Android")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin" OR CMAKE_SYSTEM_NAME MATCHES "iOS")
 	set(libaudioplugin_platform "Apple")
-	set(libaudioplugin_vst2_extension "app")
+	set(libaudioplugin_vst2_extension "vst2")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 	set(libaudioplugin_platform "Windows")
