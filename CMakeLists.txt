@@ -117,7 +117,6 @@ function(add_plugin plugin_name)
 		set(libaudioplugin_wrapper_main 
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/macmain.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/macexport.exp)
-		target_link_libraries(${plugin_name} "-framework Foundation")
 	
 	elseif(libaudioplugin_platform MATCHES "Linux")
 		set(libaudioplugin_wrapper_main ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk/public.sdk/source/main/linuxmain.cpp)
@@ -156,7 +155,10 @@ function(add_plugin plugin_name)
 		add_custom_command(TARGET ${plugin_name} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/VST3)
 		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_VST2_WRAPPER)
-
+		if(libaudioplugin_platform MATCHES "Apple")
+			target_link_libraries(${plugin_name} "-framework Cocoa")
+		endif()
+		
 	else()
 		smtg_add_vst3plugin(${plugin_name} ${LIBAUDIOPLUGIN_PLUGIN_SOURCES})
 		target_sources(${plugin_name} PRIVATE
