@@ -155,11 +155,6 @@ function(add_plugin plugin_name)
 		# add_custom_command(TARGET ${plugin_name} POST_BUILD
 		# 	COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/VST3)
 		target_compile_definitions(${plugin_name} PRIVATE -DLIBAUDIOPLUGIN_BUILD_VST2_WRAPPER)
-		if(libaudioplugin_platform MATCHES "Apple")
-			# set(CMAKE_FIND_FRAMEWORK ONLY)
-			find_library(LIBAUDIOPLUGIN_MACOS_FOUNDATION Foundation)
-			target_link_libraries(${plugin_name} PRIVATE ${LIBAUDIOPLUGIN_MACOS_FOUNDATION})
-		endif()
 		
 	else()
 		smtg_add_vst3plugin(${plugin_name} ${LIBAUDIOPLUGIN_PLUGIN_SOURCES})
@@ -177,6 +172,11 @@ function(add_plugin plugin_name)
 	endif()
 	
 	target_link_libraries(${plugin_name} PRIVATE sdk)
+	
+	if(libaudioplugin_platform MATCHES "Apple")
+		find_library(LIBAUDIOPLUGIN_MACOS_FOUNDATION Foundation)
+		target_link_libraries(${plugin_name} PRIVATE ${LIBAUDIOPLUGIN_MACOS_FOUNDATION})
+	endif()
 
 	target_include_directories(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include)
 
