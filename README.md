@@ -9,6 +9,10 @@
 ## Motivation
 
 ## Features
-- Builds to all the plugin formats supported by the OS
+- Builds to all the plugin formats supported by the VST3 SDK for desktop platforms
 - Provides a single CMake command 'add_plugin'
-- 
+- Validates plugins after wrapping with the 'VALIDATE' keyword for the 'add_plugin' function
+	- AUv2/AUv3 using the 'auval -v' MacOS command that provides deep insight
+	- VST2 using a lightweight validator that mimics the VST3 default validator
+	- VST3 using the default validator that comes with the SDK
+	- No validator for AAX as we won't have access to the host SDK

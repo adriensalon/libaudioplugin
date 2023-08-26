@@ -227,6 +227,12 @@ function(add_plugin plugin_name)
 		# No validator for AAX go ask Avid
 
 	endif()
+
+
+	# Clean step here !!!!! (after validate)
+
+
+	
 endfunction()
 
 if(LIBAUDIOPLUGIN_BUILD_DOC)
