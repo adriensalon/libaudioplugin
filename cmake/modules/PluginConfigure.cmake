@@ -71,11 +71,11 @@ function(plugin_configure_target target company backend sources vst3sdk)
 			file(MAKE_DIRECTORY "${_default_comp_path}")
 		endif()
 		smtg_add_vst3plugin(${target} ${sources})
-		# smtg_target_add_auv2(${target}-au
-		# 	BUNDLE_NAME ${target}
-		# 	BUNDLE_IDENTIFIER com.${company}.${target}.audiounit
-		# 	INFO_PLIST_TEMPLATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/au-info.plist
-		# 	VST3_PLUGIN_TARGET ${target})
+		smtg_target_add_auv2(${target}-au
+			BUNDLE_NAME ${target}
+			BUNDLE_IDENTIFIER com.${company}.${target}.audiounit
+			INFO_PLIST_TEMPLATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/au-info.plist
+			VST3_PLUGIN_TARGET ${target})
 	elseif(backend STREQUAL "AUV3")
 		# TODO
 	elseif(backend STREQUAL "VST2")
