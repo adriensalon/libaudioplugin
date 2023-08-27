@@ -35,7 +35,8 @@ if(SMTG_MAC)
         target_link_libraries(${target} 
             PRIVATE 
                 sdk_hosting 
-                "-framework AudioUnit" "-framework CoreMIDI"
+                "-framework AudioUnit" 
+				"-framework CoreMIDI"
                 "-framework AudioToolbox"
                 "-framework CoreFoundation"
                 "-framework Carbon" 
