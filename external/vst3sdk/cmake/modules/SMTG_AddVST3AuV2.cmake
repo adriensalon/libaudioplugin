@@ -3,7 +3,7 @@ include(SMTG_Bundle)
 include(SMTG_UniversalBinary)
 include(SMTG_CodeSign)
 
-if (SMTG_COREAUDIO_SDK_PATH)
+if (XCODE AND SMTG_COREAUDIO_SDK_PATH)
 
 	set(SMTG_AUV2_FOLDER FOLDER "AudioUnit V2")
 
