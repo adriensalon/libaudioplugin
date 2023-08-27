@@ -21,12 +21,34 @@ plugin_configure_platform(
 	${LIBAUDIOPLUGIN_AAXSDK_PATH}
 	_platform
 	_available_backends)
+	
+	
+# if(_platform STREQUAL "MacOS" AND NOT EXISTS "${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH}/AudioUnits/AUPublic/AUBase/AUBase.cpp")
+if(NOT EXISTS "${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH}/AudioUnits/AUPublic/AUBase/AUBase.cpp")
+	file(DOWNLOAD
+		https://developer.apple.com/library/archive/samplecode/CoreAudioUtilityClasses/CoreAudioUtilityClasses.zip
+		${CMAKE_BINARY_DIR}/cached/zip/coreaudiosdk.zip
+		SHOW_PROGRESS)
+		
+	file(ARCHIVE_EXTRACT 
+		INPUT ${CMAKE_BINARY_DIR}/cached/zip/coreaudiosdk.zip 
+		DESTINATION ${CMAKE_BINARY_DIR}/cached/extracted/coreaudiosdk)
+
+	file(RENAME 
+		${CMAKE_BINARY_DIR}/cached/extracted/coreaudiosdk/CoreAudioUtilityClasses/CoreAudio
+		${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH})
+
+	file(REMOVE ${CMAKE_BINARY_DIR}/cached/zip/coreaudiosdk.zip)
+	file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/cached/extracted/coreaudiosdk)
+endif()
+
+
 
 plugin_configure_sdk(
 	${_platform}
 	"${_available_backends}"
 	${LIBAUDIOPLUGIN_AAXSDK_PATH}
-	"${CMAKE_CURRENT_LIST_DIR}/external/ausdk"
+	${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH}
 	"${CMAKE_CURRENT_LIST_DIR}/external/vst2sdk"
 	"${CMAKE_CURRENT_LIST_DIR}/external/vst3sdk")	
 
@@ -92,6 +114,11 @@ function(add_plugin target)
 		${PLUGIN_SOURCES}
 		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk)
 
+		
+
+
+
+	
 	plugin_include_directories(
 		${target}
 		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include)

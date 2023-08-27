@@ -21,3 +21,7 @@
 og core audio sdk https://developer.apple.com/library/archive/samplecode/CoreAudioUtilityClasses/Introduction/Intro.html
 
 but would be nice to support this instead https://github.com/apple/AudioUnitSDK
+
+
+https://learn-cdn.avid.com/cpp_toolkits/aax-sdk-2-5-1.zip
+https://developer.apple.com/library/archive/samplecode/CoreAudioUtilityClasses/CoreAudioUtilityClasses.zip

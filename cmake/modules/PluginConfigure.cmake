@@ -36,14 +36,16 @@ endfunction()
 # @param backend 
 # @param platform 
 # @param aaxsdk 
-# @param ausdk 
+# @param coreaudiosdk 
 # @param vst2sdk 
 # @param vst3sdk 
-function(plugin_configure_sdk platform available_backends aaxsdk ausdk vst2sdk vst3sdk)
+function(plugin_configure_sdk platform available_backends aaxsdk coreaudiosdk vst2sdk vst3sdk)
 	if(AAX IN_LIST available_backends)
 		set(SMTG_AAX_SDK_PATH ${aaxsdk} CACHE STRING "The location where we store the AAX SDK" FORCE)
 	endif()
 	if(AUV2 IN_LIST available_backends OR AUV3 IN_LIST available_backends)
+		
+	  
 		set(SMTG_COREAUDIO_SDK_PATH ${coreaudiosdk} CACHE STRING "The location where we store the CoreAudio SDK" FORCE)
 	endif()
 	set(SMTG_ENABLE_VST3_HOSTING_EXAMPLES OFF CACHE BOOL "We do not need examples" FORCE)
