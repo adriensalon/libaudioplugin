@@ -26,11 +26,16 @@ message("$<TARGET_FILE_NAME:${target}>.vst3")
 			# 	BUNDLE_IDENTIFIER com.${company}.${target}
 			# 	COMPANY_NAME "${company}")
 			set(_output_dir ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>)
-			add_custom_command(TARGET ${target} POST_BUILD 
-				COMMAND /bin/mkdir "-p" "${_output_dir}/${target}.component/Contents/Resources"
-				COMMAND /bin/rm "-f" "${_output_dir}/${target}.component/Contents/Resources/plugin.vst3"
-				COMMAND /bin/ln "-svfF" "$<TARGET_FILE:${target}>.vst3" "${_output_dir}/${target}.component/Contents/Resources/plugin.vst3"
-				COMMAND /bin/cp "-rpf" "${_output_dir}/${target}.component" "~/Library/Audio/Plug-Ins/Components/")
+			add_custom_command(TARGET ${target} POST_BUILD
+				# COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.bundle ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.component
+				COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.bundle "~/Library/Audio/Plug-Ins/Components/"
+				)
+			# add_custom_command(TARGET ${target} POST_BUILD 
+			# 	COMMAND find .
+			# 	COMMAND /bin/mkdir "-p" "${_output_dir}/${target}.component/Contents/Resources"
+			# 	COMMAND /bin/rm "-f" "${_output_dir}/${target}.component/Contents/Resources/plugin.vst3"
+			# 	COMMAND /bin/ln "-svfF" "$<TARGET_FILE:${target}>.vst3" "${_output_dir}/${target}.component/Contents/Resources/plugin.vst3"
+			# 	COMMAND /bin/cp "-rpf" "${_output_dir}/${target}.component" "~/Library/Audio/Plug-Ins/Components/")
 		endif()
 	elseif(platform STREQUAL "Windows")
 		target_sources(${target} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/win32resource.rc)
