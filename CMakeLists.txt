@@ -97,7 +97,6 @@ function(add_plugin target)
 
 	plugin_include_directories(
 		${target}
-		${_backend}
 		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include)
 
 	plugin_sources(

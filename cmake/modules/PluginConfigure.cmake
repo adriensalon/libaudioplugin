@@ -69,16 +69,12 @@ function(plugin_configure_target target company backend sources vst3sdk)
 		set(_default_comp_path "~/Library/Audio/Plug-Ins/Components/")
 		if(NOT IS_DIRECTORY "${_default_comp_path}")
 			file(MAKE_DIRECTORY "${_default_comp_path}")
-			message("-- [libaudioplugin] Created ~/Library/Audio/Plug-Ins/Components/ directory")
 		endif()
-		smtg_add_vst3plugin(${target}_VST3 ${sources})
 		smtg_target_add_auv2(${target}
 			BUNDLE_NAME ${target}
 			BUNDLE_IDENTIFIER com.${company}.${target}.audiounit
 			INFO_PLIST_TEMPLATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/au-info.plist
-			VST3_PLUGIN_TARGET ${target}_VST3)
-		smtg_target_configure_version_file(${target}_VST3)
-		set_target_properties(${target}_VST3 PROPERTIES CXX_STANDARD 17)
+			VST3_PLUGIN_TARGET ${target})
 	elseif(backend STREQUAL "AUV3")
 		# TODO
 	elseif(backend STREQUAL "VST2")
