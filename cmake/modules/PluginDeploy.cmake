@@ -4,12 +4,17 @@
 # @param company 
 # @param backend 
 function(plugin_bundle target platform company backend)
+	if(backend STREQUAL "AUV2" OR backend STREQUAL "AUV3")
+		set(_local_target ${target}_VST3)
+	else()
+		set(_local_target ${target})
+	endif()
 	if(platform STREQUAL "MacOS")
-		smtg_target_set_bundle(${target}
+		smtg_target_set_bundle(${_local_target}
 			BUNDLE_IDENTIFIER com.${company}.${target}
 			COMPANY_NAME "${company}")
 	elseif(platform STREQUAL "Windows")
-		target_sources(${target} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/win32resource.rc)
+		target_sources(${_local_target} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/win32resource.rc)
 	endif()
 endfunction()
 
