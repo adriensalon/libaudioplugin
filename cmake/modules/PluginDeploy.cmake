@@ -6,14 +6,14 @@
 function(plugin_bundle target platform company backend)
 	if(platform STREQUAL "MacOS")
 		if(backend STREQUAL "AUV2")
+			smtg_target_set_bundle(${target}
+				INFOPLIST ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/au-info.plist
+				EXTENSION component)
 			set_target_properties(${target}
 				PROPERTIES
 					XCODE_ATTRIBUTE_GENERATE_PKGINFO_FILE "YES"
 					XCODE_ATTRIBUTE_PRODUCT_NAME "{target}"
 					XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER com.${company}.${target}.audiounit)
-			smtg_target_set_bundle(${target}
-				INFOPLIST ${ARG_INFO_PLIST_TEMPLATE}
-				EXTENSION component)
 		else()
 			smtg_target_set_bundle(${target}
 				BUNDLE_IDENTIFIER com.${company}.${target}
