@@ -70,7 +70,8 @@ function(plugin_configure_target target company backend sources vst3sdk)
 		if(NOT IS_DIRECTORY "${_default_comp_path}")
 			file(MAKE_DIRECTORY "${_default_comp_path}")
 		endif()
-		smtg_target_add_auv2(${target}
+		smtg_add_vst3plugin(${target} ${sources})
+		smtg_target_add_auv2(${target}-au
 			BUNDLE_NAME ${target}
 			BUNDLE_IDENTIFIER com.${company}.${target}.audiounit
 			INFO_PLIST_TEMPLATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/au-info.plist
