@@ -17,7 +17,7 @@ function(plugin_configure_sdk platform available_backends aaxsdk coreaudiosdk vs
 	set(SMTG_ENABLE_VST3_HOSTING_EXAMPLES OFF CACHE BOOL "We do not need examples" FORCE)
 	set(SMTG_ENABLE_VST3_PLUGIN_EXAMPLES OFF CACHE BOOL "We do not need examples" FORCE)
 	set(SMTG_ENABLE_VSTGUI_SUPPORT OFF CACHE BOOL "We do not need VSTGUI (for now)" FORCE)
-	set(SMTG_BUILD_UNIVERSAL_BINARY ON CACHE BOOL "We build universal binaries on MacOS" FORCE)
+	set(SMTG_BUILD_UNIVERSAL_BINARY OFF CACHE BOOL "We build universal binaries on MacOS" FORCE)
 	set(SMTG_CREATE_BUNDLE_FOR_WINDOWS ON CACHE BOOL "Throws CMake warnings otherwise" FORCE)
 	set(SMTG_CREATE_PLUGIN_LINK OFF CACHE BOOL "We do not need to create simlinks" FORCE)
 	set(SMTG_CREATE_VST2_AGAIN_SAMPLE_VERSION OFF CACHE BOOL "We do not need examples" FORCE)
