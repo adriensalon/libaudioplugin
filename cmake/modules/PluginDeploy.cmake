@@ -16,13 +16,6 @@ function(plugin_bundle target platform company backend)
 	elseif(platform STREQUAL "Windows")
 		target_sources(${_local_target} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/win32resource.rc)
 	endif()
-	if(backend STREQUAL "AUV2")
-		smtg_target_add_auv2(${target}
-			BUNDLE_NAME ${target}
-			BUNDLE_IDENTIFIER com.${company}.${target}.audiounit
-			INFO_PLIST_TEMPLATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/au-info.plist
-			VST3_PLUGIN_TARGET ${target}_VST3)
-	endif()
 endfunction()
 
 # @brief plugin_validate internal function
