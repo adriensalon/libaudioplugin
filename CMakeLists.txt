@@ -27,18 +27,18 @@ plugin_configure_sdk(
 	${LIBAUDIOPLUGIN_AAXSDK_PATH}
 	"${CMAKE_CURRENT_LIST_DIR}/external/ausdk"
 	"${CMAKE_CURRENT_LIST_DIR}/external/vst2sdk"
-	"${CMAKE_CURRENT_LIST_DIR}/external/vst3sdk")
+	"${CMAKE_CURRENT_LIST_DIR}/external/vst3sdk")	
 
-# your project scope preferred backend variable
+# your project scope preferred backend variable)
 set(LIBAUDIOPLUGIN_PREFERRED_BACKEND "VST3" CACHE STRING "Selected plugin backend")
 set_property(CACHE LIBAUDIOPLUGIN_PREFERRED_BACKEND PROPERTY STRINGS ${_available_backends})
-
+	
 message("-- [libaudioplugin] Configuring for ${_platform} platform")
 message("-- [libaudioplugin] Available backends are ${_available_backends}")
 message("-- [libaudioplugin] Preferred backend is ${LIBAUDIOPLUGIN_PREFERRED_BACKEND}")
-message("-- [libaudioplugin] Building Doxygen documentation is ${LIBAUDIOPLUGIN_BUILD_DOC}")
+message("-- [libaudioplugin] Building documentation is ${LIBAUDIOPLUGIN_BUILD_DOC}")
 message("-- [libaudioplugin] Building example plugin is ${LIBAUDIOPLUGIN_BUILD_EXAMPLE}")
-
+	
 # @brief This is the main CMake function exported by this library
 # @param target
 # @param VALIDATE

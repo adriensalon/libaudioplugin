@@ -25,11 +25,11 @@ function(plugin_configure_platform aaxsdk out_platform out_available_backends)
 	if(_aax_available)
 		if(EXISTS "${aaxsdk}/Interfaces/AAX.h")
 			set(_detected_backends AAX ${_detected_backends})
-			set(${out_available_backends} ${_detected_backends} PARENT_SCOPE)
 		else()
 			message("[libaudioplugin] AAX SDK not found")
 		endif()
 	endif()
+	set(${out_available_backends} ${_detected_backends} PARENT_SCOPE)
 endfunction()
 
 # @brief plugin_configure_sdk internal function
