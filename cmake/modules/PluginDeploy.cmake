@@ -28,7 +28,7 @@ message("$<TARGET_FILE_NAME:${target}>.vst3")
 			set(_output_dir ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>)
 			add_custom_command(TARGET ${target} POST_BUILD
 				# COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.bundle ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.component
-				COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.vst3" "~/Library/Audio/Plug-Ins/Components/${target}.component"
+				COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.vst3" "~/Library/Audio/Plug-Ins/Components/${target}.component"
 				)
 			# add_custom_command(TARGET ${target} POST_BUILD 
 			# 	COMMAND find .
