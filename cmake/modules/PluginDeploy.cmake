@@ -12,10 +12,10 @@ function(plugin_bundle target platform company backend)
 			set_target_properties(${target}
 				PROPERTIES
 					XCODE_ATTRIBUTE_GENERATE_PKGINFO_FILE "YES"
-					XCODE_ATTRIBUTE_PRODUCT_NAME "{target}"
-					XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER com.${company}.${target}.audiounit
-					LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/VST3
-						"AudioUnit V2")
+					XCODE_ATTRIBUTE_PRODUCT_NAME "${target}"
+					XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER com.${company}.${target}.audiounit)
+					# LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/VST3
+					# 	"AudioUnit V2"
 		else()
 			smtg_target_set_bundle(${target}
 				BUNDLE_IDENTIFIER com.${company}.${target}
