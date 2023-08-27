@@ -1,25 +1,12 @@
 # @brief plugin_bundle internal function
-function(plugin_bundle)
-	
-	# if(SMTG_MAC)
-	# 	smtg_target_set_bundle(${plugin_name}
-	# 		BUNDLE_IDENTIFIER com.${LIBAUDIOPLUGIN_PLUGIN_COMPANY}.${plugin_name}
-	# 		COMPANY_NAME "${LIBAUDIOPLUGIN_PLUGIN_COMPANY}")
-
-	# # smtg_target_set_debug_executable(${plugin_name}
-	# # "/Applications/VST3PluginTestHost.app"
-	# # "--pluginfolder;$(BUILT_PRODUCTS_DIR)")
-	# elseif(SMTG_WIN)
-	# 	target_sources(${plugin_name} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/resource/win32resource.rc)
-
-	# 	if(MSVC)
-	# 		set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${plugin_name})
-
-	# 		# smtg_target_set_debug_executable(${plugin_name}
-	# 		# "$(ProgramW6432)/Steinberg/VST3PluginTestHost/VST3PluginTestHost.exe"
-	# 		# "--pluginfolder \"$(OutDir)/\"")
-	# 	endif()
-	# endif(SMTG_MAC)
+function(plugin_bundle target platform company backend)
+	if(platform STREQUAL "MacOS")
+		smtg_target_set_bundle(${target}
+			BUNDLE_IDENTIFIER com.${company}.${target}
+			COMPANY_NAME "${company}")
+	elseif(platform STREQUAL "Windows")
+		target_sources(${target} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/win32resource.rc)
+	endif()
 endfunction()
 
 # @brief plugin_validate internal function

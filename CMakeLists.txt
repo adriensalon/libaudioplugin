@@ -121,7 +121,11 @@ function(add_plugin target)
 		${_email}
 		${_website})
 
-	plugin_bundle()
+	plugin_bundle(
+		${target}
+		${_platform}
+		${_company}
+		${_backend})
 
 	plugin_validate(
 		${target}
