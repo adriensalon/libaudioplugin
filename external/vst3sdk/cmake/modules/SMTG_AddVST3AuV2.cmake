@@ -3,7 +3,9 @@ include(SMTG_Bundle)
 include(SMTG_UniversalBinary)
 include(SMTG_CodeSign)
 
-if (SMTG_COREAUDIO_SDK_PATH)
+# if (SMTG_COREAUDIO_SDK_PATH)
+
+	message("YESSSSSSSSSS")
 
 	set(SMTG_AUV2_FOLDER FOLDER "AudioUnit V2")
 
@@ -114,6 +116,6 @@ if (SMTG_COREAUDIO_SDK_PATH)
 		)
 
 	endfunction(smtg_target_add_auv2)
-else()
-	message("[SMTG] * To add an AudioUnit v2 target, you need to use the Xcode generator and set SMTG_COREAUDIO_SDK_PATH to the path of your installation of the CoreAudio SDK!")
-endif(XCODE AND SMTG_COREAUDIO_SDK_PATH)
+# else()
+	# message("[SMTG] * To add an AudioUnit v2 target, you need to use the Xcode generator and set SMTG_COREAUDIO_SDK_PATH to the path of your installation of the CoreAudio SDK!")
+# endif()
