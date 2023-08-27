@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Configure
-        run: cmake -B ${{ github.workspace }}/build -DLIBAUDIOPLUGIN_BUILD_EXAMPLE:BOOL=ON -DLIBAUDIOPLUGIN_BUILD_BACKEND:STRING=${{ matrix.backend }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        run: cmake -B ${{ github.workspace }}/build -DLIBAUDIOPLUGIN_BUILD_EXAMPLE:BOOL=ON -DLIBAUDIOPLUGIN_PREFERRED_BACKEND:STRING=${{ matrix.backend }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --target ExamplePlugin --config ${{ matrix.build_type }}
