@@ -5,6 +5,9 @@
 # @param backend 
 function(plugin_bundle target platform company backend)
 	if(platform STREQUAL "MacOS")
+		smtg_target_set_bundle(${target}
+			BUNDLE_IDENTIFIER com.${company}.${target}
+			COMPANY_NAME "${company}")
 		if(backend STREQUAL "AUV2")
 		# 	add_custom_command(TARGET ${target} POST_BUILD
 		# 			COMMAND find .)
@@ -18,14 +21,15 @@ function(plugin_bundle target platform company backend)
 		# 			XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER com.${company}.${target}.audiounit
 		# 			LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/VST3")
 		# 			# 	"AudioUnit V2"
-			smtg_target_set_bundle(${target}
-				BUNDLE_IDENTIFIER com.${company}.${target}
-				COMPANY_NAME "${company}"
-				EXTENSION component)
-		else()
-			smtg_target_set_bundle(${target}
-				BUNDLE_IDENTIFIER com.${company}.${target}
-				COMPANY_NAME "${company}")
+			# smtg_target_set_bundle(${target}
+			# 	BUNDLE_IDENTIFIER com.${company}.${target}
+			# 	COMPANY_NAME "${company}")
+			set(_output_dir ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>)
+			add_custom_command(TARGET ${target} POST_BUILD 
+				COMMAND /bin/mkdir "-p" ${_output_dir}/${target}.component/Contents/Resources
+				COMMAND /bin/rm "-f" "${_output_dir}/${target}.component/Contents/Resources/plugin.vst3"
+				COMMAND /bin/ln "-svfF" "${_output_dir}/$<TARGET_FILE_NAME:${target}>.vst3" "${outputdir}/${target}.component/Contents/Resources/plugin.vst3"
+				COMMAND /bin/cp "-rpf" "${_output_dir}/${target}.component" "~/Library/Audio/Plug-Ins/Components/")
 		endif()
 	elseif(platform STREQUAL "Windows")
 		target_sources(${target} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/win32resource.rc)
