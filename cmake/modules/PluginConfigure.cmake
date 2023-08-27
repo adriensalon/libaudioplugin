@@ -72,7 +72,7 @@ function(plugin_configure_sdk platform available_backends aaxsdk ausdk vst2sdk v
 	if(AUV2 IN_LIST available_backends)	
 		list(APPEND CMAKE_MODULE_PATH "${vst3sdk}/cmake/modules")
 		include(SMTG_AddVST3AuV2)	
-		message("${Xcode version = ${XCODE_VERSION}}")
+		message("Xcode version = ${XCODE_VERSION}")
 	endif()
 	if(VST2 IN_LIST available_backends)	
 		add_subdirectory(${vst2sdk})
