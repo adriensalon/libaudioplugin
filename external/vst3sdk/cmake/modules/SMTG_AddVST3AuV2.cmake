@@ -55,6 +55,7 @@ if (XCODE AND SMTG_COREAUDIO_SDK_PATH)
 		string(MAKE_C_IDENTIFIER ${CocoaIdStamp} CocoaId)
 		set(SMTG_AUCocoaUIBase_CLASS_NAME "SMTG_AUCocoaUIBase_${ARG_BUNDLE_NAME}${CocoaId}")
 
+		message("AUV2 SOURCES = ${AUv2_sources}")
 	    add_library(${target} MODULE ${AUv2_sources})
         smtg_target_setup_universal_binary(${target})
         smtg_target_codesign(${target})
