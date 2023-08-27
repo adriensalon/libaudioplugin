@@ -10,7 +10,7 @@ project(libaudioplugin_example)
 
 # Creates a target named ExamplePlugin that we can use as if created by the add_library function.
 add_plugin(ExamplePlugin 
-	# BACKEND "VST2" We comment this for CI so we can use the preferred backend
+	# BACKEND "VST2" # We comment this for CI so we can use the preferred backend
 	VALIDATE
 	SOURCES "example.cpp"
 	FX

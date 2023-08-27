@@ -15,7 +15,7 @@ function(plugin_sources target backend platform vst3sdk)
 	if(platform STREQUAL "Windows")
 		set(_sources ${vst3sdk}/public.sdk/source/main/dllmain.cpp)
 		# target_sources(${target} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/resource/win32resource.rc) PAS ICI EN VRAI
-	elseif(platform STREQUAL "Apple")
+	elseif(platform STREQUAL "MacOS")
 		set(_sources 
 			${vst3sdk}/public.sdk/source/main/macmain.cpp
 			${vst3sdk}/public.sdk/source/main/macexport.exp)
@@ -37,7 +37,7 @@ endfunction()
 # @param vst3sdk 
 function(plugin_link_libraries target backend platform vst3sdk)
 	target_link_libraries(${target} PRIVATE sdk)
-	if(platform STREQUAL "Apple")
+	if(platform STREQUAL "MacOS")
 		find_library(foundation_framework Foundation)
 		target_link_libraries(${target} PRIVATE ${foundation_framework})
 	endif()

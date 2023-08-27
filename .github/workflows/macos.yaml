@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         build_type: ["Debug", "Release"]
-        backend: ["AAX", "AU2", "AU3", "VST2", "VST3"]
+        backend: ["AAX", "AUV2", "AUV3", "VST2", "VST3"]
 
     name: ${{ matrix.backend }} (${{ matrix.build_type }})
 
