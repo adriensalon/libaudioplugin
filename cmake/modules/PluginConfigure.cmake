@@ -1,36 +1,4 @@
-# @brief plugin_configure_platform internal function
-# @param aaxsdk
-# @param out_platform
-# @param out_available_backends
-function(plugin_configure_platform aaxsdk out_platform out_available_backends)
-	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-		set(${out_platform} "Linux" PARENT_SCOPE)
-		set(_detected_backends VST3)
-		set(_aax_available OFF)
-	elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-		set(${out_platform} "MacOS" PARENT_SCOPE)
-		set(_detected_backends AUV2 AUV3 VST2 VST3)
-		set(_aax_available ON)
-	elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-		set(${out_platform} "Windows" PARENT_SCOPE)
-		set(_detected_backends VST2 VST3)
-		set(_aax_available ON)
-	elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
-		message(FATAL_ERROR "[libaudioplugin] Platform ${CMAKE_SYSTEM_NAME} not yet supported")
-	elseif(CMAKE_SYSTEM_NAME MATCHES "iOS")
-		message(FATAL_ERROR "[libaudioplugin] Platform ${CMAKE_SYSTEM_NAME} not yet supported")
-	else()
-		message(FATAL_ERROR "[libaudioplugin] Invalid platform ${CMAKE_SYSTEM_NAME}")
-	endif()	
-	if(_aax_available)
-		if(EXISTS "${aaxsdk}/Interfaces/AAX.h")
-			set(_detected_backends AAX ${_detected_backends})
-		else()
-			message("[libaudioplugin] AAX SDK not found")
-		endif()
-	endif()
-	set(${out_available_backends} ${_detected_backends} PARENT_SCOPE)
-endfunction()
+
 
 # @brief plugin_configure_sdk internal function
 # @param backend 
@@ -43,9 +11,7 @@ function(plugin_configure_sdk platform available_backends aaxsdk coreaudiosdk vs
 	if(AAX IN_LIST available_backends)
 		set(SMTG_AAX_SDK_PATH ${aaxsdk} CACHE STRING "The location where we store the AAX SDK" FORCE)
 	endif()
-	if(AUV2 IN_LIST available_backends OR AUV3 IN_LIST available_backends)
-		
-	  
+	if(AUV2 IN_LIST available_backends OR AUV3 IN_LIST available_backends)	  
 		set(SMTG_COREAUDIO_SDK_PATH ${coreaudiosdk} CACHE STRING "The location where we store the CoreAudio SDK" FORCE)
 	endif()
 	set(SMTG_ENABLE_VST3_HOSTING_EXAMPLES OFF CACHE BOOL "We do not need examples" FORCE)

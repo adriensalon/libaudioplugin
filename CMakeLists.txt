@@ -10,21 +10,20 @@ include(PluginDeploy)
 include(PluginFetch)
 include(PluginParse)
 
-# paths to the AAX SDK (defaults to /external/aaxsdk)
-set(LIBAUDIOPLUGIN_AAXSDK_PATH "${CMAKE_CURRENT_LIST_DIR}/external/aaxsdk" CACHE STRING "Default path for the AAX SDK (go there 'http://developer.avid.com/aax/')")
-set(LIBAUDIOPLUGIN_COREAUDIOSDK_PATH "${CMAKE_CURRENT_LIST_DIR}/external/coreaudiosdk" CACHE STRING "Default path for the CoreAudio SDK (go there 'https://developer.apple.com/library/archive/samplecode/CoreAudioUtilityClasses/Introduction/Intro.html')")
-
 # build optionals
 option(LIBAUDIOPLUGIN_BUILD_DOC "Build Doxygen documentation" ON)
 option(LIBAUDIOPLUGIN_BUILD_EXAMPLE "Build example executable" ON)
 
-plugin_fetch_aaxsdk(${LIBAUDIOPLUGIN_AAXSDK_PATH})
-plugin_fetch_coreaudiosdk(${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH})
+# paths to the AAX SDK (defaults to /external/aaxsdk, change if needed for other projects not including libaudioplugin ?)
+set(LIBAUDIOPLUGIN_AAXSDK_PATH "${CMAKE_CURRENT_LIST_DIR}/external/aaxsdk" CACHE STRING "Default path for the AAX SDK (get there 'http://developer.avid.com/aax/')")
+set(LIBAUDIOPLUGIN_COREAUDIOSDK_PATH "${CMAKE_CURRENT_LIST_DIR}/external/ausdk" CACHE STRING "Default path for the CoreAudio SDK (get there 'https://developer.apple.com/library/archive/samplecode/CoreAudioUtilityClasses/Introduction/Intro.html')")
 
-plugin_configure_platform(
+plugin_detect_backend(_platform _available_backends)
+
+plugin_fetch_sdk(
+	"${_available_backends}" 
 	${LIBAUDIOPLUGIN_AAXSDK_PATH}
-	_platform
-	_available_backends)
+	${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH})
 
 plugin_configure_sdk(
 	${_platform}
@@ -32,18 +31,18 @@ plugin_configure_sdk(
 	${LIBAUDIOPLUGIN_AAXSDK_PATH}
 	${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH}
 	"${CMAKE_CURRENT_LIST_DIR}/external/vst2sdk"
-	"${CMAKE_CURRENT_LIST_DIR}/external/vst3sdk")	
+	"${CMAKE_CURRENT_LIST_DIR}/external/vst3sdk")
 
 # your project scope preferred backend variable)
 set(LIBAUDIOPLUGIN_PREFERRED_BACKEND "VST3" CACHE STRING "Selected plugin backend")
 set_property(CACHE LIBAUDIOPLUGIN_PREFERRED_BACKEND PROPERTY STRINGS ${_available_backends})
-	
+
 message("-- [libaudioplugin] Configuring for ${_platform} platform")
 message("-- [libaudioplugin] Available backends are ${_available_backends}")
 message("-- [libaudioplugin] Preferred backend is ${LIBAUDIOPLUGIN_PREFERRED_BACKEND}")
 message("-- [libaudioplugin] Building documentation is ${LIBAUDIOPLUGIN_BUILD_DOC}")
 message("-- [libaudioplugin] Building example plugin is ${LIBAUDIOPLUGIN_BUILD_EXAMPLE}")
-	
+
 # @brief This is the main CMake function exported by this library
 # @param target
 # @param VALIDATE
@@ -64,13 +63,13 @@ function(add_plugin target)
 
 	plugin_parse_backend(
 		"${_available_backends}"
-		${LIBAUDIOPLUGIN_PREFERRED_BACKEND} 
-		PLUGIN_BACKEND 
+		${LIBAUDIOPLUGIN_PREFERRED_BACKEND}
+		PLUGIN_BACKEND
 		_backend)
 
 	plugin_parse_type(
-		${PLUGIN_INSTRUMENT} 
-		${PLUGIN_FX} 
+		${PLUGIN_INSTRUMENT}
+		${PLUGIN_FX}
 		_type)
 
 	plugin_parse_company(PLUGIN_COMPANY _company)
@@ -96,11 +95,6 @@ function(add_plugin target)
 		${PLUGIN_SOURCES}
 		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk)
 
-		
-
-
-
-	
 	plugin_include_directories(
 		${target}
 		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include)

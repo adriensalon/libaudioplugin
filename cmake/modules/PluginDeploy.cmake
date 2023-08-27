@@ -22,6 +22,30 @@ function(plugin_bundle)
 	# endif(SMTG_MAC)
 endfunction()
 
+# @brief plugin_validate internal function
+# @param target 
+# @param backend 
+# @param enabled 
+function(plugin_validate target backend enabled)
+	if(enabled)
+		if(backend STREQUAL "VST2")
+			message("-- [libaudioplugin] Selecting VST2 validator tool")
+			smtg_target_run_vst_validator(${target})
+		elseif(backend STREQUAL "VST3")
+			message("-- [libaudioplugin] Selecting VST3 default validator tool that comes with the SDK")
+			smtg_target_run_vst_validator(${target})
+		elseif(backend STREQUAL "AUV2" OR backend STREQUAL "AUV3")
+			message("-- [libaudioplugin] Selecting ${target} validation with the auval command")
+			add_custom_command(TARGET ${target} POST_BUILD
+				COMMAND auval -v ${target})
+		elseif(backend STREQUAL "AAX")
+			message("-- [libaudioplugin] Selecting no AAX validation tool because the AAX host SDK is not public")
+		else()
+			message(FATAL_ERROR "[libaudioplugin] Invalid backend '${backend}'")
+		endif()
+	endif()
+endfunction()
+
 # @brief plugin_clean internal function
 # @param target
 # @param backend 
@@ -55,29 +79,4 @@ function(plugin_clean target backend)
 		message(FATAL_ERROR "[libaudioplugin] Invalid backend")
 	endif()	
 
-endfunction()
-
-
-# @brief plugin_validate internal function
-# @param target 
-# @param backend 
-# @param enabled 
-function(plugin_validate target backend enabled)
-	if(enabled)
-		if(backend STREQUAL "VST2")
-			message("-- [libaudioplugin] Selecting VST2 validator tool")
-			smtg_target_run_vst_validator(${target})
-		elseif(backend STREQUAL "VST3")
-			message("-- [libaudioplugin] Selecting VST3 default validator tool that comes with the SDK")
-			smtg_target_run_vst_validator(${target})
-		elseif(backend STREQUAL "AUV2" OR backend STREQUAL "AUV3")
-			message("-- [libaudioplugin] Selecting ${target} validation with the auval command")
-			add_custom_command(TARGET ${target} POST_BUILD
-				COMMAND auval -v ${target})
-		elseif(backend STREQUAL "AAX")
-			message("-- [libaudioplugin] Selecting no AAX validation tool because the AAX host SDK is not public")
-		else()
-			message(FATAL_ERROR "[libaudioplugin] Invalid backend '${backend}'")
-		endif()
-	endif()
 endfunction()
