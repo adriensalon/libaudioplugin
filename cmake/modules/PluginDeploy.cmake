@@ -6,6 +6,8 @@
 function(plugin_bundle target platform company backend)
 	if(platform STREQUAL "MacOS")
 		if(backend STREQUAL "AUV2")
+			add_custom_command(TARGET ${target} POST_BUILD
+					COMMAND find .)
 			smtg_target_set_bundle(${target}
 				INFOPLIST ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/au-info.plist
 				EXTENSION component)
