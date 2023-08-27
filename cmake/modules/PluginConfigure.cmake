@@ -66,6 +66,10 @@ function(plugin_configure_target target company backend sources vst3sdk)
 	if(backend STREQUAL "AAX")
 		smtg_add_aaxplugin(${target} ${sources})
 	elseif(backend STREQUAL "AUV2")
+		set(_default_comp_path "~/Library/Audio/Plug-Ins/Components/")
+		if(NOT IS_DIRECTORY "${_default_comp_path}")
+			file(MAKE_DIRECTORY "${_default_comp_path}")
+		endif()
 		smtg_target_add_auv2(${target}
 			BUNDLE_NAME ${target}
 			BUNDLE_IDENTIFIER com.${company}.${target}.audiounit

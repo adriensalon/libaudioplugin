@@ -1,4 +1,8 @@
 # @brief plugin_bundle internal function
+# @param target 
+# @param platform 
+# @param company 
+# @param backend 
 function(plugin_bundle target platform company backend)
 	if(platform STREQUAL "MacOS")
 		smtg_target_set_bundle(${target}

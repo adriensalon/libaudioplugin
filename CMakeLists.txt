@@ -32,7 +32,7 @@ plugin_configure_sdk(
 	${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH}
 	"${CMAKE_CURRENT_LIST_DIR}/external/vst2sdk"
 	"${CMAKE_CURRENT_LIST_DIR}/external/vst3sdk")
-
+	
 # your project scope preferred backend variable)
 set(LIBAUDIOPLUGIN_PREFERRED_BACKEND "VST3" CACHE STRING "Selected plugin backend")
 set_property(CACHE LIBAUDIOPLUGIN_PREFERRED_BACKEND PROPERTY STRINGS ${_available_backends})
