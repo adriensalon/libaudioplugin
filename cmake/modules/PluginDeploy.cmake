@@ -28,7 +28,9 @@ function(plugin_validate target backend enabled)
 		elseif(backend STREQUAL "AUV2" OR backend STREQUAL "AUV3")
 			message("-- [libaudioplugin] Selecting ${target} validation with the auval command")
 			add_custom_command(TARGET ${target} POST_BUILD
-				COMMAND auval -a ${target})
+				COMMAND auval -a)
+			add_custom_command(TARGET ${target} POST_BUILD
+				COMMAND file /Library/Audio/Plug-Ins/Components/${target}.component/Contents/MacOS/${target})
 		elseif(backend STREQUAL "AAX")
 			message("-- [libaudioplugin] Selecting no AAX validation tool because the AAX host SDK is not public")
 		else()
