@@ -4,6 +4,7 @@
 # @param company 
 # @param backend 
 function(plugin_bundle target platform company backend)
+message("$<TARGET_FILE_NAME:${target}>.vst3")
 	if(platform STREQUAL "MacOS")
 		smtg_target_set_bundle(${target}
 			BUNDLE_IDENTIFIER com.${company}.${target}
@@ -26,9 +27,9 @@ function(plugin_bundle target platform company backend)
 			# 	COMPANY_NAME "${company}")
 			set(_output_dir ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>)
 			add_custom_command(TARGET ${target} POST_BUILD 
-				COMMAND /bin/mkdir "-p" ${_output_dir}/${target}.component/Contents/Resources
+				COMMAND /bin/mkdir "-p" "${_output_dir}/${target}.component/Contents/Resources"
 				COMMAND /bin/rm "-f" "${_output_dir}/${target}.component/Contents/Resources/plugin.vst3"
-				COMMAND /bin/ln "-svfF" "${_output_dir}/$<TARGET_FILE_NAME:${target}>.vst3" "${outputdir}/${target}.component/Contents/Resources/plugin.vst3"
+				COMMAND /bin/ln "-svfF" "$<TARGET_FILE:${target}>.vst3" "${_output_dir}/${target}.component/Contents/Resources/plugin.vst3"
 				COMMAND /bin/cp "-rpf" "${_output_dir}/${target}.component" "~/Library/Audio/Plug-Ins/Components/")
 		endif()
 	elseif(platform STREQUAL "Windows")
