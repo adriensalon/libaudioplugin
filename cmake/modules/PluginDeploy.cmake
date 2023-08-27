@@ -29,6 +29,7 @@ message("$<TARGET_FILE_NAME:${target}>.vst3")
 			add_custom_command(TARGET ${target} POST_BUILD
 				# COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.bundle ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.component
 				COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.vst3" "~/Library/Audio/Plug-Ins/Components/${target}.component"
+				COMMAND find ~/Library/Audio/Plug-Ins/Components/
 				)
 			# add_custom_command(TARGET ${target} POST_BUILD 
 			# 	COMMAND find .
@@ -61,7 +62,7 @@ function(plugin_validate target backend enabled)
 			add_custom_command(TARGET ${target} POST_BUILD
 				COMMAND auval -a)
 			add_custom_command(TARGET ${target} POST_BUILD
-				COMMAND file /Library/Audio/Plug-Ins/Components/${target}.component/Contents/MacOS/${target})
+				COMMAND file ~/Library/Audio/Plug-Ins/Components/${target}.component/Contents/MacOS/${target})
 		elseif(backend STREQUAL "AAX")
 			message("-- [libaudioplugin] Selecting no AAX validation tool because the AAX host SDK is not public")
 		else()
