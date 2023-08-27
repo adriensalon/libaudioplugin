@@ -55,6 +55,7 @@ if (XCODE AND SMTG_COREAUDIO_SDK_PATH)
 		string(MAKE_C_IDENTIFIER ${CocoaIdStamp} CocoaId)
 		set(SMTG_AUCocoaUIBase_CLASS_NAME "SMTG_AUCocoaUIBase_${ARG_BUNDLE_NAME}${CocoaId}")
 
+		message("AUV2 SOURCES = ${AUv2_sources}")
 	    add_library(${target} MODULE ${AUv2_sources})
         smtg_target_setup_universal_binary(${target})
         smtg_target_codesign(${target})
@@ -106,9 +107,8 @@ if (XCODE AND SMTG_COREAUDIO_SDK_PATH)
 
 		add_custom_command(TARGET ${target} POST_BUILD 
 			COMMAND /bin/mkdir "-p" ${outputdir}/${ARG_BUNDLE_NAME}.component/Contents/Resources
-			# COMMAND /bin/rm "-f" "${outputdir}/${ARG_BUNDLE_NAME}.component/Contents/Resources/plugin.vst3"
-			COMMAND /bin/ln "-svfF" "${outputdir}/$<TARGET_FILE_NAME:${target}>.vst3" "${outputdir}/${ARG_BUNDLE_NAME}.component/Contents/Resources/plugin.vst3"
-			# COMMAND /bin/ln "-svfF" "${outputdir}/$<TARGET_FILE_NAME:${ARG_VST3_PLUGIN_TARGET}>.vst3" "${outputdir}/${ARG_BUNDLE_NAME}.component/Contents/Resources/plugin.vst3"
+			COMMAND /bin/rm "-f" "${outputdir}/${ARG_BUNDLE_NAME}.component/Contents/Resources/plugin.vst3"
+			COMMAND /bin/ln "-svfF" "${outputdir}/$<TARGET_FILE_NAME:${ARG_VST3_PLUGIN_TARGET}>.vst3" "${outputdir}/${ARG_BUNDLE_NAME}.component/Contents/Resources/plugin.vst3"
 			COMMAND /bin/cp "-rpf" "${outputdir}/${ARG_BUNDLE_NAME}.component" "~/Library/Audio/Plug-Ins/Components/"
 		)
 
