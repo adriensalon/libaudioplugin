@@ -10,7 +10,8 @@ include(PluginDeploy)
 include(PluginParse)
 
 # paths to the AAX SDK (defaults to /external/aaxsdk)
-set(LIBAUDIOPLUGIN_AAXSDK_PATH "${CMAKE_CURRENT_LIST_DIR}/external/aaxsdk" CACHE STRING "Selected plugin backend")
+set(LIBAUDIOPLUGIN_AAXSDK_PATH "${CMAKE_CURRENT_LIST_DIR}/external/aaxsdk" CACHE STRING "Default path for the AAX SDK (go there 'http://developer.avid.com/aax/')")
+set(LIBAUDIOPLUGIN_COREAUDIOSDK_PATH "${CMAKE_CURRENT_LIST_DIR}/external/coreaudiosdk" CACHE STRING "Default path for the CoreAudio SDK (go there 'https://developer.apple.com/library/archive/samplecode/CoreAudioUtilityClasses/Introduction/Intro.html')")
 
 # build optionals
 option(LIBAUDIOPLUGIN_BUILD_DOC "Build Doxygen documentation" ON)

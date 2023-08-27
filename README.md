@@ -16,3 +16,8 @@
 	- VST2 using a lightweight validator that mimics the VST3 default validator
 	- VST3 using the default validator that comes with the SDK
 	- No validator for AAX as we won't have access to the host SDK
+
+
+og core audio sdk https://developer.apple.com/library/archive/samplecode/CoreAudioUtilityClasses/Introduction/Intro.html
+
+but would be nice to support this instead https://github.com/apple/AudioUnitSDK
