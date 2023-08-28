@@ -67,6 +67,8 @@ function(plugin_validate target backend enabled)
 			add_custom_command(TARGET ${target} POST_BUILD
 				COMMAND auval -a)
 			add_custom_command(TARGET ${target} POST_BUILD
+				COMMAND auval -strict -v aufx gain mmnf)
+			add_custom_command(TARGET ${target} POST_BUILD
 				COMMAND cat ~/Library/Audio/Plug-Ins/Components/${target}.component/Contents/Info.plist
 				COMMAND file ~/Library/Audio/Plug-Ins/Components/${target}.component/Contents/MacOS/${target}
 				)
