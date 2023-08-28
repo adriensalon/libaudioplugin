@@ -68,6 +68,7 @@ Things to do :
 
 #include <dlfcn.h>
 #include <algorithm>
+#include <iostream>
 #include <objc/runtime.h>
 
 #if !CA_USE_AUDIO_PLUGIN_ONLY
@@ -2635,6 +2636,7 @@ void* AUWrapperFactory (const AudioComponentDescription* inDesc);
 __attribute__ ((visibility ("default"))) void* AUWrapperFactory (
     const AudioComponentDescription* inDesc)
 {
+	std::cout << "Hello frmo 1" << std::endl;
 	return AUFactory<AUWrapper>::Factory (inDesc);
 }
 } // extern "C"
@@ -2647,6 +2649,7 @@ ComponentResult AUWrapperEntry (ComponentParameters* params, AUWrapper* obj);
 __attribute__ ((visibility ("default"))) ComponentResult AUWrapperEntry (
     ComponentParameters* params, AUWrapper* obj)
 {
+	std::cout << "Hello frmo 2" << std::endl;
 	return ComponentEntryPoint<AUWrapper>::Dispatch (params, obj);
 }
 }
