@@ -1,5 +1,5 @@
 #include <windows.h>
-#include <libaudioplugin/pluginfo.h>
+#include <audioplugin/glue/pluginfo.hpp>
 
 #define APSTUDIO_READONLY_SYMBOLS
 

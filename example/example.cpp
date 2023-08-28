@@ -1,4 +1,4 @@
-#include <libaudioplugin/libaudioplugin.hpp>
+#include <audioplugin/audioplugin.hpp>
 
 #include <public.sdk/source/vst/vstaudioeffect.h>
 #include <public.sdk/source/vst/vsteditcontroller.h>
@@ -11,7 +11,7 @@ struct vst3_processor final : public Steinberg::Vst::AudioEffect {
 
     vst3_processor()
     {
-        setControllerClass(PLUGIN_CONTROLLER_UID);
+        setControllerClass(AUDIOPLUGIN_CONTROLLER_UID);
     }
 
     ~vst3_processor() override

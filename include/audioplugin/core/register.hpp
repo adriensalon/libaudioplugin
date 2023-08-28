@@ -1,29 +1,25 @@
 #pragma once
 
-#include <pluginterfaces/base/fplatform.h>
-#include <pluginterfaces/base/funknown.h>
-#include <pluginterfaces/vst/vsttypes.h>
+#include <audioplugin/glue/factory.hpp>
 
 /// @brief
-#if !defined(PLUGIN_PROCESSOR_UID)
-#define PLUGIN_PROCESSOR_UID libaudioplugin::detail::processor_uid
+#if !defined(AUDIOPLUGIN_PROCESSOR_UID)
+#define AUDIOPLUGIN_PROCESSOR_UID libaudioplugin::detail::processor_uid
 #endif
 
 /// @brief
-#if !defined(PLUGIN_CONTROLLER_UID)
-#define PLUGIN_CONTROLLER_UID libaudioplugin::detail::controller_uid
+#if !defined(AUDIOPLUGIN_CONTROLLER_UID)
+#define AUDIOPLUGIN_CONTROLLER_UID libaudioplugin::detail::controller_uid
 #endif
-
-#include <libaudioplugin/libplugin.fwd>
 
 /// @brief
 #define REGISTER_PLUGIN(processor_class_m, controller_class_m)              \
-    LIBAUDIOPLUGIN_VERIFY_PLUGIN(processor_class_m, controller_class_m)          \
-    LIBAUDIOPLUGIN_ADD_PLUGIN(processor_class_m, controller_class_m)             \
-    LIBAUDIOPLUGIN_ADD_PLUGIN_AAX_WRAPPER()                                      \
-    LIBAUDIOPLUGIN_ADD_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m) \
-    LIBAUDIOPLUGIN_ADD_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m) \
-    LIBAUDIOPLUGIN_ADD_PLUGIN_VST2_WRAPPER()
+    AUDIOPLUGIN_VERIFY_PLUGIN(processor_class_m, controller_class_m)          \
+    AUDIOPLUGIN_ADD_PLUGIN(processor_class_m, controller_class_m)             \
+    AUDIOPLUGIN_ADD_PLUGIN_AAX_WRAPPER()                                      \
+    AUDIOPLUGIN_ADD_PLUGIN_AU2_WRAPPER(processor_class_m, controller_class_m) \
+    AUDIOPLUGIN_ADD_PLUGIN_AU3_WRAPPER(processor_class_m, controller_class_m) \
+    AUDIOPLUGIN_ADD_PLUGIN_VST2_WRAPPER()
 
 #if defined(LIBAUDIOPLUGIN_BUILD_AAX_WRAPPER)
 
