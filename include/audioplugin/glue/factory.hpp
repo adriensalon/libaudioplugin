@@ -2,7 +2,7 @@
 
 #include <public.sdk/source/main/pluginfactory.h>
 
-#include <audioplugin/glue/pluginfo.hpp>
+#include <audioplugin/glue/pluginfo.h>
 #include <audioplugin/glue/plugids.hpp>
 
 #define AUDIOPLUGIN_ADD_PLUGIN(processor_class_m, controller_class_m) \

@@ -1,5 +1,5 @@
 #include <windows.h>
-#include <audioplugin/glue/pluginfo.hpp>
+#include "source/version.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 
@@ -7,8 +7,8 @@
 // Version
 /////////////////////////////////////////////////////////////////////////////
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION PLUGIN_VERSION_MAJOR_INT,PLUGIN_VERSION_SUB_INT,PLUGIN_VERSION_RELEASE_INT,PLUGIN_VERSION_BUILD_INT
- PRODUCTVERSION PLUGIN_VERSION_MAJOR_INT,PLUGIN_VERSION_SUB_INT,PLUGIN_VERSION_RELEASE_INT,PLUGIN_VERSION_BUILD_INT
+ FILEVERSION MAJOR_VERSION_INT,SUB_VERSION_INT,RELEASE_NUMBER_INT,BUILD_NUMBER_INT
+ PRODUCTVERSION MAJOR_VERSION_INT,SUB_VERSION_INT,RELEASE_NUMBER_INT,BUILD_NUMBER_INT
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -23,15 +23,15 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-            VALUE "FileVersion",      PLUGIN_VERSION"\0"
-            VALUE "ProductVersion",   PLUGIN_VERSION"\0"
-            VALUE "OriginalFilename", PLUGIN_FILENAME"\0"
-            VALUE "FileDescription",  PLUGIN_FILEDESC"\0"
-            VALUE "InternalName",     PLUGIN_FILEDESC"\0"
-            VALUE "ProductName",      PLUGIN_FILEDESC"\0"
-            VALUE "CompanyName",      PLUGIN_COMPANY"\0"
-            VALUE "LegalCopyright",   PLUGIN_COPYRIGHT"\0"
-            VALUE "LegalTrademarks",  PLUGIN_LEGAL"\0"
+            VALUE "FileVersion",      FULL_VERSION_STR"\0"
+            VALUE "ProductVersion",   FULL_VERSION_STR"\0"
+            VALUE "OriginalFilename", stringOriginalFilename"\0"
+            VALUE "FileDescription",  stringFileDescription"\0"
+            VALUE "InternalName",     stringFileDescription"\0"
+            VALUE "ProductName",      stringFileDescription"\0"
+            VALUE "CompanyName",      stringCompanyName"\0"
+            VALUE "LegalCopyright",   stringLegalCopyright"\0"
+            VALUE "LegalTrademarks",  stringLegalTrademarks"\0"
             //VALUE "PrivateBuild",     " \0"
             //VALUE "SpecialBuild",     " \0"
             //VALUE "Comments",         " \0"

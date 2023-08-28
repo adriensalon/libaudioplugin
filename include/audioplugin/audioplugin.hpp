@@ -5,15 +5,6 @@
 
 
 
-/// @brief
-#if !defined(AUDIOPLUGIN_PROCESSOR_UID)
-#define AUDIOPLUGIN_PROCESSOR_UID libaudioplugin::detail::processor_uid
-#endif
-
-/// @brief
-#if !defined(AUDIOPLUGIN_CONTROLLER_UID)
-#define AUDIOPLUGIN_CONTROLLER_UID libaudioplugin::detail::controller_uid
-#endif
 
 /// @brief
 #define REGISTER_PLUGIN(processor_class_m, controller_class_m)              \

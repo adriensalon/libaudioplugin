@@ -1,11 +1,10 @@
 
 
 # @brief plugin_parse_backend internal function
-# @param available_backends
 # @param preferred_backend
 # @param var_target_backend
 # @param out_backend
-function(plugin_parse_backend available_backends preferred_backend var_target_backend out_backend)
+function(plugin_parse_backend preferred_backend var_target_backend out_backend)
 	if(${var_target_backend})
 		set(${out_backend} ${${var_target_backend}} PARENT_SCOPE)
 	else()
