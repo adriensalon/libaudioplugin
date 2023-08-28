@@ -36,7 +36,7 @@ endfunction()
 # @param platform 
 # @param vst3sdk 
 function(plugin_link_libraries target backend platform vst3sdk)
-	target_link_libraries(${target} PRIVATE sdk)
+	target_link_libraries(${target} PRIVATE base pluginterfaces sdk)
 	if(platform STREQUAL "MacOS")
 		find_library(foundation_framework Foundation)
 		target_link_libraries(${target} PRIVATE ${foundation_framework})

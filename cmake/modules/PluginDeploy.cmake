@@ -68,6 +68,8 @@ function(plugin_validate target backend enabled)
 			add_custom_command(TARGET ${target} POST_BUILD
 				COMMAND find .)
 			add_custom_command(TARGET ${target} POST_BUILD
+				COMMAND killall -9 AudioComponentRegistrar)
+			add_custom_command(TARGET ${target} POST_BUILD
 				COMMAND auval -a -h)
 			add_custom_command(TARGET ${target} POST_BUILD
 				COMMAND auval -strict -v aufx gain mmnf)
