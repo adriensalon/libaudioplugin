@@ -7,7 +7,7 @@ function(plugin_bundle target platform company backend)
 message("$<TARGET_FILE_NAME:${target}>.vst3")
 	if(platform STREQUAL "MacOS")
 		
-		if(backend STREQUAL "AUV2")
+		# if(backend STREQUAL "AUV2")
 		# 	add_custom_command(TARGET ${target} POST_BUILD
 		# 			COMMAND find .)
 			# smtg_target_set_bundle(${target}
@@ -24,28 +24,28 @@ message("$<TARGET_FILE_NAME:${target}>.vst3")
 			# 	BUNDLE_IDENTIFIER com.${company}.${target}
 			# 	COMPANY_NAME "${company}")
 			
-			smtg_target_set_bundle(${target}
-				BUNDLE_IDENTIFIER com.${company}.${target}
-				COMPANY_NAME "${company}"
-				INFOPLIST ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/auv2info.plist
-				EXTENSION component)
-			set(_output_dir ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>)
-			add_custom_command(TARGET ${target} POST_BUILD
-				# COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.bundle ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.component
-				COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.vst3" "~/Library/Audio/Plug-Ins/Components/${target}.component"
-				COMMAND find ~/Library/Audio/Plug-Ins/Components/
-				)
+			# smtg_target_set_bundle(${target}
+			# 	BUNDLE_IDENTIFIER com.${company}.${target}
+			# 	COMPANY_NAME "${company}"
+			# 	INFOPLIST ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/auv2info.plist
+			# 	EXTENSION component)
+			# set(_output_dir ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>)
+			# add_custom_command(TARGET ${target} POST_BUILD
+			# 	# COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.bundle ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.component
+			# 	COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.component" "~/Library/Audio/Plug-Ins/Components/${target}.component"
+			# 	COMMAND find ~/Library/Audio/Plug-Ins/Components/
+			# 	)
 			# add_custom_command(TARGET ${target} POST_BUILD 
 			# 	COMMAND find .
 			# 	COMMAND /bin/mkdir "-p" "${_output_dir}/${target}.component/Contents/Resources"
 			# 	COMMAND /bin/rm "-f" "${_output_dir}/${target}.component/Contents/Resources/plugin.vst3"
 			# 	COMMAND /bin/ln "-svfF" "$<TARGET_FILE:${target}>.vst3" "${_output_dir}/${target}.component/Contents/Resources/plugin.vst3"
 			# 	COMMAND /bin/cp "-rpf" "${_output_dir}/${target}.component" "~/Library/Audio/Plug-Ins/Components/")
-		else()
+		# else()
 			smtg_target_set_bundle(${target}
 				BUNDLE_IDENTIFIER com.${company}.${target}
 				COMPANY_NAME "${company}")
-		endif()
+		# endif()
 	elseif(platform STREQUAL "Windows")
 		target_sources(${target} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/win32resource.rc)
 	endif()

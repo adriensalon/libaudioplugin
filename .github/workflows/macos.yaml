@@ -26,5 +26,5 @@ jobs:
         run: cmake -B ${{ github.workspace }}/build -G Xcode -DLIBAUDIOPLUGIN_BUILD_EXAMPLE:BOOL=ON -DLIBAUDIOPLUGIN_PREFERRED_BACKEND:STRING=${{ matrix.backend }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
       - name: Build
-        run: cmake --build ${{ github.workspace }}/build --target ExamplePlugin --config ${{ matrix.build_type }}
+        run: cmake --build ${{ github.workspace }}/build --target ExamplePlugin-au --config ${{ matrix.build_type }}
 
