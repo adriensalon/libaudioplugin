@@ -26,9 +26,9 @@
 			<key>description</key>
 			<string>ExamplePlugin</string>
 			<key>manufacturer</key>
-			<string>mmnf</string>
+			<string>Mmnf</string>
 			<key>name</key>
-			<string>MyFullName</string>
+			<string>Steinberg: AGain</string>
 			<key>subtype</key>
 			<string>gain</string>
 			<key>type</key>
