@@ -17,8 +17,8 @@ function(plugin_sources target backend platform vst3sdk)
 		# target_sources(${target} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/resource/win32resource.rc) PAS ICI EN VRAI
 	elseif(platform STREQUAL "MacOS")
 		set(_sources 
-			${vst3sdk}/public.sdk/source/main/macmain.cpp
-			${vst3sdk}/public.sdk/source/main/macexport.exp)
+			${vst3sdk}/public.sdk/source/main/macmain.cpp)
+			# ${vst3sdk}/public.sdk/source/main/macexport.exp)
 	elseif(platform STREQUAL "Linux")
 		set(_sources ${vst3sdk}/public.sdk/source/main/linuxmain.cpp)	
 	else()
