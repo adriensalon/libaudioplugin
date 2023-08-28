@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>ExamplePlugin</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.adrien salon.ExamplePlugin</string>
+	<string>com.test.vst.ExamplePlugin.audiounit</string>
 	<key>CFBundleName</key>
 	<string>ExamplePlugin</string>
 	<key>CFBundleInfoDictionaryVersion</key>
