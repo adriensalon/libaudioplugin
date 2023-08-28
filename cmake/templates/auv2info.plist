@@ -22,7 +22,7 @@
 	<array>
 		<dict>
 			<key>factoryFunction</key>
-			<string>GetPluginFactory</string>
+			<string>AUWrapperFactory</string>
 			<key>description</key>
 			<string>ExamplePlugin</string>
 			<key>manufacturer</key>
