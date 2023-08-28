@@ -35,6 +35,7 @@ function(plugin_configure_sdk platform available_backends aaxsdk coreaudiosdk vs
 	set(SMTG_RUN_VST_VALIDATOR OFF CACHE BOOL "We run this manually" FORCE)
 	set(SMTG_USE_STATIC_CRT OFF CACHE BOOL "IDK bro" FORCE)
 	add_subdirectory(${vst3sdk})	
+	smtg_enable_vst3_sdk()
 	target_include_directories(sdk PUBLIC ${vst3sdk})
 	if(AAX IN_LIST available_backends)	
 		list(APPEND CMAKE_MODULE_PATH "${vst3sdk}/cmake/modules")
@@ -53,7 +54,6 @@ function(plugin_configure_sdk platform available_backends aaxsdk coreaudiosdk vs
 		endif()
 	endif()
 	set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE STRING "")
-	smtg_enable_vst3_sdk()
 endfunction()
 
 # @brief plugin_configure_target internal function
