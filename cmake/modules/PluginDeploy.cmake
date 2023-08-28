@@ -25,6 +25,11 @@ message("$<TARGET_FILE_NAME:${target}>.vst3")
 			# smtg_target_set_bundle(${target}
 			# 	BUNDLE_IDENTIFIER com.${company}.${target}
 			# 	COMPANY_NAME "${company}")
+			
+			smtg_target_set_bundle(${target}
+				BUNDLE_IDENTIFIER com.${company}.${target}
+				COMPANY_NAME "${company}"
+				INFOPLIST ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/auv2info.plist)
 			set(_output_dir ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>)
 			add_custom_command(TARGET ${target} POST_BUILD
 				# COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.bundle ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.component

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>ExamplePlugin</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.adrien salon.ExamplePlugin</string>
+	<key>CFBundleName</key>
+	<string>ExamplePlugin</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>AudioComponents</key>
+	<array>
+		<dict>
+			<key>factoryFunction</key>
+			<string>AUWrapperFactory</string>
+			<key>description</key>
+			<string>ExamplePlugin</string>
+			<key>manufacturer</key>
+			<string>MyManufacturer</string>
+			<key>name</key>
+			<string>MyFullName</string>
+			<key>subtype</key>
+			<string>gain</string>
+			<key>type</key>
+			<string>aufx</string>
+			<key>version</key>
+			<integer>0xFFFFFFFF</integer>
+		</dict>
+	</array>
+	<key>AudioUnit SupportedNumChannels</key>
+	<array>
+		<dict>
+			<key>Outputs</key>
+			<string>2</string>
+			<key>Inputs</key>
+			<string>2</string>
+		</dict>
+		<dict>
+			<key>Outputs</key>
+			<string>0</string>
+			<key>Inputs</key>
+			<string>1</string>
+		</dict>
+		<dict>
+			<key>Outputs</key>
+			<string>1</string>
+			<key>Inputs</key>
+			<string>1</string>
+		</dict>
+	</array>
+</dict>
+</plist>
