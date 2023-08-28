@@ -62,7 +62,9 @@ function(plugin_validate target backend enabled)
 			add_custom_command(TARGET ${target} POST_BUILD
 				COMMAND auval -a)
 			add_custom_command(TARGET ${target} POST_BUILD
-				COMMAND file ~/Library/Audio/Plug-Ins/Components/${target}.component/Contents/MacOS/${target})
+				COMMAND cat ~/Library/Audio/Plug-Ins/Components/${target}.component/Contents/Info.plist
+				COMMAND file ~/Library/Audio/Plug-Ins/Components/${target}.component/Contents/MacOS/${target}
+				)
 		elseif(backend STREQUAL "AAX")
 			message("-- [libaudioplugin] Selecting no AAX validation tool because the AAX host SDK is not public")
 		else()
