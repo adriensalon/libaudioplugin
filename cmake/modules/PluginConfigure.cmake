@@ -87,3 +87,26 @@ function(plugin_configure_target target company backend sources vst3sdk)
 	smtg_target_configure_version_file(${target})
 	set_target_properties(${target} PROPERTIES CXX_STANDARD 17)
 endfunction()
+
+# @brief plugin_configure_validator internal function
+# @param external
+# @param include 
+# @param source 
+function(plugin_configure_validator external include source)
+	# set options
+	add_subdirectory(${external}/dylib)
+	# set options
+	add_subdirectory(${external}/googletest)
+	set(_validator_sources
+		"${source}/glue/open.cpp"
+		"${source}/glue/step.cpp"
+		"${source}/steps/vst2/mystep.cpp")
+	add_executable(libaudioplugin_validator ${_validator_sources})
+	target_include_directories(libaudioplugin_validator
+		PRIVATE ${include}
+		PRIVATE ${source})
+	target_link_libraries(libaudioplugin_validator
+		PRIVATE dylib
+		PRIVATE gtest)
+	set_target_properties(libaudioplugin_validator PROPERTIES CXX_STANDARD 17)
+endfunction()

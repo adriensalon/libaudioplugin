@@ -4,7 +4,6 @@
 # @param company 
 # @param backend 
 function(plugin_bundle target platform company backend)
-message("$<TARGET_FILE_NAME:${target}>.vst3")
 	if(platform STREQUAL "MacOS")
 		
 		if(backend STREQUAL "AUV2")
@@ -55,10 +54,15 @@ endfunction()
 # @param backend 
 # @param enabled 
 function(plugin_validate target backend enabled)
-	if(enabled)
+	if(enabled)		
+		add_dependencies(${target} libaudioplugin_validator)
 		if(backend STREQUAL "VST2")
-			message("-- [libaudioplugin] Selecting VST2 validator tool")
-			smtg_target_run_vst_validator(${target})
+			message("-- [libaudioplugin] Selecting VST2 validator tool")	
+			add_custom_command(
+				TARGET ${target} POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E echo [libaudioplugin] Starting validator for VST2 plugin				
+				COMMAND $<TARGET_FILE:libaudioplugin_validator> "$<TARGET_FILE:${target}>" 
+				WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")		
 		elseif(backend STREQUAL "VST3")
 			message("-- [libaudioplugin] Selecting VST3 default validator tool that comes with the SDK")
 			smtg_target_run_vst_validator(${target})
@@ -81,6 +85,7 @@ function(plugin_validate target backend enabled)
 		else()
 			message(FATAL_ERROR "[libaudioplugin] Invalid backend '${backend}'")
 		endif()
+		add_dependencies(${target} libaudioplugin_validator)
 	endif()
 endfunction()
 
@@ -100,10 +105,10 @@ function(plugin_clean target backend)
 		
 
 	elseif(backend STREQUAL "VST2")
-		# add_custom_command(TARGET ${plugin_name} POST_BUILD
-		# 	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${plugin_name}> ${LIBAUDIOPLUGIN_BUILD_PATH})
-		# add_custom_command(TARGET ${plugin_name} POST_BUILD
-		# 	COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/VST3)
+	# 	add_custom_command(TARGET ${plugin_name} POST_BUILD
+	# 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${target}> ${LIBAUDIOPLUGIN_BUILD_PATH})
+	# 	add_custom_command(TARGET ${plugin_name} POST_BUILD
+	# 		COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/VST3)
 	elseif(backend STREQUAL "VST3")
 		# # add_custom_command(TARGET ${target} PRE_BUILD
 		# # 	COMMAND ${CMAKE_COMMAND} -E rm -R ${LIBAUDIOPLUGIN_BUILD_PATH})

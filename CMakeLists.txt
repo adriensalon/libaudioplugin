@@ -32,6 +32,11 @@ plugin_configure_sdk(
 	${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH}
 	"${CMAKE_CURRENT_LIST_DIR}/external/vst2sdk"
 	"${CMAKE_CURRENT_LIST_DIR}/external/vst3sdk")
+
+plugin_configure_validator(
+	${CMAKE_CURRENT_LIST_DIR}/external
+	${CMAKE_CURRENT_LIST_DIR}/include
+	${CMAKE_CURRENT_LIST_DIR}/source)
 	
 # your project scope preferred backend variable)
 set(LIBAUDIOPLUGIN_PREFERRED_BACKEND "VST3" CACHE STRING "Selected plugin backend")
@@ -78,7 +83,7 @@ function(add_plugin target)
 	plugin_parse_email(PLUGIN_EMAIL _email)
 	plugin_parse_website(PLUGIN_WEBSITE _website)
 
-	message("-- [libaudioplugin] Building plugin ${target} for ${_backend} backend")
+	message("-- [libaudioplugin] Building ${_backend} plugin ${target}")
 	message("-- [libaudioplugin] Plugin category is ${_type}")
 	message("-- [libaudioplugin] Plugin company is ${_company}")
 	message("-- [libaudioplugin] Plugin description is ${_description}")
