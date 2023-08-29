@@ -1,10 +1,10 @@
 
 #include <filesystem>
+#include <memory>
 #include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <memory>
 
 #define DYLIB_CPP17
 #include <dylib.hpp>
@@ -21,7 +21,7 @@ namespace detail {
 
     static std::optional<std::string> external_validator_output = std::nullopt;
 
-	// add library load ? idk must be a test
+    // add library load ? idk must be a test
 
     namespace {
 
@@ -51,12 +51,12 @@ namespace detail {
                     }
                 }
             }
-            for (auto& _pair : _result) {
-                std::cout << _pair.first << std::endl;
-                for (auto& lol : _pair.second) {
-                    std::cout << lol << std::endl;
-                }
-            }
+            // for (auto& _pair : _result) {
+            //     std::cout << _pair.first << std::endl;
+            //     for (auto& lol : _pair.second) {
+            //         std::cout << lol << std::endl;
+            //     }
+            // }
             return _result;
         }
 
@@ -97,7 +97,58 @@ namespace detail {
     }
 }
 }
+
+#if defined(AUDIOPLUGIN_BACKEND_VST2)
 #include <public.sdk/source/vst/vst2wrapper/vst2wrapper.h>
+
+VstIntPtr HostCallback (AEffect* effect, VstInt32 opcode, VstInt32 index, VstIntPtr value, void* ptr, float opt)
+{
+	VstIntPtr result = 0;
+
+	// Filter idle calls...
+	bool filtered = false;
+	if (opcode == audioMasterIdle)
+	{
+		static bool wasIdle = false;
+		if (wasIdle)
+			filtered = true;
+		else
+		{
+			printf ("(Future idle calls will not be displayed!)\n");
+			wasIdle = true;
+		}
+	}
+
+	// if (!filtered)
+	// 	printf ("PLUG> HostCallback (opcode %d)\n index = %d, value = %p, ptr = %p, opt = %f\n", opcode, index, FromVstPtr<void> (value), ptr, opt);
+
+	switch (opcode)
+	{
+		case audioMasterVersion :
+			result = kVstVersion;
+			break;
+	}
+
+	return result;
+}
+#endif
+
+
+#if defined(AUDIOPLUGIN_BACKEND_AAX)
+
+#include <public.sdk/source/vst/aaxwrapper/aaxwrapper.h>
+
+
+#include "AAX.h"
+#include "AAX_Init.h"
+#include "acfresult.h"
+#include "acfunknown.h"
+
+#endif
+
+
+
+
 
 int main(int argc, char** argv)
 {
@@ -107,24 +158,73 @@ int main(int argc, char** argv)
     // 2nd is external tool command
 
     using namespace audioplugin::detail;
+    std::cout << std::endl;
+	
+	formatted_args _formatted_args = format_args(argc, argv);
+	extracted_args _extracted_args = extract_args(_formatted_args);
+	const std::filesystem::path& _plugin_path = _extracted_args.first;
+	plugin_library = dylib(_plugin_path);
 
+#if defined(AUDIOPLUGIN_BACKEND_VST2)
     try {
-        formatted_args _formatted_args = format_args(argc, argv);
-        extracted_args _extracted_args = extract_args(_formatted_args);
-        const std::filesystem::path& _plugin_path = _extracted_args.first;
-        const std::optional<std::string>& _external_command = _extracted_args.second;
 
-        // std::cout << PLUGIN_COMPANY << "plugin path = " << _plugin_path << std::endl;
-        // std::cout << "external_validator_path = " << _external_validator_path << std::endl;
+        using vst2_entry_function = AEffect* (*)(audioMasterCallback);
+        vst2_entry_function _vst2_plugin_main = nullptr;
+        try {
+            _vst2_plugin_main = plugin_library.value().get_function<AEffect*(audioMasterCallback)>("VSTPluginMain");
+            std::cout << "[==========] Found VSTPluginMain" << std::endl;
+        } catch (...) {
+            std::cout << "[==========] AEffect* VSTPluginMain(audioMasterCallback) not found" << std::endl;
+            try {
+                _vst2_plugin_main = plugin_library.value().get_function<AEffect*(audioMasterCallback)>("main"); // main_macho on macos
+            	std::cout << "[==========] Found main" << std::endl;
+            } catch (...) {
+				throw std::exception("AEffect* main(audioMasterCallback) not found");
+            }
+        }
 
-		plugin_library = dylib(_plugin_path);
-		auto* ooo2 = plugin_library.value().get_function<Steinberg::IPluginFactory*()>("GetPluginFactory");
-		auto* ooo = plugin_library.value().get_function<AEffect*(audioMasterCallback)>("VSTPluginMain");
+		AEffect* _effect = _vst2_plugin_main(HostCallback);
+		if (!_effect)
+		{
+			printf ("Failed to create effect instance!\n");
+			return 1;
+		}
+		std::size_t _inputs_count = static_cast<std::size_t>(_effect->numInputs);
+		std::cout << "[==========] Found " << std::to_string(_inputs_count) << " audio inputs"<< std::endl;
+
+		std::size_t _outputs_count = static_cast<std::size_t>(_effect->numOutputs);
+		std::cout << "[==========] Found " << std::to_string(_outputs_count) << " audio outputs"<< std::endl;
+
+		_effect->processDoubleReplacing(_effect, nullptr, nullptr, 10);
+
+        // auto* ooo2 = plugin_library.value().get_function<Steinberg::IPluginFactory*()>("GetPluginFactory");
 
     } catch (const std::exception& _exception) {
-        std::cout << "-- [libaudioplugin] Exception occured in validator executable :" << std::endl;
-        std::cout << "-- [libaudioplugin] " << _exception.what() << std::endl;
+        std::cout << "[==========] Exception occured in validator executable :" << std::endl;
+        std::cout << "[==========] " << _exception.what() << std::endl;
     }
+#endif
+
+#if defined(AUDIOPLUGIN_BACKEND_AAX)
+    std::cout <<  "AAXXXXXXXXXXX" << std::endl;
+
+	try {
+
+        using aax_entry_function = ACFRESULT (*)(IACFUnknown*, IACFPluginDefinition**);
+        aax_entry_function _aax_plugin_main = nullptr;
+		_aax_plugin_main = plugin_library.value().get_function<ACFRESULT(IACFUnknown*, IACFPluginDefinition**)>("ACFRegisterPlugin");
+		ACFRESULT _result = _aax_plugin_main(nullptr, nullptr);
+		std::cout << "null object = " << std::to_string(AAX_ERROR_NULL_OBJECT) << std::endl;
+		std::cout << "unknown = " << std::to_string(AAX_ERROR_UNKNOWN_EXCEPTION) << std::endl;
+		std::cout << "ok = " << std::to_string(ACF_OK) << std::endl;
+		std::cout << "unexpected = " << std::to_string(ACF_E_UNEXPECTED) << std::endl;
+		std::cout << "result = " << std::to_string(_result) << std::endl;
+    } catch (const std::exception& _exception) {
+        std::cout << "[==========] Exception occured in validator executable :" << std::endl;
+        std::cout << "[==========] " << _exception.what() << std::endl;
+    }
+
+#endif
 
     std::cout << std::endl;
     testing::InitGoogleTest(&argc, argv);

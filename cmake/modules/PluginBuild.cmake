@@ -3,6 +3,12 @@
 # @param include 
 function(plugin_include_directories target include)
 	target_include_directories(${target} PRIVATE ${include})
+
+	target_include_directories(libaudioplugin_validator
+    	PRIVATE
+        "${SMTG_AAX_SDK_PATH}/Interfaces"
+        "${SMTG_AAX_SDK_PATH}/Interfaces/ACF"
+        "${SMTG_AAX_SDK_PATH}/Libs/AAXLibrary/Include")
 endfunction()
 
 # @brief plugin_sources internal function
@@ -51,6 +57,7 @@ function(plugin_link_libraries target backend platform vst3sdk)
 	endif()
 	if(backend STREQUAL "AAX")
 		target_link_libraries(${target} PRIVATE aaxwrapper)
+		# target_link_libraries(libaudioplugin_validator PRIVATE aaxwrapper)
 	elseif(backend STREQUAL "AUV2")
 		target_link_libraries(${target} PRIVATE auwrapper)
 	elseif(backend STREQUAL "VST2")
@@ -70,16 +77,19 @@ endfunction()
 function(plugin_compile_definitions target backend type company description version email website)
 	if(backend STREQUAL "AAX")
 		target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_BACKEND_AAX)
+		target_compile_definitions(libaudioplugin_validator PRIVATE -DAUDIOPLUGIN_BACKEND_AAX)
 	elseif(backend STREQUAL "AUV2")
 		target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_BACKEND_AUV2)
+		target_compile_definitions(libaudioplugin_validator PRIVATE -DAUDIOPLUGIN_BACKEND_AUV2)
 	elseif(backend STREQUAL "AUV3")
 		target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_BACKEND_AUV3)
+		target_compile_definitions(libaudioplugin_validator PRIVATE -DAUDIOPLUGIN_BACKEND_AUV3)
 	elseif(backend STREQUAL "VST2")
 		target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_BACKEND_VST2)
-		target_compile_definitions(libaudioplugin_validator PRIVATE -DLIBAUDIOPLUGIN_BUILD_VST2_WRAPPER)
-		target_compile_definitions(libaudioplugin_validator PRIVATE -DLIBAUDIOPLUGIN_TEST_NAME=${target}VST2)
+		target_compile_definitions(libaudioplugin_validator PRIVATE -DAUDIOPLUGIN_BACKEND_VST2)
 	elseif(backend STREQUAL "VST3")
 		target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_BACKEND_VST3)
+		target_compile_definitions(libaudioplugin_validator PRIVATE -DAUDIOPLUGIN_BACKEND_VST3)
 	else()
 		message(FATAL_ERROR "[libaudioplugin] Invalid backend")
 	endif()
@@ -90,4 +100,5 @@ function(plugin_compile_definitions target backend type company description vers
 	target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_PLUGIN_VERSION="${version}")
 	target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_PLUGIN_EMAIL="${email}")
 	target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_PLUGIN_WEBSITE="${website}")
+	target_compile_definitions(libaudioplugin_validator PRIVATE -DAUDIOPLUGIN_TEST_SUITE=${target})
 endfunction()

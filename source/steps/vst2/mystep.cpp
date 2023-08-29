@@ -1,12 +1,16 @@
 
 #include <gtest/gtest.h>
 
-TEST(LIBAUDIOPLUGIN_TEST_NAME, make)
+#if defined(AUDIOPLUGIN_BACKEND_VST2)
+
+TEST(AUDIOPLUGIN_TEST_SUITE, VST2Test1)
 {
     EXPECT_STREQ("ok", "ok");
 }
 
-TEST(LIBAUDIOPLUGIN_TEST_NAME, launch)
+TEST(AUDIOPLUGIN_TEST_SUITE, VST2Test2)
 {
     EXPECT_STREQ("ok", "ok");
 }
+
+#endif

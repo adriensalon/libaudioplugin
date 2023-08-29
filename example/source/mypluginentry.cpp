@@ -4,7 +4,7 @@
 #include "mypluginprocessor.h"
 #include <audioplugin/audioplugin.hpp>
 
-#if defined(LIBAUDIOPLUGIN_BUILD_AAX_WRAPPER)
+#if defined(AUDIOPLUGIN_BACKEND_AAX)
 
 // AAX_ADDITIONAL_OUTPUTS_ARRAY(
 // 	AAX_ADDITIONAL_OUTPUT("AUX2", 2),

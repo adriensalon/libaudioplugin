@@ -83,7 +83,14 @@ function(plugin_validate target backend enabled)
 				COMMAND file ~/Library/Audio/Plug-Ins/Components/${target}.component/Contents/MacOS/${target}
 				)
 		elseif(backend STREQUAL "AAX")
-			message("-- [libaudioplugin] Selecting no AAX validation tool because the AAX host SDK is not public")
+			# message("-- [libaudioplugin] Selecting no AAX validation tool because the AAX host SDK is not public")
+			message("-- [libaudioplugin] Selecting VST2 validator tool")
+			add_test(NAME "${target}Test" COMMAND ${target}Test)	
+			add_custom_command(
+				TARGET ${target} POST_BUILD
+				# COMMAND ${CMAKE_COMMAND} -E echo [libaudioplugin] Starting validator for AAX plugin				
+				COMMAND $<TARGET_FILE:libaudioplugin_validator> -plugin "$<TARGET_FILE:${target}>" 
+				WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")	
 		else()
 			message(FATAL_ERROR "[libaudioplugin] Invalid backend '${backend}'")
 		endif()
