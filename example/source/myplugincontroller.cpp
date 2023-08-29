@@ -3,8 +3,6 @@
 //------------------------------------------------------------------------
 
 #include "myplugincontroller.h"
-#include "myplugincids.h"
-
 
 using namespace Steinberg;
 

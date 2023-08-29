@@ -3,10 +3,11 @@
 //------------------------------------------------------------------------
 
 #include "mypluginprocessor.h"
-#include "myplugincids.h"
 
 #include "base/source/fstreamer.h"
 #include "pluginterfaces/vst/ivstparameterchanges.h"
+
+#include <audioplugin/audioplugin.hpp>
 
 using namespace Steinberg;
 
@@ -17,7 +18,7 @@ namespace vstsync {
 TestPlugProcessor::TestPlugProcessor ()
 {
 	//--- set the wanted controller for our processor
-	setControllerClass (kTestPlugControllerUID);
+	setControllerClass (AUDIOPLUGIN_CONTROLLER_UID);
 }
 
 //------------------------------------------------------------------------

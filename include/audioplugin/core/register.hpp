@@ -2,7 +2,7 @@
 
 #include <audioplugin/glue/factory.hpp>
 
-#if defined(LIBAUDIOPLUGIN_BUILD_AAX_WRAPPER)
+#if defined(AUDIOPLUGIN_BACKEND_AAX)
 
 /// @brief
 #define AAX_ADDITIONAL_OUTPUT(output_name_m, channels_count_m) \
