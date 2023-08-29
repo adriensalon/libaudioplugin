@@ -1,7 +1,7 @@
 project(libaudioplugin_example)
 
 add_plugin(ExamplePlugin
-	BACKEND "VST3" # We comment this for CI so we can use the preferred backend
+	BACKEND "AAX" # We comment this for CI so we can use the preferred backend
 	VALIDATE
 	SOURCES 
 		source/myplugincontroller.h
@@ -10,7 +10,7 @@ add_plugin(ExamplePlugin
 		source/mypluginprocessor.h
 		source/mypluginprocessor.cpp
 	FX
-	COMPANY "adrien salon"
+	COMPANY "adriensalon"
 	DESCRIPTION "An example plugin"
 	VERSION "1.0.0.0"
 	EMAIL "mail@me.com"

@@ -213,7 +213,8 @@ int main(int argc, char** argv)
         using aax_entry_function = ACFRESULT (*)(IACFUnknown*, IACFPluginDefinition**);
         aax_entry_function _aax_plugin_main = nullptr;
 		_aax_plugin_main = plugin_library.value().get_function<ACFRESULT(IACFUnknown*, IACFPluginDefinition**)>("ACFRegisterPlugin");
-		ACFRESULT _result = _aax_plugin_main(nullptr, nullptr);
+		IACFPluginDefinition* _pluginDefinition = nullptr;
+		ACFRESULT _result = _aax_plugin_main(nullptr, &_pluginDefinition);
 		std::cout << "null object = " << std::to_string(AAX_ERROR_NULL_OBJECT) << std::endl;
 		std::cout << "unknown = " << std::to_string(AAX_ERROR_UNKNOWN_EXCEPTION) << std::endl;
 		std::cout << "ok = " << std::to_string(ACF_OK) << std::endl;
