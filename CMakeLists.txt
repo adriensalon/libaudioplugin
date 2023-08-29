@@ -108,7 +108,7 @@ function(add_plugin target)
 		${_backend}
 		${_platform}
 		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk
-		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/resource)
+		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/cmake/templates)
 
 	plugin_link_libraries(
 		${target}

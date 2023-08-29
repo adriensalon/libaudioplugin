@@ -10,12 +10,14 @@ endfunction()
 # @param backend 
 # @param platform 
 # @param vst3sdk 
-function(plugin_sources target backend platform vst3sdk resources)	
+function(plugin_sources target backend platform vst3sdk templates)	
 	if(platform STREQUAL "Windows")
 		set(_main_source "${vst3sdk}/public.sdk/source/main/dllmain.cpp")
+		set(_win32_resource "${templates}/win32resource.rc")
 		message("-- [libaudioplugin] Adding ${_main_source}")
+		message("-- [libaudioplugin] Adding ${_win32_resource}")
 		target_sources(${target} PRIVATE ${_main_source})
-		target_sources(${target} PRIVATE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/oldwin32resource.rc) #PAS ICI EN VRAI
+		target_sources(${target} PRIVATE ${_win32_resource})
 	elseif(platform STREQUAL "MacOS")
 		set(_main_source "${vst3sdk}/public.sdk/source/main/macmain.cpp")
 			# ${vst3sdk}/public.sdk/source/main/macexport.exp)
