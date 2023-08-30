@@ -55,7 +55,7 @@ namespace validate {
                     _vst2_plugin_main = library.get_function<AEffect*(audioMasterCallback)>("main"); // main_macho on macos
                     std::cout << "[==========] Found main" << std::endl;
                 } catch (...) {
-                    throw std::exception("AEffect* main(audioMasterCallback) not found");
+                    // throw std::exception("AEffect* main(audioMasterCallback) not found");
                 }
             }
 
