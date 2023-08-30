@@ -27,12 +27,12 @@ function(plugin_bundle target platform company backend)
 				BUNDLE_IDENTIFIER com.${company}.${target}
 				COMPANY_NAME "${company}"
 				INFOPLIST ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../templates/auv2info.plist)
-			set(_output_dir ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>)
-			add_custom_command(TARGET ${target} POST_BUILD
-				# COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.bundle ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.component
-				COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.vst3" "~/Library/Audio/Plug-Ins/Components/${target}.component"
-				COMMAND find ~/Library/Audio/Plug-Ins/Components/
-				)
+			# set(_output_dir ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>)
+			# add_custom_command(TARGET ${target} POST_BUILD
+			# 	# COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.bundle ${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.component
+			# 	COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_BINARY_DIR}/VST3/$<CONFIGURATION>/${target}.vst3" "~/Library/Audio/Plug-Ins/Components/${target}.component"
+			# 	COMMAND find ~/Library/Audio/Plug-Ins/Components/
+			# 	)
 			# add_custom_command(TARGET ${target} POST_BUILD 
 			# 	COMMAND find .
 			# 	COMMAND /bin/mkdir "-p" "${_output_dir}/${target}.component/Contents/Resources"
@@ -90,7 +90,6 @@ function(plugin_validate target backend enabled)
 		else()
 			message(FATAL_ERROR "[libaudioplugin] Invalid backend '${backend}'")
 		endif()
-		add_dependencies(${target} libaudioplugin_validator)
 	endif()
 endfunction()
 

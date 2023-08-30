@@ -29,6 +29,7 @@ function(plugin_sources target backend platform vst3sdk templates source)
 			"${vst3sdk}/public.sdk/source/main/macmain.cpp"
 			"${vst3sdk}/public.sdk/source/main/macexport.exp")
 		message("-- [libaudioplugin] Adding macmain.cpp")
+		message("-- [libaudioplugin] Adding macexport.exp")
 		target_sources(${target} PRIVATE ${_main_source})
 	elseif(platform STREQUAL "Linux")
 		set(_main_source "${vst3sdk}/public.sdk/source/main/linuxmain.cpp")	
