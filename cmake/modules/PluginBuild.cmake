@@ -16,30 +16,42 @@ endfunction()
 # @param backend 
 # @param platform 
 # @param vst3sdk 
-function(plugin_sources target backend platform vst3sdk templates)	
+function(plugin_sources target backend platform vst3sdk templates source)	
 	if(platform STREQUAL "Windows")
 		set(_main_source "${vst3sdk}/public.sdk/source/main/dllmain.cpp")
 		set(_win32_resource "${templates}/win32resource.rc")
-		message("-- [libaudioplugin] Adding ${_main_source}")
-		message("-- [libaudioplugin] Adding ${_win32_resource}")
+		message("-- [libaudioplugin] Adding dllmain.cpp")
+		message("-- [libaudioplugin] Adding win32resource.rc")
 		target_sources(${target} PRIVATE ${_main_source})
 		target_sources(${target} PRIVATE ${_win32_resource})
 	elseif(platform STREQUAL "MacOS")
 		set(_main_source "${vst3sdk}/public.sdk/source/main/macmain.cpp")
 			# ${vst3sdk}/public.sdk/source/main/macexport.exp)
-		message("-- [libaudioplugin] Adding ${_main_source}")
+		message("-- [libaudioplugin] Adding macmain.cpp")
 		target_sources(${target} PRIVATE ${_main_source})
 	elseif(platform STREQUAL "Linux")
 		set(_main_source "${vst3sdk}/public.sdk/source/main/linuxmain.cpp")	
-		message("-- [libaudioplugin] Adding ${_main_source}")
+		message("-- [libaudioplugin] Adding linuxmain.cpp")
 		target_sources(${target} PRIVATE ${_main_source})
 	else()
 		message(FATAL_ERROR "[libaudioplugin] Invalid platform '${platform}'")
 	endif()
 	if (backend STREQUAL "VST2")
 		set(_vst2wrapper_source "${vst3sdk}/public.sdk/source/vst/vst2wrapper/vst2wrapper.sdk.cpp")
-		message("-- [libaudioplugin] Adding ${_vst2wrapper_source}")
+		message("-- [libaudioplugin] Adding vst2wrapper.sdk.cpp")
 		target_sources(${target} PRIVATE ${_vst2wrapper_source})
+		set(_validator_sources
+			"${source}/vst2/chunks.cpp"
+			"${source}/vst2/env.cpp"
+			"${source}/vst2/flags.cpp"
+			"${source}/vst2/parameters.cpp"
+			"${source}/vst2/process.cpp"
+			"${source}/vst2/view.cpp")
+		target_sources(libaudioplugin_validator PRIVATE ${_validator_sources})
+	elseif(backend STREQUAL "AAX")		
+		set(_validator_sources
+			"${source}/aax/env.cpp")
+		target_sources(libaudioplugin_validator PRIVATE ${_validator_sources})
 	endif()
 endfunction()
 
@@ -62,6 +74,7 @@ function(plugin_link_libraries target backend platform vst3sdk)
 		target_link_libraries(${target} PRIVATE auwrapper)
 	elseif(backend STREQUAL "VST2")
 		target_link_libraries(${target} PRIVATE vst2sdk)
+		target_link_libraries(libaudioplugin_validator PRIVATE vst2sdk)
 	endif()
 endfunction()
 

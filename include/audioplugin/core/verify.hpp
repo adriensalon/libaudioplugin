@@ -25,12 +25,12 @@ constexpr bool is_component_verified()
         "The given component is not polymorphic. VST3 components work by inheriting interfaces "
         "and overriding some appropriate methods.");
 
-	if constexpr(!std::is_final_v<vst3_component_t>) {
-		constexpr bool _has_virtual_destructor = std::has_virtual_destructor_v<vst3_component_t>;
-		static_assert(_has_virtual_destructor,
-			"The given component is not final but does not have a virtual destructor.");
-	}
-	
+    if constexpr (!std::is_final_v<vst3_component_t>) {
+        constexpr bool _has_virtual_destructor = std::has_virtual_destructor_v<vst3_component_t>;
+        static_assert(_has_virtual_destructor,
+            "The given component is not final but does not have a virtual destructor.");
+    }
+
     constexpr bool _is_component = std::is_base_of_v<Steinberg::Vst::ComponentBase, vst3_component_t>;
     static_assert(_is_component,
         "The given component does not inherit the Steinberg::Vst::ComponentBase interface. This "
@@ -39,28 +39,28 @@ constexpr bool is_component_verified()
     constexpr bool _has_initialize = detail::has_initialize_method<vst3_component_t>;
     static_assert(_has_initialize,
         "The given component does not implement the initialize method. This is required for all "
-		"VST3 components.");
+        "VST3 components.");
 
     constexpr bool _has_terminate = detail::has_terminate_method<vst3_component_t>;
     static_assert(_has_terminate,
         "The given component does not implement the terminate method. This is required for all "
-		"VST3 components.");
+        "VST3 components.");
 
     constexpr bool _has_get_state = detail::has_get_state_method<vst3_component_t>;
     static_assert(_has_get_state,
         "The given component does not implement the getState method. This is required for all "
-		"VST3 components.");
+        "VST3 components.");
 
     constexpr bool _has_set_state = detail::has_set_state_method<vst3_component_t>;
     static_assert(_has_set_state,
         "The given component does not implement the setState method. This is required for all "
-		"VST3 components.");
+        "VST3 components.");
 
     return true;
 }
 
 /// @brief Asserts at compile time that the given typenames are valid VST3 processor and controller
-/// that can be used with the VST3 SDK. This function asserts that the typename provides some 
+/// that can be used with the VST3 SDK. This function asserts that the typename provides some
 /// general functionnality that VST3 processor and controller should implement.
 /// @tparam vst3_processor_t is the processor typename to verify
 /// @tparam vst3_controller_t is the controller typename to verify
@@ -83,47 +83,47 @@ constexpr bool is_plugin_verified()
     constexpr bool _has_processor_set_active = detail::processor::has_set_active_method<vst3_processor_t>;
     static_assert(_has_processor_set_active,
         "The given component does not implement the setActive method. This is required for all "
-		"VST3 processors.");
+        "VST3 processors.");
 
     constexpr bool _has_processor_setup_processing = detail::processor::has_setup_processing_method<vst3_processor_t>;
     static_assert(_has_processor_setup_processing,
         "The given component does not implement the setupProcessing method. This is required for "
-		"all VST3 processors.");
+        "all VST3 processors.");
 
     constexpr bool _has_processor_can_process_sample_size = detail::processor::has_can_process_sample_size_method<vst3_processor_t>;
     static_assert(_has_processor_can_process_sample_size,
         "The given component does not implement the canProcessSampleSize method. This is required "
-		"for all VST3 processors.");
+        "for all VST3 processors.");
 
     constexpr bool _has_process = detail::processor::has_process_method<vst3_processor_t>;
     static_assert(_has_process,
         "The given component does not implement the process method. This is required for all VST3 "
-		"processors.");
+        "processors.");
 
     constexpr bool _has_set_component_state = detail::controller::has_set_component_state_method<vst3_controller_t>;
     static_assert(_has_set_component_state,
         "The given component does not implement the setComponentState method. This is required for "
-		"all VST3 controllers.");
+        "all VST3 controllers.");
 
     constexpr bool _has_create_view = detail::controller::has_create_view_method<vst3_controller_t>;
     static_assert(_has_create_view,
         "The given component does not implement the createView method. This is required for all "
-		"VST3 controllers.");
+        "VST3 controllers.");
 
     constexpr bool _has_set_param_normalized = detail::controller::has_set_param_normalized_method<vst3_controller_t>;
     static_assert(_has_set_param_normalized,
         "The given component does not implement the setParamNormalized method. This is required "
-		"for all VST3 controllers.");
+        "for all VST3 controllers.");
 
     constexpr bool _has_get_param_string_by_value = detail::controller::has_get_param_string_by_value_method<vst3_controller_t>;
     static_assert(_has_get_param_string_by_value,
         "The given component does not implement the getParamStringByValue method. This is required "
-		"for all VST3 controllers.");
+        "for all VST3 controllers.");
 
     constexpr bool _has_get_param_value_by_string = detail::controller::has_get_param_value_by_string_method<vst3_controller_t>;
     static_assert(_has_get_param_value_by_string,
         "The given component does not implement the getParamValueByString method. This is required "
-		"for all VST3 controllers.");
+        "for all VST3 controllers.");
 
     return true;
 }

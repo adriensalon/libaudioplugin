@@ -1,7 +1,7 @@
 project(libaudioplugin_example)
 
 add_plugin(ExamplePlugin
-	BACKEND "VST3" # We comment this for CI so we can use the preferred backend
+	BACKEND VST2 # We comment this for CI so we can use the preferred backend
 	VALIDATE
 	SOURCES 
 		source/myplugincontroller.h

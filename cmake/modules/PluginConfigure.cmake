@@ -66,9 +66,7 @@ function(plugin_configure_validator external include source)
 	# set options
 	add_subdirectory(${external}/googletest)
 	set(_validator_sources
-		"${source}/glue/open.cpp"
-		"${source}/glue/step.cpp"
-		"${source}/steps/vst2/mystep.cpp")
+		"${source}/validate.cpp")
 	add_executable(libaudioplugin_validator ${_validator_sources})
 	target_include_directories(libaudioplugin_validator
 		PRIVATE ${include}
