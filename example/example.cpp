@@ -7,7 +7,8 @@
 
 #include <base/source/fstreamer.h>
 
-struct vst3_processor final : public Steinberg::Vst::AudioEffect {
+
+class vst3_processor : public Steinberg::Vst::AudioEffect {
 
     vst3_processor()
     {
@@ -122,11 +123,11 @@ struct vst3_processor final : public Steinberg::Vst::AudioEffect {
     }
 };
 
-struct vst3_controller final : public Steinberg::Vst::EditControllerEx1 {
+struct vst3_controller : public Steinberg::Vst::EditControllerEx1 {
 
     static Steinberg::FUnknown* createInstance(void* context)
     {
-        return static_cast<Steinberg::Vst::IEditController*>(new vst3_controller);
+        return (Steinberg::Vst::IEditController*>(new vst3_controller);
     }
 
     Steinberg::tresult PLUGIN_API initialize(Steinberg::FUnknown* context) override

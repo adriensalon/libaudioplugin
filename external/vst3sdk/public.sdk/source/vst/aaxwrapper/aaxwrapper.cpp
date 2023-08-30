@@ -56,6 +56,8 @@ static_assert (AAX_SDK_CURRENT_REVISION >= AAX_SDK_2p3p2_REVISION,
 #include "aaxwrapper_gui.h"
 #include "aaxwrapper_parameters.h"
 
+#include <iostream>
+
 #include "base/thread/include/fcondition.h"
 
 #define USE_TRACE 1
@@ -1382,18 +1384,26 @@ AAX_Result GetEffectDescriptions (AAX_ICollection* outCollection)
 
 	AAX_Result result = AAX_ERROR_NULL_OBJECT;
 
+	std::cout << "jjjj \n";
 	AAX_Effect_Desc* effDesc = AAXWrapper_GetDescription ();
+	std::cout << "jjddddddddjj \n";
 	for (const AAX_Plugin_Desc* pdesc = effDesc->mPluginDesc; pdesc->mEffectID; pdesc++)
 	{
+		std::cout << "forrrrrr \n";
 		if (AAX_IEffectDescriptor* plugInDescriptor = outCollection->NewDescriptor ())
 		{
+			std::cout << "mmmmmmm \n";
 			result = GetPlugInDescription (plugInDescriptor, effDesc, pdesc);
-			if (result == AAX_SUCCESS)
-				result = outCollection->AddEffect (pdesc->mEffectID, plugInDescriptor);
+			if (result == AAX_SUCCESS){
+				
+				std::cout << "successssssss " << result << std::to_string(pdesc->mInputChannels) << plugInDescriptor << std::endl;
+				result = outCollection->AddEffect (pdesc->mEffectID, plugInDescriptor);}
+				std::cout << "22 successssssss " << result << std::endl;
 			AAX_ASSERT (result == AAX_SUCCESS);
 		}
 	}
 
+	std::cout << "ok rrez = " << result << std::endl;
 	outCollection->SetManufacturerName (effDesc->mManufacturer);
 
 	/* needed ?

@@ -21,17 +21,17 @@ set(LIBAUDIOPLUGIN_COREAUDIOSDK_PATH "${CMAKE_CURRENT_LIST_DIR}/external/ausdk" 
 plugin_detect_backend(_platform _available_backends)
 
 plugin_fetch_sdk(
-	"${_available_backends}" 
+	"${_available_backends}"
 	${LIBAUDIOPLUGIN_AAXSDK_PATH}
 	${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH})
 
 plugin_configure_sdk(
-	${_platform}
 	"${_available_backends}"
+	${_platform}
 	${LIBAUDIOPLUGIN_AAXSDK_PATH}
 	${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH}
-	"${CMAKE_CURRENT_LIST_DIR}/external/vst2sdk"
-	"${CMAKE_CURRENT_LIST_DIR}/external/vst3sdk")
+	${CMAKE_CURRENT_LIST_DIR}/external/vst2sdk
+	${CMAKE_CURRENT_LIST_DIR}/external/vst3sdk)
 
 plugin_configure_validator(
 	${CMAKE_CURRENT_LIST_DIR}/external
@@ -65,9 +65,8 @@ function(add_plugin target)
 	set(_add_plugin_args COMPANY DESCRIPTION VERSION EMAIL WEBSITE BACKEND)
 	set(_add_plugin_multi SOURCES)
 	cmake_parse_arguments(PARSE_ARGV 1 PLUGIN "${_add_plugin_options}" "${_add_plugin_args}" "${_add_plugin_multi}")
-
+	
 	plugin_parse_backend(
-		"${_available_backends}"
 		${LIBAUDIOPLUGIN_PREFERRED_BACKEND}
 		PLUGIN_BACKEND
 		_backend)
@@ -94,10 +93,10 @@ function(add_plugin target)
 	project(${target} VERSION ${_version} DESCRIPTION ${_description})
 
 	plugin_configure_target(
+		"${PLUGIN_SOURCES}"
 		${target}
 		${_company}
 		${_backend}
-		${PLUGIN_SOURCES}
 		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk)
 
 	plugin_include_directories(
@@ -108,7 +107,8 @@ function(add_plugin target)
 		${target}
 		${_backend}
 		${_platform}
-		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk)
+		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk
+		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/cmake/templates)
 
 	plugin_link_libraries(
 		${target}
