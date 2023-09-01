@@ -2,6 +2,10 @@
 
 #include <public.sdk/source/main/pluginfactory.h>
 
+
+#include <audioplugin/glue/backend.hpp>
+#include <audioplugin/glue/entry.hpp>
+#include <audioplugin/glue/frontend.hpp>
 #include <audioplugin/glue/plugids.hpp>
 #include <audioplugin/glue/pluginfo.hpp>
 

@@ -7,7 +7,9 @@
 # @param coreaudiosdk 
 # @param vst2sdk 
 # @param vst3sdk 
-function(plugin_configure_sdk list_available_backends platform aaxsdk coreaudiosdk vst2sdk vst3sdk)
+function(plugin_configure_sdk list_available_backends platform aaxsdk coreaudiosdk vst2sdk vst3sdk concurrentqueue)
+	add_subdirectory(${concurrentqueue} ${PROJECT_BINARY_DIR}/external/concurrentqueue)
+	message("cq = ${concurrentqueue}")
 	if("AAX" IN_LIST list_available_backends)
 		set(SMTG_AAX_SDK_PATH ${aaxsdk} CACHE STRING "The location where we store the AAX SDK" FORCE)
 	endif()

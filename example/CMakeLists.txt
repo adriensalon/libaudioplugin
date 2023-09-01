@@ -2,7 +2,7 @@ project(libaudioplugin_example)
 
 add_plugin(ExamplePlugin
 	BACKEND VST2 # We comment this for CI so we can use the preferred backend
-	# VALIDATE
+	VALIDATE
 	SOURCES 
 		source/myplugincontroller.h
 		source/myplugincontroller.cpp

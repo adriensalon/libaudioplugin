@@ -85,7 +85,7 @@ tresult PLUGIN_API TestPlugProcessor::process (Vst::ProcessData& data)
 			}
 		}
 	}*/
-	
+		
 	//--- Here you have to implement your processing
 
 	return kResultOk;

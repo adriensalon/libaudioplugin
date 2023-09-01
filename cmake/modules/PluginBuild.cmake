@@ -2,7 +2,10 @@
 # @param target
 # @param include 
 function(plugin_include_directories target include)
+	message("cq = ${concurrentqueue}")
 	target_include_directories(${target} PRIVATE ${include})
+	# target_include_directories(${target} PRIVATE ${concurrrentqueue})
+	# target_include_directories(libaudioplugin_validator PRIVATE ${concurrrentqueue})
 
 	target_include_directories(libaudioplugin_validator
     	PRIVATE
@@ -62,7 +65,9 @@ endfunction()
 # @param backend 
 # @param platform 
 # @param vst3sdk 
-function(plugin_link_libraries target backend platform vst3sdk)
+function(plugin_link_libraries target backend platform)
+	target_link_libraries(${target} PRIVATE concurrentqueue)
+	target_link_libraries(libaudioplugin_validator PRIVATE concurrentqueue)
 	target_link_libraries(${target} PRIVATE sdk)
 	target_link_libraries(libaudioplugin_validator PRIVATE sdk)
 	if(platform STREQUAL "MacOS")
@@ -89,7 +94,7 @@ endfunction()
 # @param version 
 # @param email 
 # @param website 
-function(plugin_compile_definitions target backend type company description version email website)
+function(plugin_compile_definitions target backend list_available_backends type company description version email website)
 	if(backend STREQUAL "AAX")
 		target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_BACKEND_AAX)
 		target_compile_definitions(libaudioplugin_validator PRIVATE -DAUDIOPLUGIN_BACKEND_AAX)
@@ -107,6 +112,21 @@ function(plugin_compile_definitions target backend type company description vers
 		target_compile_definitions(libaudioplugin_validator PRIVATE -DAUDIOPLUGIN_BACKEND_VST3)
 	else()
 		message(FATAL_ERROR "[libaudioplugin] Invalid backend")
+	endif()
+	if("AAX" IN_LIST list_available_backends)
+		target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_FRONTEND_AAX)
+	endif()
+	if("AUV2" IN_LIST list_available_backends)
+		target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_FRONTEND_AUV2)
+	endif()
+	if("AUV3" IN_LIST list_available_backends)
+		target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_FRONTEND_AUV3)
+	endif()
+	if("VST2" IN_LIST list_available_backends)
+		target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_FRONTEND_VST2)
+	endif()
+	if("VST3" IN_LIST list_available_backends)
+		target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_FRONTEND_VST3)
 	endif()
 	target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_PLUGIN_NAME="${target}")
 	target_compile_definitions(${target} PRIVATE -DAUDIOPLUGIN_PLUGIN_TYPE="${type}")

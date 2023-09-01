@@ -31,7 +31,8 @@ plugin_configure_sdk(
 	${LIBAUDIOPLUGIN_AAXSDK_PATH}
 	${LIBAUDIOPLUGIN_COREAUDIOSDK_PATH}
 	${CMAKE_CURRENT_LIST_DIR}/external/vst2sdk
-	${CMAKE_CURRENT_LIST_DIR}/external/vst3sdk)
+	${CMAKE_CURRENT_LIST_DIR}/external/vst3sdk
+	${CMAKE_CURRENT_LIST_DIR}/external/concurrentqueue)
 
 plugin_configure_validator(
 	${CMAKE_CURRENT_LIST_DIR}/external
@@ -114,12 +115,12 @@ function(add_plugin target)
 	plugin_link_libraries(
 		${target}
 		${_backend}
-		${_platform}
-		${CMAKE_CURRENT_FUNCTION_LIST_DIR}/external/vst3sdk)
+		${_platform})
 
 	plugin_compile_definitions(
 		${target}
 		${_backend}
+		"${_available_backends}"
 		${_type}
 		${_company}
 		${_description}

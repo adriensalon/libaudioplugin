@@ -23,4 +23,9 @@ AAX_VARIANTS_ARRAY(
 
 #endif
 
-REGISTER_PLUGIN(vstsync::TestPlugProcessor, vstsync::TestPlugController)
+REGISTER_OG_PLUGIN(vstsync::TestPlugProcessor, vstsync::TestPlugController)
+
+
+// REGISTER_VST3_PLUGIN(
+// 	vstsync::TestPlugProcessor, AUDIOPLUGIN_PROCESSOR_UID, 
+// 	vstsync::TestPlugController, AUDIOPLUGIN_CONTROLLER_UID)
